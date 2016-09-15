@@ -1,0 +1,109 @@
+% -----------------------------*- LaTeX -*------------------------------
+\documentclass[12pt]{report}
+\usepackage{scribe}
+\usepackage{amsmath, bm}
+\def\cD{\mathcal D}
+\def\cH{\mathcal H}
+\def\bx{\bm{x}}
+\def\by{\bm{y}}
+\def\bw{\bm{w}}
+\def\bbE{\mathbb E}
+\def\bbR{\mathbb R}
+\begin{document}
+\scribe{Yifei Liu \& Fan Gao}
+\lecturenumber{2}			% required, must be a number
+\lecturedate{09/08}		% required, omit year
+
+\maketitle
+
+%\framebox[.95\textwidth]{\parbox{.93\textwidth}{ {{\bf Note:}} These
+%lecture notes are still rough, and have only have been mildly proofread.  }}
+%\vspace*{.1in}
+
+
+% ----------------------------------------------------------------------
+
+\section{Empirical Risk Minimization (ERM)}
+Given a dataset $\cD = \{(\bx_1, y_1), (\bx_2, y_2), \cdots, (\bx_n, y)\}$, where $(\bx_i, y_i)$'s are independently and identically distributed (i.i.d.) following some underlying distribution. Then ERM aims to find a model from certain hypothesis class $\cH$ that minimizes the empirical risk,
+\[
+\min_{\text{models} \in \cH} \sum_i \text{disagree} ( \text{model}(\bx_i), y_i)
+\]
+When we apply machine learing methods on a dataset, usually we will split the data into three folds with the following proportion, (training set : validation set: test set) = (2:1:1). And ERM is related to the first two folds. We can use cross validation or holdout set to perform parameter tuning, see Chapter 7.7 (page 222) of \textit{Introduction to Statistical Learning Theory} for more detail.
+~\\~\\
+We care about two questions on ERM:
+\begin{itemize}
+\item When does the ERM concentrate around the true risk?
+\item How does the hypothesis class affect the ERM?
+\end{itemize}
+We will try to answer these questions in the following sections.
+~\\~\\
+For a machine learning problem, our goal is to find a hypothesis $h_s$ with the smallest expected risk, which is defined as 
+\begin{equation}
+  \label{eq:expected_risk}
+  R[h_s] = \bbE \{ f(h_s(\bx), y)\},
+\end{equation}
+where $f(\cdot, \cdot)$ is a function that measures the disagreement between predicted label and true label, and the expectation is taken with respect to the underlying distribution. However, in practice, we don't know the exact form of the underlying distribution. Therefore, we use the empirical risk instead and try to find the minimizer of it. Define the empirical risk of a hypothesis $h$ to be
+\begin{equation}
+  \label{eq:empirical_risk}
+  \hat R_n [h] = \frac{1}{n} \sum_{i = 1}^n f(h(\bx_i), y_i),
+\end{equation}
+and define the generalization error to be 
+\begin{equation}
+  \label{eq:gene_err}
+  \epsilon_{\text{gen}} [h] = | \hat R_n [h] - R[h] |.
+\end{equation}
+Now we assume that our loss function $f$ is between 0 and 1, namely, $0 \leq f(a, b) \leq 1, \forall a, b$. To answer the first question, we need the following powerful Hoeffding's Inequality.
+\begin{theorem}[Hoeffding's Inequality]
+\label{Hoef}
+Let $X_1, X_2, \cdots, X_n$ be i.i.d. random variables on $\bbR$, and $\forall i, 0 \leq X_i \leq 1$. Let $S_n = \frac{1}{n}\sum_i X_i$, then
+\begin{equation}
+  \label{eq:hoef}
+  Pr(|S_n - \bbE[S_n]| \geq \epsilon ) \leq 2 e^{-2n\epsilon^2}
+\end{equation}
+\end{theorem}
+\textbf{Exercise:} How many samples do we need to bound $Pr(|S_n - \bbE[S_n]| \geq \epsilon ) \leq 0.1$? $n = \frac{3}{2}\epsilon^{-2}$.
+~\\~\\
+Denote $R_i = f(h(\bx_i), y_i)$, then $\hat R_n = \frac{1}{n}\sum_{i=1}^n{R_i}$ and
+\begin{equation}
+	\label{eq:exp_empirical_risk}
+  	\bbE(R_i) = \bbE(\hat R_n) = \bbE \{ f(h(\bx), y)\} = R[h]
+\end{equation}
+\begin{corollary}
+	\label{Cor_Concentration_inequality}
+	A corollary of Theorem~\ref{Hoef}. The loss function is between 0 and 1.  
+	\begin{equation}
+	\label{eq:concentration_inequality}
+		Pr(|\hat R_n [h] - R[h]| \geq \epsilon ) \leq 2 e^{-2n\epsilon^2}
+	\end{equation}
+\end{corollary}
+\begin{lemma}[Union Bound]
+	\label{union_bound}
+	For $n$ sets $A_1$, $A_2$, ..., $A_n$, 
+	\begin{equation}
+	\label{eq:union_bound}
+		Pr\left( \bigcup_{i=1}^{n}{A_i}\right) \leq \sum_{i=1}^n{Pr(A_i)}
+	\end{equation}	
+\end{lemma}
+Let $\cH$ be a finite set of predictors, hence
+\begin{equation}
+\label{eq:finite_set_H}
+	Pr \left( \bigcup_{h \in \cH}\{ |\hat R_n [h] - R[h]| \geq \epsilon \} \right) \leq 2 |\cH | e^{-2n\epsilon^2}
+\end{equation}
+\textbf{Exercise:} How many samples do we need to bound $Pr \left( \bigcup_{h \in \cH}\{ |\hat R_n [h] - R[h]| \geq \epsilon \} \right) \leq \delta$? 
+\begin{equation}
+\label{eq:for_n}
+	n \geq \frac{1}{2 \epsilon^2} \log{\left( \frac{2|\cH|}{\delta}\right)} = O \left( \frac{\log|\cH| + \log(\delta^{-1})}{\epsilon^2}\right)
+\end{equation}
+What if the set $\cH$ is not finite? For example, the decision rule in \emph{support vector machine}: $h(\bx) = \text{sign}(\bw^T\bx + b)$. Obviously $|\cH| = \infty$, so this bound doesn't work. But if we consider the floating-point in computer, the set $\cH_{float}$ is finite. Assuming that we work on a 64-bit computer and the dimension of $\bx$ is $d$, then $|\cH_{float}| = {2^{64}}^{(d+1)}$ and the sample size $n$ should be $O_{\delta}(d/\epsilon^2)$. 
+~\\~\\
+Let's loot at another example \emph{neural networks}. For a three-layer network (input layer, hidden layer and output layer): the input $\bx \in \bbR^{p}$, the output $\by \in \bbR^{q}$, the weight matrices $W_1 \in \bbR^{m\times p}$ and $W_2 \in \bbR^{q \times m}$, the model is 
+\begin{equation}
+\label{eq:nn}
+	y_k = \sigma {\left(\sum_{i=1}^{m}{(W_2)_{k,i} \sigma{ \left( \sum_{j=1}^{p}{(W_1)_{i,j} x_j} \right)}} \right)}
+\end{equation}
+where $\sigma$ is the sigmoid function. $|\cH_{float}| = {2^{64}}^{(mp+mq)}$ and the sample size $n$ should be $O_{\delta}(m(p+q)/\epsilon^2)$.
+
+
+
+\end{document}
+
