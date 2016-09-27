@@ -61,7 +61,9 @@ x_{k+1} &= x_k - \gamma \nabla f(x_k)\end{align*}
 
 Here, $\gamma > 0$ is some constant we define. It is referred to as the {\it learning rate}. Last time, we derived the following inequality in gradient descent for convex, $L$-Lipschitz functions:
 \begin{align*}
-f(x_k) - f^* \leq \dfrac{1}{2\gamma}\bigg(||x_k-x^*||^2 - ||x_{k+1}-x^*||_2 +\gamma^2||\nabla f(x_k)||^2\bigg)\end{align*}
+f(x_k) - f^* &\leq \dfrac{1}{2\gamma}\bigg(||x_k-x^*||^2 - ||x_{k+1}-x^*||_2 +\gamma^2||\nabla f(x_k)||^2\bigg)\\
+&\leq \dfrac{1}{2\gamma}\bigg(||x_k-x^*||^2 - ||x_{k+1}-x^*||_2 + \gamma^2L^2\bigg)
+\end{align*}
 
 For simplicity, we define $\Delta_i = ||x_i-x^*||$. We then get the following theorem:
 
@@ -117,7 +119,7 @@ Let $f(x)$ be a $\lambda$-strongly convex, $\beta$-smooth function on a convex s
 \langle \nabla f(x) - \nabla f(y) , x-y \rangle \geq \dfrac{\lambda\beta}{\lambda+\beta}||x-y||^2 + \frac{1}{\lambda+\beta}||\nabla f(x) - \nabla f(y)||^2\end{align*}
 \end{lemma}
 
-We will use this lemma to prove a convergence rate for these functions. The gradient descent algorithm remains unchanged from the one above.
+We will use this lemma to prove a convergence rate for these functions. The gradient descent algorithm remains unchanged from the one above. The theorem below involves the condition number $\kappa = \frac{\beta}{\lambda}$. Note that for $\lambda$-strongly convex, $\beta$-smooth functions, it is straightforward to show that $\beta \geq \lambda$, implying that $\kappa \geq 1$.
 
 \begin{theorem}
 Let $\gamma = \frac{2}{\lambda + \beta}$ and let $\kappa = \frac{\beta}{\lambda}$. Using gradient descent to produce $T+1$ iterates $x_k$, we get:
@@ -132,12 +134,13 @@ Using the update rule for gradient descent and expanding, we get the following e
 
 By Lemma 5.2 above and the fact that $\nabla f(x^*) = 0$, we have:
 \begin{align*}
-\langle \nabla f(x_k), x_k-x^*\rangle \geq \dfrac{\lambda\beta}{\lambda+\beta}\Delta_k^2 + \dfrac{1}{\lambda+\beta}||\nabla f(x_k)||^2\end{align*}
+\langle \nabla f(x_k), x_k-x^*\rangle & = \langle \nabla f(x_k)-\nabla f(x^*), x_k-x^*\rangle\\
+&\geq \dfrac{\lambda\beta}{\lambda+\beta}\Delta_k^2 + \dfrac{1}{\lambda+\beta}||\nabla f(x_k)-\nabla f(x^*)||^2\end{align*}
 
 Plugging this in to our equation for $\Delta_{k+1}^2$ above we get:
 \begin{align*}
 \Delta_{k+1}^2 &\leq \Delta_k^2 -2\gamma\bigg(\dfrac{\lambda\beta}{\lambda+\beta}\Delta_k^2 + \dfrac{1}{\lambda+\beta}||\nabla f(x_k)||^2\bigg) + \gamma^2||\nabla f(x_k)||^2\\
-&= \bigg(1-\dfrac{2\gamma\lambda\beta}{\lambda+\beta}\bigg)\Delta_k^2 + \bigg(\dfrac{1}{\lambda+\beta} + \gamma^2\bigg)||f(x_k)||^2\\
+&= \bigg(1-\dfrac{2\gamma\lambda\beta}{\lambda+\beta}\bigg)\Delta_k^2 + \bigg(\dfrac{1}{\lambda+\beta} + \gamma^2\bigg)||\nabla f(x_k) - \nabla f(x^*)||^2\\
 &\leq \bigg(1-\dfrac{2\gamma\lambda\beta}{\lambda+\beta}\bigg)\Delta_k^2 + \bigg(\dfrac{1}{\lambda+\beta} + \gamma^2\bigg)\beta^2\Delta_k^2
 \end{align*}
 
