@@ -130,7 +130,7 @@ f(x_{T+1}) - f^* \leq \frac{\beta}{2}\exp\bigg(\frac{-T}{\kappa}\bigg)\Delta_1^2
 \begin{proof}
 Using the update rule for gradient descent and expanding, we get the following equality:
 \begin{align*}
-\Delta_{k+1}^2 = ||x_{k+1}-x^*||^2 = ||x_k - x^*|| -2\gamma\langle \nabla f(x_k), x_k-x^*\rangle + \gamma^2||\nabla f(x_k)||^2\end{align*}
+\Delta_{k+1}^2 = ||x_{k+1}-x^*||^2 = ||x_k - x^*||^2 -2\gamma\langle \nabla f(x_k), x_k-x^*\rangle + \gamma^2||\nabla f(x_k)||^2\end{align*}
 
 By Lemma 5.2 above and the fact that $\nabla f(x^*) = 0$, we have:
 \begin{align*}
@@ -140,13 +140,13 @@ By Lemma 5.2 above and the fact that $\nabla f(x^*) = 0$, we have:
 Plugging this in to our equation for $\Delta_{k+1}^2$ above we get:
 \begin{align*}
 \Delta_{k+1}^2 &\leq \Delta_k^2 -2\gamma\bigg(\dfrac{\lambda\beta}{\lambda+\beta}\Delta_k^2 + \dfrac{1}{\lambda+\beta}||\nabla f(x_k)||^2\bigg) + \gamma^2||\nabla f(x_k)||^2\\
-&= \bigg(1-\dfrac{2\gamma\lambda\beta}{\lambda+\beta}\bigg)\Delta_k^2 + \bigg(\dfrac{1}{\lambda+\beta} + \gamma^2\bigg)||\nabla f(x_k) - \nabla f(x^*)||^2\\
-&\leq \bigg(1-\dfrac{2\gamma\lambda\beta}{\lambda+\beta}\bigg)\Delta_k^2 + \bigg(\dfrac{1}{\lambda+\beta} + \gamma^2\bigg)\beta^2\Delta_k^2
+&= \bigg(1-\dfrac{2\gamma\lambda\beta}{\lambda+\beta}\bigg)\Delta_k^2 + \bigg(\dfrac{-2\gamma}{\lambda+\beta} + \gamma^2\bigg)||\nabla f(x_k) - \nabla f(x^*)||^2\\
+&\leq \bigg(1-\dfrac{2\gamma\lambda\beta}{\lambda+\beta}\bigg)\Delta_k^2 + \bigg(\dfrac{-2\gamma}{\lambda+\beta} + \gamma^2\bigg)\beta^2\Delta_k^2
 \end{align*}
 
 Note that this last step holds by $\beta$-smoothness of $f$ and the fact that $\nabla f(x^*) = 0$. Plugging in $\gamma = \frac{2}{\lambda+\beta}$, some tedious arithmetic shows:
 \begin{align*}
-\Delta_{k+1}^2 \leq \bigg(1 - \frac{4\lambda\beta}{(\lambda+\beta)^2}\bigg)\end{align*}
+\Delta_{k+1}^2 \leq \bigg(1 - \frac{4\lambda\beta}{(\lambda+\beta)^2}\bigg)\Delta_k^2\end{align*}
 
 Some more manipulation shows that we can bound this above by $\frac{\kappa-1}{\kappa+1}\Delta_k^2$. Applying this bound repeatedly, we get the equation:
 \begin{align*}

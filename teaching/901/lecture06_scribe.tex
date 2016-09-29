@@ -1,0 +1,225 @@
+% -----------------------------*- LaTeX -*------------------------------
+\documentclass[12pt]{report}
+\usepackage{scribe}
+\begin{document}
+\scribe{Sneha Rudra}
+\lecturenumber{6}			% required, must be a number
+\lecturedate{09/22/2016}		% required, omit year
+
+\maketitle
+
+\framebox[.95\textwidth]{\parbox{.93\textwidth}{ {{\bf Note:}} These
+lecture notes are still rough, and have only have been mildly proofread.  }}
+\vspace*{.1in}
+
+
+% ----------------------------------------------------------------------
+
+
+\section {Stochastic Gradient Descent}
+
+\subsection{Introduction}
+In the last two lectures we studied the Gradient Descent Method extensively in the context of \underline{convex} objective functions. We also saw previously that a typical Empirical Risk Minimization objective $f(\mathbf{x})$ can be expressed as follows-
+
+\begin{equation}
+f(\mathbf{x}) = \frac{1}{n}\sum_{i}^{n} f_{i}(\mathbf{x})
+\end{equation}
+
+where the \underline{summation} is over \underline{$n$} training instances,  $f_{i}(\mathbf{x})$ is the \underline{convex} loss function evaluated at $i$-th training instance and the decision variable $\mathbf{x}$ represents the parameter vector of the classifier/model belonging to a specific hypothesis class.\\
+
+We also saw that if we used Gradient Descent to minimize this objective $f(\mathbf{x})$, we would be required to compute $\nabla f(\mathbf{x})$ and hence we would need \underline{$n$ gradient computations} one corresponding to each training instance $i$ during every iteration of the algorithm.\\
+
+In the present lecture, we explore the Stochastic Gradient Descent (\underline{SGD}) algorithm which leverages the fact that performing a full gradient computation during every iteration may often times be unnecessary and thus seeks to \underline{reduce} the \underline{per-iteration computation}. SGD is simple to implement, has a small memory footprint and has been shown to perform well on several problems. It is the basis of many algorithms that have been developed to solve large scale optimization problems which appear in various machine learning applications.\\ 
+
+\subsection{Stochastic Gradient Descent Update Steps}
+The key idea here is that inorder to make progress towards the minima, it is enough that \underline{on an average} our gradient computations are correct [1]. Instead of picking a locally optimal direction in which to update the current iterate, SGD picks an index $i$ uniformly at random from [$1$,$2$...$n$] and evaluates the gradient of $f_i$ at the current iterate to be the update direction (i.e. at the current iterate, instead of the full gradient, it uses the gradient of one loss function ($f_{s_{k}}$) picked randomly from the set of $n$ losses.). \underline{SGD update} steps are:
+
+\begin{itemize}
+    \item Sample $s_k$ $\sim$ unif\{1,n\}, $s_k$ are i.i.d 
+    \item Update the current iterate according to the following- 
+$x_{k+1}$ = $x_{k}$ - $\gamma \nabla$ $f_{s_k}(x_k)$  
+\end{itemize}
+
+$x_{k}$ is the curent iterate and $\gamma$ is the step size.\\
+
+Clearly, SGD requires only one gradient computation per iteration (while Gradient Descent requires $n$). However, as we will see later, since we give up on accuracy, there is usually a tradeoff and while the computational effort per iteration is less, SGD in general needs \underline{more iterations} than Gradient Descent to reach a specified optimizatiom error.
+
+$\>$
+\subsection{Expected Convergence Rate of Stochastic Gradient Descent}
+The following properties and assumptions have been used in proving the Expected Convergence Rate of SGD.
+\begin{itemize}
+    \item Stochastic gradients have the property that for any iterate $\mathbf{x}$, in expectation, the stochastic gradient is equal to the true gradient 
+    \begin{equation}
+    \mathbf{E}_{s}\lbrack \nabla f_{s}(\mathbf{x}) \rbrack = \nabla f(\mathbf{x})
+    \end{equation}
+    
+    
+    \item Uniform bound on stochastic gradients assumption:
+    \begin{equation}
+    \mathbf{E}_{s}\|\nabla f_{s}(\mathbf{x})\|\leq M^{2}
+    \end{equation}
+     i.e. in expectation the norm of the stochastic gradient is bounded. 
+    
+    \item Further $f$ has been assumed to be $\lambda$ strongly convex. In particular this implies 
+    \begin{equation}
+    \langle \nabla f(x) - \nabla f(y), x-y \rangle \geq \lambda \|x-y\|^{2}
+    \end{equation}
+\end{itemize}
+
+\begin{theorem}
+\label{ThmNeat}
+For $\gamma = \frac{\epsilon \lambda}{M^2}$ and number of iterations $T= O(\frac{M^2}{\lambda^2}\frac{\log(\frac{\Delta_{1}}{\epsilon})}{\epsilon})$, after $T$ iterations of SG we get:
+\begin{equation}
+\mathbf{E}(\Delta_{k+1}) \leq \epsilon
+\end{equation}
+Where $\Delta_{k}$ denotes the distance between the $k$-th iterate and the optimum i.e. $\Delta_{k} = \|x_{k}-x*\|^{2}$. Note that $\Delta_{1}$ shows up in the estimate of $T$ but in most cases assuming that $\Delta_{1} = O(d)$ is reasonable especially when we are operating in a compact domain. $M$ and $\lambda$ correspond to equations 6.3 and 6.4 above.  
+\end{theorem}
+
+\begin{proof}
+Consider the distance of the $k+1$-th iterate from the optimum and substitute for $x_{k+1} = x_{k} - \gamma \nabla f_{s_{k}}(x_{k})$ from the update step-\\
+\begin{equation}
+\|x_{k+1}-x*\|^{2} = \|x_{k} - \gamma \nabla f_{s_{k}}(x_{k})-x*\|^{2} = \|x_{k}-x*\|^{2} - 2\gamma \langle \nabla f_{s_{k}}(x_k), x_{k}-x*\rangle + \gamma^2\|\nabla f_{s_{k}}(x_k)\|^2
+\end{equation}\\
+
+Since the directions $s_1, s_2... s_k$ were randomly chosen and the current iterate $x_{k}$ depends on all the previous directions, we take the expectation of the above equation with respect to $s_1,s_2...s_k$.
+
+\begin{equation}
+\mathbf{E}_{s_1,..s_k} \lbrack\|x_{k+1}-x*\|^{2}\rbrack = \mathbf{E}_{s_1,..s_k}\lbrack\|x_{k}-x*\|^2\rbrack - 2\gamma \mathbf{E}_{s_1,..s_k}\lbrack \langle \nabla f_{s_k}(x_k), x_{k}-x* \rangle \rbrack + \gamma^2 \mathbf{E}_{s_1,..s_k} \lbrack \| \nabla f_{s_k}(x_k)\|^2 \rbrack
+\\
+\end{equation}
+\\
+Expanding the second term on the right hand side of the above equation-\\
+
+\begin{equation}
+\mathbf{E}_{s_1,..s_k}\lbrack \langle \nabla f_{s_k}(x_k), x_{k}-x* \rangle \rbrack = \mathbf{E}_{s_{1}..s_{k-1}}\mathbf{E}_{s_{k}}\langle \nabla f_{s_{k}}(x_{k}),x_{k}-x*\rangle
+\end{equation}
+
+\begin{equation}
+ = \mathbf{E}_{s_{1}..s_{k-1}}\langle \mathbf{E}_{s_{k}}(\nabla f_{s_{k}}(x_{k})),x_{k}-x*\rangle 
+\end{equation}
+\\
+Note that equation 6.9 holds because $s_{k}$ ($s_{k}$ is a random number between $1$ and $n$) and $x_{k}$ are independent of each other. Further using equation $6.2$,
+
+\begin{equation}
+ = \mathbf{E}_{s_{1}..s_{k}}\langle (\nabla f(x_{k})),x_{k}-x*\rangle
+\end{equation}
+\\
+Plugging equation $6.10$ back into $6.7$ and using the uniform bound from equation $6.3$ we have-
+\begin{equation}
+\mathbf{E}_{s_{1}..s_{k}}\lbrack\|x_{k+1}-x*\|^{2}\rbrack \leq \mathbf{E}_{s_{1}..s_{k}}(\|x_{k}-x*\|^{2})- 2\gamma \mathbf{E}_{s_{1}..s_{k}}\lbrack\langle \nabla f(x_{k}), x_{k}-x*\rangle\rbrack + \gamma^{2}M^{2}
+\end{equation}
+\\
+Next using strong convexity (equation 6.4), using the fact that $\nabla f(x*) =0$ and setting $\Delta_{k} = \|x_{k}-x*\|^2$ we get
+\begin{equation}
+\mathbf{E}_{s_{1}..s_{k}}(\Delta_{k+1}) \leq (1-2\gamma\lambda)\mathbf{E}_{s_{1}..s_{k}}(\Delta_{k}) + \gamma^2 M^2 \leq \epsilon
+\end{equation}
+
+Writing out equation 6.12 for $k$, $k-1$..$1$ and adding:
+\begin{equation}
+\mathbf{E}_{s_{1}..s_{k}}(\Delta_{k}) \leq (1-2\gamma\lambda)\mathbf{E}_{s_{1}..s_{k}}(\Delta_{k-1}) + \gamma^2 M^2 
+\end{equation}
+
+\begin{equation}
+\mathbf{E}_{s_{1}..s_{k}}(\Delta_{k-1}) \leq (1-2\gamma\lambda)\mathbf{E}_{s_{1}..s_{k}}(\Delta_{k-2}) + \gamma^2 M^2 
+\end{equation}
+
+
+\begin{align*}
+\vdots
+\end{align*}
+
+\begin{equation}
+\mathbf{E}_{s_{1}..s_{k}}(\Delta_{2}) \leq (1-2\gamma\lambda)\mathbf{E}_{s_{1}..s_{k}}(\Delta_{1}) + \gamma^2 M^2 
+\end{equation}
+\begin{align*}
+\rule{8cm}{0.4pt}
+\end{align*}
+\begin{equation}
+\mathbf{E}_{s_{1}..s_{k}}(\Delta_{k+1}) \leq (1-2\gamma\lambda)^{k}\mathbf{E}_{s_{1}..s_{k}}(\Delta_{1}) +  \sum_{i=0}^{k-1}(1-2\lambda\gamma)^i(\gamma^2M^2)
+\end{equation}
+
+Next, under the assumption that $0\leq 2\gamma\lambda \leq 1$, we can use the following property-
+\begin{equation}
+\sum_{i=0}^{\infty}(1-a)^i \leq \frac{1}{a} \,\,\,\,\text{if}\,\, 0\leq a \leq 1
+\end{equation}
+
+Simplifying equation 6.16 using above and setting $\mathbf{E}_{s_{1}..s_{k}}(\Delta_{1}) = \Delta_{1}$ (the starting point is known and hence $\Delta_{1}$ is deterministic)
+
+\begin{equation}
+\mathbf{E}_{s_{1}..s_{k}}(\Delta_{k+1}) \leq (1-2\gamma\lambda)^{k}\Delta_{1} +  \frac{\gamma M^2}{2\lambda} \leq \epsilon
+\end{equation}
+
+
+We observe that we have contraction due to the first term as the number of iterations $k$ increases, but we lose some of it due to $\frac{\gamma M^2}{2\lambda}$. Finally, inorder to get to an optimization error of $\epsilon$, we have two parameters that can be tuned, $\gamma$ (the step size) and $k$ (the number of iterations). Assuming that both the terms in equation 6.18 contribute $\epsilon/2$ to the optimization error, we get-
+\begin{equation}
+\gamma = \frac{\lambda\epsilon}{M^2}
+\end{equation}
+
+Now using this value of $\gamma$ we get
+\begin{equation}
+k = O(\frac{M^2}{\lambda^2}\frac{\log(\Delta_{1}/\epsilon)}{\epsilon}})
+\end{equation}
+
+Hence theoretically, tuning the parameter $\gamma$ according to equation $6.19$ and performing number of iterations on the order provided by equation $6.20$ can hence help SGD obtain an optimization error of $\epsilon$, in expectation.
+\end{proof}
+
+
+\subsection{Comparison of Gradient Descent and Stochastic Gradient Descent}\\
+In summary, the running time of Gradient Descent and Stochastic Gradient Descent can be compared as follows:\\
+
+$SGD:$ To reach an accuracy of $\epsilon$ the number of iterations $T = O(\frac{M^2}{\lambda^2}\frac{\log(\frac{\Delta_1}{\epsilon})}{\epsilon})$  \\
+
+$GD:$ To reach an accuracy of $\epsilon$ the number of iterations $T = O(\frac{\beta}{\lambda}\log(\frac{\beta}{\lambda \epsilon}))$\\ 
+
+Clearly, if $\epsilon$ is the dominating factor, then Gradient Descent requires exponentially smaller number of iterations but the work per iteration is $n$ times more compared to SGD. Note that these results are based on different step sizes for Gradient Descent and SGD. The number of iterations for Gradient Descent is based on our discussion in the previous lecture.\\
+
+\subsection{Example: Logistic Regression}\\
+\begin{equation}
+f(x) = \frac{1}{n}\sum_{i=1}^{n}\log(1 + \exp(-y_{i}a_{i}^{T}x)) + \lambda\|x\|_{2}^{2}
+\end{equation}
+
+Consider the following assumptions/ properties hold:
+
+\begin{itemize}
+\item We are operating in a $d$ dimensional sphere, where $d$ represents the dimensions
+\item $\|a_i\| = O(\sqrt{d})$ $\forall i$ (From the property of vector norm)
+\item $\Delta_{1} = O(d)$ (Reasonable on a $d$- dimensional sphere)
+\item $M^2 = O(d)$, $\beta = O(d)$
+\end{itemize}
+
+To reach an optimization error of $\epsilon$
+\begin{equation}
+\# iter_{GD} = O(\frac{\beta}{\lambda}\log(\frac{\beta}{\lambda \epsilon})) = O(\frac{d}{\lambda}\log(\frac{d}{\lambda \epsilon}))
+\end{equation}
+
+\begin{equation}
+\# iter_{SGD} = O(\frac{M^2}{\lambda^2}\frac{\log(\frac{\Delta_1}{\epsilon})}{\epsilon}) = O(\frac{d}{\lambda^2}\frac{\log(\frac{d}{\epsilon})}{\epsilon})
+\end{equation}
+
+From the previous lecture, if $A$ matrix has columns given by $a_{i}
+
+\begin{equation}
+\# cost_{GD}/iter = O(nnz(A)) 
+\end{equation}
+
+Similarly, cost of evaluating a single gradient would be given by
+\begin{equation}
+\# cost_{SGD}/iter = \frac{1}{n}O(nnz(A))
+\end{equation}
+
+
+\begin{equation}
+\frac{cost_{GD}/iter \times \# iter_{GD}(\epsilon) }{cost_{SGD}/iter\times \# iter_{SGD}(\epsilon)} = \frac{nnz(A)\times\frac{d}{\lambda}\log(\frac{d}{\lambda\epsilon})}{\frac{nnz(A)}{n}\frac{d\espilon}{\lambda^2 \epsilon}\log(\frac{d}{\epsilon})} = O(n\lambda\epsilon) 
+\end{equation}\\
+
+This makes sense from the point of view of SGD as O($n\lambda\epsilon$) represents the saving per iteration times the loss in terms of number of iterations.
+
+\subsection{Conclusion}
+In the next lecture, we will study Stochastic Variance Reduced Gradient Method also known as SVRG which hopes to achieve the best properties of both GD and SGD - number of iterations proportional to $\log(\frac{1}{\epsilon})$ ($\epsilon$ is the optimization error) and small amortized computational complexity per iteration.
+\\
+\\
+
+[1] Convex Optimization: Algorithms and Complexity, Sebastien Bubeck, Chapter 6.
+
+\end{document}
+
