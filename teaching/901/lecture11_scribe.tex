@@ -1,0 +1,167 @@
+% -----------------------------*- LaTeX -*------------------------------
+\documentclass[12pt]{report}
+\usepackage{scribe}
+\usepackage{graphicx, float, amsmath}
+\begin{document}
+\scribe{Apul Jain}
+\lecturenumber{11}			% required, must be a number
+\lecturedate{10/11}		% required, omit year
+
+\renewcommand{\bibname}{References}
+
+\maketitle
+
+\framebox[.95\textwidth]{\parbox{.93\textwidth}{ {{\bf Note:}} These
+lecture notes are still rough, and have only have been mildly proofread.  }}
+\vspace*{.1in}
+
+
+% ----------------------------------------------------------------------
+
+\section{Neural Networks}
+
+Neural Networks were invented in 1940s as a model of computation inspired by the structure of neurons in the human brain. A neural network is a graph consisting of nodes and edges. During 1990s, Artificial Neural Networks (ANN) were designed as a hypothesis class for models learning from data. Broadly, ANNs gained attraction in two eras:
+\begin{itemize}
+\item 1st era: 1990s. During this time the focus was on expressivity and capacity of ANNs. It turned out that ANNs didn't work better than linear models and suffered from two major limitations:
+\begin{itemize}
+	\item Insufficient number of examples or in other words lack of training data
+	\item Limited computational power
+\end{itemize}
+\item 2nd era: late 2000s. Nearly a decade later, ANNs gained traction again because of more than ever available compute power and large number of training examples. In fact sometime around 2006, image classification model designed using ANNs outperformed state of the art algorithm.
+\end{itemize}
+
+In this lecture we will focus on three topics: 1) Expressive power of neural networks 2) Computational hardness (Barriers) 3) Interesting/tractable questions.
+
+\section{Single-layer Neural Network}
+ 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{Neural-Net-1}
+\caption{}
+\label{fig:Neural-Net-1}
+\end{figure}
+
+
+Consider a single layer neural network as shown in figure \ref{fig:Neural-Net-1}. Here $X^{(i)}$ is the $i$-th $d$-dimensional feature vector, $y_{i}$ is the ith label and $\sigma$ is the activation function. Following are the examples of activation function.
+$$\sigma(\alpha) = sign(\alpha)$$
+$$\sigma(\alpha) = \frac{1}{1 + e^{-\alpha}}$$
+
+Suppose we take L-2 loss then ERM for the neural network will be
+
+$$\min \frac{1}{n} \sum^{n}_{i = 1} (y_{i} - \sigma(w^TX^{(i)}))$$
+
+If $\sigma$ is invertible then problem is equivalent to
+$$\min \frac{1}{n} \sum^{n}_{i = 1} (\sigma^{-1}(y_{i}) - w^TX^{(i)})$$
+
+Clearly single-layer neural network is equivalent to a linear classifier.
+
+%Here is how to typeset an array of equations.
+%
+%\begin{eqnarray}
+%	x & = & y + z \\
+%%
+%     \alpha & = & \frac{\beta}{\gamma}
+%\end{eqnarray}
+%
+
+
+\section{Feed-forward Neural Network}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.6]{Neural-Net-2}
+\caption{}
+\label{fig:Neural-Net-2}
+\end{figure}
+
+Feed-forward neural networks have multiple hidden layers of nodes with no loops i.e., information flows in only one direction \textit{forward} across the layers and no output goes to the previous layer.
+
+\section{Expressive power and Computational hardness}
+Consider a hypothesis class $\mathcal{H}_{V,E,\sigma}$ where $V$ represents vertices (neurons) in the neural network and $E$ represents directed edges between those vertices. As before, $\sigma$ is the activation function applied at each neuron. Now given a hypothesis $h \in \mathcal{H}_{V,E,\sigma}$ ERM can be written as:
+
+$$\min \frac{1}{n} \sum_{i=1}^{n} loss\left(h(X^{(i)}, w), y_{i}\right)$$  
+
+Here $X^{(i)}$ is the $d-$dimensional feature vector corresponding to $i$-th example.
+
+\begin{theorem}
+\label{Thm1}
+For every dimension $d$,   $\exists$ $h_{V,E, sign()}$ such that it contains all binary functions $f : \{+1, -1\}^{d} \rightarrow \{\pm 1\}$.
+\end{theorem}
+
+\begin{proof}
+Let $\mathcal{X}$ be the set of feature vectors such that
+$$\mathcal{X} = \{\pm 1\}^{d}$$ 
+$$\mathcal{X}^{+} = \{ X \in \mathcal{X} : f(X)  = 1\}$$
+$$\mathcal{X}^{-} = \{ X \in \mathcal{X} : f(X)  = -1\}$$
+
+Let's assume $|\mathcal{X^{+}}| = k$\\
+We aim to design an architecture of neural network which will represent the above boolean function $f$.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{Neural-Net-3}
+\caption{}
+\label{fig:Neural-Net-3}
+\end{figure}
+
+Construct a neural network having input layer with $d+1$ neurons, one hidden layer with $2^{d} + 1$ neurons and one output neuron. Now we will try to make each neuron in the hidden layer recognize if $X \in \mathcal{X^{+}}$ or $\mathcal{X^{-}}$.
+
+Take $X_{1} \in \mathcal{X}^{+}$ then we can make the 1st neuron in the inner layer recognize if input is $X_{1}$ or not by following trick:
+
+Set $w_{1} = X_{1}$, where $w_{1}$ are the weights corresponding to neuron-1 in the inner layer. Then,
+\[
+\begin{array}{lr}
+	X_{1}^{T}w_{1} = d & \\
+	\\
+X_{2}^{T}w_{1} \leq d - 1 & \text{if } X_{2} \neq X_{1}
+\end{array}
+\]
+
+Hence, neuron-1 will output
+\[
+\begin{array}{llr}
+	sign\left(X^{T}w_{1} - d + 1\right) & = 1 & \text{if } X = w_{1}\\
+	 &  = -1 & \text{otherwise}
+\end{array}
+\]
+
+Similarly we can design all the neurons of inner layer to recognize each individual $X_{i} \in \mathcal{X}^{+}$. Final output layer neuron will combine outputs of inner layer as follows:
+
+\[
+\begin{array}{llr}
+sign\left( \sum_{i} \sigma_{i}(w_{i}^TX) + k\right) & = 1 & \text{if } X \in \mathcal{X}^{+}\\
+&  = -1 & \text{otherwise}
+\end{array}
+\]
+
+This construction gives us a set of weights for a neural network which represents the given function $f$. \\
+
+Let's analyze the complexity of this network. Since VC-dimension of $\mathcal{H}_{V,E, sign()} = 2^d$ and $\mathcal{H}_{V,E, sign()} \leq O(Elog|V|) \leq O(V^3)$. This implies $|V| \ge 2^{d}$. Hence the network is exponential in size.
+
+\end{proof}
+
+\begin{theorem}
+	\label{Thm2}
+Let $f : \{\pm 1\} \rightarrow \{\pm1\}$. If complexity to evaluate $f(X)$ is O(T). Then there exists a neural network $h_{V, E, sign()}$ with size O($T^2$).
+\end{theorem}
+
+\begin{proof}: This can be proved using the relation between the time complexity of programs and the circuit complexity which measures the size of Boolean circuits required to calcualte functions. However, learning complexity of such a network can't be bounded. For further discussion, see Theorem 20.3 in ref \cite{UML}. 
+\end{proof}
+
+Solving ERM with 0-1 loss for the class of neural networks $\mathcal{H}_{V, E, sign()}$ is as hard as $k \geq 3$ coloring problem. So although in the worst case we are doomed, things are not as bad in practice!
+
+\section{Interesting/tractable questions}
+In subsequent lectures we will discuss following things:
+
+$$\min_w \sum_{i=1}^{n} \left(h(X_{i}, w) - y_{i}\right)^{2}$$
+\begin{itemize}
+	\item What can we promise if we run SGD using back propagation. We will see if $E||\nabla f(X_{k})||^2 \rightarrow 0$ as $k \rightarrow \infty$.
+	\item What about overparameterization. Does having more weights than samples help? Can we make loss = 0?
+	\item Can we solve it in poly time? Specifically we will look into generalization property of SGD for non-convex functions as well.
+	\item How do you scale to parallel and distributed architecture?
+\end{itemize}
+ \begin{thebibliography}{1}
+ 	
+ 	\bibitem{UML} Understanding Machine Learning: From Theory to Algorithms, by Shai Shalev-Shwartz and Shai Ben-David 	
+ \end{thebibliography}
+\end{document}
+

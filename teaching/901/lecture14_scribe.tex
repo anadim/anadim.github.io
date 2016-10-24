@@ -1,0 +1,131 @@
+% -----------------------------*- LaTeX -*------------------------------
+\documentclass[12pt]{report}
+\usepackage{scribe}
+\usepackage{hyperref}
+
+\begin{document}
+\scribe{Ronak Mehta}
+\lecturenumber{14}			% required, must be a number
+\lecturedate{10/20}		% required, omit year
+
+\maketitle
+
+\framebox[.95\textwidth]{\parbox{.93\textwidth}{ {{\bf Note:}} These
+lecture notes are still rough, and have only have been mildly proofread.  }}
+\vspace*{.1in}
+
+
+% ----------------------------------------------------------------------
+
+
+\section{A Brief Recap}
+Previously we discussed algorithmic stability, where if an algorithm's output $w$ is defined as a function of the data $A(S)$, then the empirical risk minimizer (ERM) is
+
+\begin{align} \label{eq:ERM}
+A(S) = \arg\min_w \frac{1}{n} \sum_{i=1}^n l(w,x_i)
+\end{align}
+
+We saw that if the loss functions $l(w,x_i)$ are convex and Lipschitz smooth, or strongly convex, then if you add a regularizer $\lambda||w||$ you automatically get algorithmic stability. If the objective is $\lambda$-strongly convex, then the stability of the algorithm is approximately O($\frac{1}{\lambda n}$), where n is the number of samples. This is intuitive, as a large number of samples will inherently be invariant to a single one, and a stronger regularization will only lead to the model learned being more agnostic to \textit{all} sample points.
+
+\textbf{Note.} This is a statement about an algorithm which is completely static. In other words, the only randomness introduced into our model comes from the underlying distribution from which the data was sampled. 
+
+\section{Randomized Stability}
+What if we are using a \textit{randomized} algorithm? If now our randomness not only comes from the sampling distribution but also from our learning algorithm, can we conclude something about stability?
+
+To develop this idea, let's look at the most common randomized algorithm in use, which also fits nicely into our ERM setup above. Stochastic gradient descent (SGD) is the method most commonly used to solve objectives such as the ERM \ref{eq:ERM}. The minimization procedes in steps, during which at each step the subproblem to be minimized is the loss function evaluated at a random sample from the training set. In this particular setup, let us assume that we run SGD for $T$ iterations, where $T$ may be greater than the number of samples $n$.
+
+To further clarify, instead of looking at our generalization error as solely a function of the sample $S$,
+\begin{align}
+\epsilon_{gen} = E_{S} \left[ \hat{R}(A(S)) - R(A(S))\right]
+\end{align}
+we are also interested in accounting for randomness in the algorithm:
+\begin{align}
+\epsilon_{gen} = E_{S,A} \left[ \hat{R}(A(S)) - R(A(S))\right]
+\end{align}
+Where $\hat{R}$ and $R$ represent the empirical and generalization risk respectively.
+
+\subsection{Some Definitions}
+Let the sample set $S = \{z_1,\ldots,z_n\}$, where $z = (\vec{x}, y) \sim D$. Also define the set $S^i = \{z_1,\ldots, z_{i-1}, z_i^\prime,z_{i+1},\ldots,z_n\}$ with the same samples as $S$ except differing on $z_i,z_i^\prime$.
+
+Recall from the previous lecture and from \cite{bousquet2002stability} that an algorithm $A$ is $\epsilon$-uniformly stable if 
+\begin{align}
+\sup_{z,S,z_i} E_{A} \left[ l(A(S),z) - l(A(S^i),z)\right] \leq \epsilon
+\end{align}
+And that $\epsilon$-uniform stability implies $\epsilon_gen \leq \epsilon$ generalization error.
+
+Consider running SGD for $T$ iterations, and let $w_T$ and $w_T^\prime$ denote the corresponding outputs of the stochastic gradient models whose update takes the following form:
+
+\begin{align}
+w_{t+1} = w_t - \alpha_t \nabla l(w_t;z_{st}) \quad , \quad st \sim Unif(1,\ldots,n)
+\end{align}
+
+\subsection{Convex Optimization Stochastic Stability}
+The following result comes from \cite{hardt2015train}.
+\begin{theorem}
+\label{ThmNeat}
+Assume that the loss function $f(\dot{,z})$ is $\beta$-smooth, convex, and L-Lipschitz for every $z$. Suppose that we run SGD with step sizes $\alpha_t \leq 2/\beta$ for $T$ steps. Then SGD satisfies uniform stability with
+\begin{align}
+\epsilon_{stability} \leq \frac{2L^2}{n}\sum_{t=1}^T \alpha_t
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Let $G_1,\ldots,G_T$ and $G_1^\prime,\ldots,G_T^\prime$ be the gradient updates induced by the algorithm run on $S$ and $S^\prime$, and the corresponding models by $w$ and $w^\prime$ as defined above. Define $\delta_T = ||w_T - w_T^\prime||$. Now fix the example $z \in Z$ as a random sample from the distribution. Applying the Lipschitz condition of the loss function over $z$, we have
+
+\begin{align} \label{eq:explip}
+E |l(w_T;z) - l(w_T^\prime;z)| \leq L E||w_T - L_T^\prime|| = L E||\delta_t||
+\end{align}
+
+We also have that:
+
+\begin{align} \label{eq:lipbound}
+\delta_{t+1} &= || w_{t+1} - w_{t+1}^\prime|| = ||w_t - \alpha_t \nabla l(w_t;z_{st}) - w_t^\prime + \alpha_t \nabla l(w_t^\prime;z_{st}^\prime) || \\
+&\leq ||w_t - w_t^\prime|| + \alpha_t ||\nabla l(w_t;z_{st}) - \nabla l(w_t^\prime;z_{st})|| \\
+&\leq ||w_t - w_t^\prime|| + \alpha_t( ||\nabla l(w_t;z_{st})|| - ||\nabla l(w_t^\prime;z_{st})|| )\\
+&\leq ||w_t - w_t^\prime|| + 2\alpha_t L \\
+\end{align}
+
+The first and second inequalities are just the result of splitting up the norm, and the third follows from the fact that regardless of what the update is, both models have Lipschitz-bounded gradients.
+
+At any specific step $t$, the probability that we have sampled the one sample that the two models differ on is $1/n$, and in this case we have the bound on the difference from \ref{eq:lipbound}. On the other hand, the probability that the models are exactly the same, $G_t = G_t^\prime$, is $1-1/n$, and the difference is exactly equal to the difference from the previous iteration. We can then describe the expected-norm difference between the models directly based on these probabilities:
+
+\begin{align}
+E[\delta_{t+1}] \leq \left(1- \frac{1}{n}\right) E[\delta_t] + \frac{1}{n} (E[\delta_t] + 2\alpha_t L) = E[\delta_t] + \frac{2\alpha_t L}{n}
+\end{align}
+
+We can unravel the recursion as follows:
+\begin{align}
+E[\delta_T] &\leq E[\delta_{T-1}] + \frac{2\alpha_{T-1}L}{n} \\
+&\leq E[\delta_0] + \sum_{t=1}^{T-1} \frac{2\alpha_{t}L}{n} \\
+&\leq \sum_{t=0}^{T-1} \frac{2\alpha_{t}L}{n} \\
+\end{align}
+and so
+\begin{align}
+E[\delta_{T+1}] \leq E[\delta_t] + \frac{2\alpha_tL}{n} \leq \frac{2L}{n}\sum_{t=1}^T \alpha_t
+\end{align}
+
+Plugging this back in to \ref{eq:explip}, we have
+\begin{align}
+E |l(w_T;z) - l(w_T^\prime;z)| \leq \frac{2L^2}{n} \sum_{t=1}^T \alpha_t
+\end{align}
+
+While we fixed $z$ here, we did not choose it to be anything specific, and similarly with $S$ and $S^\prime$. With these conditions, this bound indeed holds for uniform stability.
+
+\end{proof}
+
+\noindent{\bf Main Takeaway.}The important idea this result is that if we know for certain that the function is convex, $\beta$-smooth, and $L$-Lipschitz, then as long as our step sizes are reasonable and we do not run for \textit{too} many iterations, our generalization error is guaranteed to be small, regardless of the underlying data distribution.
+
+\subsection{Other function types}
+
+We have even stronger bounds for strongly convex loss functions, where we find that $\epsilon_{stability} \leq \frac{2L^2}{\lambda n}$. For nonconvex objectives, unsurprisingly, we find that the stability is only exponentially bounded, and requires the step size $\alpha_t$ to be non-increasing with order $1/Lt$. The proof and more details can again be found in \cite{hardt2015train}. 
+
+\subsection{Inducing stability}
+In many cases we may have a formulation for a problem which is not inherently stable, but which we may want to make stable. Towards this end there are many operations we can apply to do so. Some existing methods that lead to stability include weight decay, gradient clipping, dropout, and projections with proximal steps.
+
+\section{Open Problems}
+While these stability results have significant impact through their direct relationship with generalization error, there are still many open problems that have yet to be answered. In particular, could these ideas be extended to a concentration result, even if limited to the convex or strongly convex case? Is there a \textit{family} of algorithms where the step sizes can be guaranteed to be not too small? Are gradient descent, randomized gradient descent, SVRG, etc. stable? If you do not know the underlying algorithm, can you test stability?
+
+\bibliographystyle{plain}
+\bibliography{14refs}
+
+\end{document}

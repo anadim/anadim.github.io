@@ -1,0 +1,153 @@
+% -----------------------------*- LaTeX -*------------------------------
+\documentclass[12pt]{report}
+\usepackage{scribe}
+\usepackage{amsmath, bm}
+\usepackage{graphicx,epstopdf}
+\def\cD{\mathcal D}
+\def\cH{\mathcal H}
+\def\bx{\bm{x}}
+\def\by{\bm{y}}
+\def\bw{\bm{w}}
+\def\bu{\bm{u}}
+\def\bbE{\mathbb E}
+\def\bbR{\mathbb R}
+\begin{document}
+\scribe{Yunyang Xiong}
+\lecturenumber{12}			% required, must be a number
+\lecturedate{10/13}		% required, omit year
+
+\maketitle
+
+%\framebox[.95\textwidth]{\parbox{.93\textwidth}{ {{\bf Note:}} These
+%lecture notes are still rough, and have only have been mildly proofread.  }}
+%\vspace*{.1in}
+
+
+% ----------------------------------------------------------------------
+
+
+%\begin{danger}
+%This is the danger environment.
+%\end{danger}
+
+\section{SGD for Nonconvex Problems and Overparameterized NNs}
+\subsection{Motivation}
+Deep neural network is a very powerful tool in many areas, like computer vision, artifial intelligence and so on so forth. SGD is widely used in deep neural network. Obviously, We want to know if SGD is convergent for solving nonconvex optimization problems and if overparameterization will help neural network avoid bad local minima?
+\subsection{Convergence of SGD for $\beta$-smooth nonconvex function}
+We will investigate the convergence result of SGD for $\beta$-smooth nonconvex function.
+\begin{theorem}
+	\label{Thm::GD}
+	If function is $\beta$-smooth nonconvex and the gradient of $f(x)$ is bounded, $E||\nabla f_{sk}(x_k)|| = ||\nabla f_k(x_k)|| \leq \mu$, then 
+	\begin{equation} \label{sgd::convg}
+	E||\nabla f(x_k)|| \rightarrow 0, k \rightarrow \infty
+	\end{equation}\cite{ghadimi2013stochastic}
+\end{theorem}
+\begin{proof}
+	In SGD setting, we have
+	\begin{equation*}
+	x_{k + 1} = x_k - \lambda\nabla f_{sk}(x_k)	
+	\end{equation*}
+	With respect to $\beta$-smooth nonconvex function, we know
+	\begin{equation*}
+	f(x) \leq f(x0) + <\nabla f(x), x - x0> + \frac{\beta}{2}||x - x_0||^2
+	\end{equation*}
+	Thus, we get 
+	\begin{equation*}
+	\begin{split}
+	& f(x_{k + 1}) \leq f(x_k) + <\nabla f(x_k), x_{k + 1} - x_k> + \beta / 2 || x_{k + 1} - x_k||^2 \\
+	& = f_k - \lambda<\nabla f(x_k), \nabla f_{sk}(x_k)> + \beta / 2 ||x_{k + 1} - x_k||^2
+	\end{split}
+	\end{equation*}
+	The gradient of $f(x)$ is bounded. Then we have 
+	\begin{equation*}
+	\begin{split}
+	& Ef_{k + 1} \leq Ef_{k} - \lambda E||\nabla f_sk(x_k)||^2 + \frac{\beta}{2}\lambda^2\mu^2 \\
+	& E||\nabla f(x_k)||^2 \leq \frac{E(f_k - f_{k + 1}}{\lambda} + \frac{\beta}{2}\lambda\mu^2
+	\end{split}
+	\end{equation*}
+	Summing T iterations, it leads to,
+	\begin{equation*}
+	\begin{split}
+	& \sum_{i = 1}^{T}E||\nabla f(x_i)||^2 \leq \sum_{i = 1}^{T}\frac{1}{\lambda}E(f_i - f_{i + 1}) + \frac{T\beta}{2}\lambda\mu^2 \\
+	& = \frac{f_1 - f_{T + 1}}{\lambda} + \frac{T\lambda\beta\mu^2}{2} \\
+	& \leq \frac{f_1 - f^{\star}}{\lambda} + \frac{T\lambda\beta\mu^2}{2} \\
+	\end{split}
+	\end{equation*}
+	Then we have,
+	\begin{equation*}
+	\begin{split}
+	& T\min_{1 \leq i \leq T}E||\nabla f(x_i)||^2 \leq \frac{f_1 - f^{\star}}{\lambda} + \frac{T\lambda\beta\mu^2}{2} \\
+	& \min_{1 \leq i \leq T} E||\nabla f(x_i)||^2 \leq \frac{f_1 - f^{\star}}{\lambda T} + \frac{\lambda\beta\mu^2}{2} \\
+	& \min_{1 \leq i \leq T} E||\nabla f(x_i)||^2 \leq \sqrt{\frac{(f_1 - f^*)\beta\mu^2}{2T}}
+	\end{split}
+	\end{equation*}
+	Therefore, when $T \rightarrow \infty$, it leads to
+	\begin{equation*}
+	E||\nabla f(x_k)|| \rightarrow 0, k \rightarrow \infty
+	\end{equation*}
+\end{proof}
+
+\subsection{Does overparameterizaiton help avoid bad local minima?}
+We will investigate overparameterization for neural networks.
+\begin{theorem}
+	\label{Thm::nn}
+	If the last layer of neural networks has more activation nodes than samples, then training error $=0$. 
+\end{theorem}\cite{soudry2016no}
+\begin{proof}
+	Define dataset $S = {(x_1, y_1), \cdots, (x_n, y_n)}$, $X = [x_1, \cdots, x_n] \in R^{d \times n}$, Leaky ReLu activation function is used,
+	\[
+	\sigma (a) = \{\begin{array}{lr}
+	a, a \geq 0 \\
+	s*a, a < 0 \\
+	\end{array}
+	\]
+	where $s$ is a small positive number. $u_l^{i} = $ input of $l-th$ layer,
+	$v_l^{i} = $ output of $l-th$ layer. Thus, we have 
+	\begin{equation}
+	\begin{split}
+	& u_l^{i} = w_l \times v_{l - 1} \\
+	& v_l^{i} = \sigma(u_l^i)
+	\end{split}
+	\end{equation}
+	The loss function of this neural network is, 
+	\begin{equation}
+	\min_{\omega}\frac{1}{n}\sum_{i = 1}^{n}(h_{l - 1}^i \cdot \omega - y_i)^2
+	\end{equation}
+	Take derivative of loss function with respect to $w$,
+	\begin{equation}
+	\begin{split}
+	& \nabla_{w} \frac{1}{n}\sum_{i = 1}^{n}(y_i - h(\omega_i x_i))^2\\
+	& \Longleftrightarrow h(w x_i) = y_i
+	\end{split}
+	\end{equation}
+	We only consider a NN with one single hidden layer,
+	\begin{equation}
+	\begin{split}
+	& e_i = y_i - w_2^T\sigma(w_1x) = y_i - w_2^T diag(a_i)w_1x \\
+	& e_i = y_i - a_i^T diag(w_2)w_1x
+	\end{split}
+	\end{equation}
+	Take derivative of $\sum_{i = 1}^{n}e_i^2$ with respect to $w$,
+	\begin{equation}
+	\begin{split}
+	& \nabla_{w}\sum_{i = 1}^{n}e_i^2 = \sum_{i} 2e_i\frac{de_i}{dw} \\
+	& = \sum_{i} 2e_i[a_ix_i^T]_{d_1\times d} = 0_{d_i \times d}
+	\end{split}
+	\end{equation}
+	Therefore, $\sum_{i}e_i(a_i)\otimes x_i = 0_{d_1\times d}$, it means that
+	$[a_1\otimes x_1, \cdots a_n \otimes x_n]e_i = 0$. Define 
+	\[
+	G = 
+	\begin{bmatrix}
+	a^1_1x_1, \dots, a^1_nx_n \\
+	\dots, \dots, \dots \\
+	a^d_1x_1, \dots, a^d_nx_n
+	\end{bmatrix}
+	\]
+	Then $Ge = 0, e = [e_1, \cdots, e_n]$.
+	If $d\times d_1 \geq n$, then matrix $G$ is full rank, the null space of $G$ is empty. Therefore the training error will be $0$.
+\end{proof}
+\bibliographystyle{plainnat}
+\bibliography{lecture12_scribe}
+\end{document}
+
