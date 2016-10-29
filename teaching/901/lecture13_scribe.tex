@@ -1,0 +1,123 @@
+% -----------------------------*- LaTeX -*------------------------------
+\documentclass[12pt]{report}
+\usepackage{scribe}
+
+\usepackage{amssymb,amsfonts,amsmath}
+\usepackage{verbatim,comment}
+\usepackage{enumitem}
+%
+\pagestyle{empty}
+\def \bs{\boldsymbol}
+
+\def \iid{\text{i.i.d.}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\E}{\mathbb E}
+
+\newcommand{\abs}[1]{\mid #1 \mid}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\D}{\mathcal{D}}
+
+\newtheorem{defn}[lemma]{Definition}
+\newtheorem{question}[lemma]{Question}
+
+\begin{document}
+\scribe{Huayu Zhang}
+\lecturenumber{13}			% required, must be a number
+\lecturedate{10/18}		% required, omit year
+
+\maketitle
+
+\framebox[.95\textwidth]{\parbox{.93\textwidth}{ {{\bf Note:}} These
+lecture notes are still rough, and have only have been mildly proofread.  }}
+\vspace*{.1in}
+
+
+% ----------------------------------------------------------------------
+
+\section{Stability of learning algorithms}
+In this lecture, we try to establish a connect between the stability and generalization of an algorithm. Specifically, algorithmic stability implies a good generalization error. Consider such a learning problem. A set of data $S = \set{Z_i = (\bs{x}_i, y_i) \mid i = 1,2,\ldots, n}$ are drawn independently from a distribution $Z_i \overset{\iid}{\sim}\D$. The model is characterized by parameters $\bs{w}$ and the loss function is $\ell(\bs{w};Z)$. 
+
+\begin{defn}[Generalization error]
+We define the risk as 
+\begin{equation} \label{scr:risk}
+	R(\bs{w}) = \E_{Z \sim \D}[\ell(\bs{w}; Z)]
+\end{equation} 
+and the empirical risk as
+\begin{equation} \label{scr:emp-risk}
+	\hat{R}(\bs{w}) = \frac{1}{n} \sum_{i=1}^{n} \ell(\bs{w};Z_i)
+\end{equation}
+The generalization error is the difference 
+\begin{equation} \label{scr:generr}
+	\epsilon = R(\bs{w}) - \hat{R}(\bs{w})
+\end{equation}
+\end{defn}
+
+Let $A$ be the algorithm and $A(S)$ be the output model of the algorithm $A$ on data $S$. We can write
+\begin{align*}
+	R(A(S)) =& \E_{Z \sim \D}[\ell(A(S);Z)] \\
+	\hat{R}(A(S)) =& \frac{1}{n} \sum_{i=1}^{n} \ell(A(S);Z_i) \\
+	\E_S[\abs{\epsilon}] =& \E_S[\abs{R(A(S)) - \hat{R}(A(S))}]
+\end{align*}
+
+Next we define the stability of algorithms. The stability is a metric to show how the result of an algorithm varies with one data changed. On the data set $S$, replace one data point $Z_i$ with another i.i.d. random variable $Z_i'$. Then we get a new date set $S^i = (S \backslash \set{Z_i})\bigcup \set{Z_i'}$.
+\begin{defn}[$\varepsilon$-Stable]
+	Algorithm $A$ is $\varepsilon$-Stable if for any $i \in \set{1,2,\ldots,n}$, 
+	\begin{equation} \label{scr:estable}
+		\E_{S,Z_i',Z}[\abs{\ell(A(S_i);Z) - \ell(A(S^i);Z)}] \le \varepsilon
+	\end{equation}
+\end{defn}
+
+The following theorem shows algorithmic stability implies good generalization error.
+\begin{theorem}
+	If $A$ is $\varepsilon$-stable, then $\E_S[\abs{R(A(S)) - \hat{R}(A(S))}] \le \varepsilon$.
+\end{theorem} 
+
+\begin{proof}
+	\begin{align*}
+		\E_S[\hat{R}(A(S))] =& \frac{1}{n} \sum_{i=1}^{n} \E_S[\ell(A(S);Z_i)] \\
+		=& \frac{1}{n} \sum_{i=1}^{n} \{\E_{S,Z_i'}[\ell(A(S), Z_i')] + \E_{S,Z_i'}[\ell(A(S), Z_i) - \ell(A(S), Z_i')] \} \\
+		\overset{\E_S[\ell(A(S),Z_i)] = \E_{S^i,Z_i'}[\ell(A(S^i),Z_i')]}{=}& \E_S[R(A(S))] + \frac{1}{n} \sum_{i=1}^{n} \E_{S,Z_i'}[\ell(A(S^i), Z_i') - \ell(A(S), Z_i')] \\
+		\overset{A\text{ is $\varepsilon$-stable}}{\le} & \E_S[R(A(S))] + \varepsilon
+	\end{align*}
+\end{proof}
+
+\begin{question}
+	What algorithms are $\varepsilon$-stable?
+\end{question}
+
+\begin{enumerate}[label=$\bullet$]
+	\item $A(S) = \argmin \sum_{i=1}^{n} \ell(\bs{w};Z_i)$. 
+	\item $A(S) = $ the output of SGD after $T$ iterations.
+\end{enumerate}
+
+\begin{enumerate}[label=Case \Roman*]
+	\item $A(S) = \argmin f_S(\bs{w}), f_S(\bs{w}) = L_S(\bs{w})  + \lambda \| \bs{w} \|^2, L_S(\bs{w}) = \frac{1}{n} \sum_{i=1}^{n} \ell_i(\bs{w})$. $\ell$ is $L$-Lipschitz. $A(S)$ is $O(\frac{1}{\lambda n})$-stable.
+\end{enumerate}
+
+\begin{proof}
+	\begin{align*}
+		f_S(\bs{V}) - f_S(\bs{u}) =& L_S(\bs{v}) + \lambda \| \bs{v} \|^2 - (L_S(\bs{u}) + \lambda \| \bs{u} \|^2) \\
+		=& L_{S^i}(\bs{v}) + \lambda \| \bs{v} \|^2 - (L_{S^i}(\bs{u}) + \lambda \| \bs{u} \|^2) + \frac{\ell(\bs{v};z_i) - \ell(\bs{v};z_i')}{n} - \frac{\ell(\bs{u};z_i) - \ell(\bs{u};z_i')}{n} 
+	\end{align*}
+	Let $\bs{v} = A(S^i), \bs{u} = A(S)$, 
+	\begin{align*}
+		f_S(A(S^i)) - f_S(A(S)) \le& \frac{\ell(\bs{v};z_i) - \ell(\bs{v};z_i')}{n} - \frac{\ell(\bs{u};z_i) - \ell(\bs{u};z_i')}{n} \\
+		\le& \frac{2L}{n} \| A(S) - A(S^i) \|
+	\end{align*}
+	According to the property of $2\lambda$-strongly convex function 
+	\begin{equation*}
+		f_S(\bs{w}) - f_S(A(S)) \ge \lambda \| \bs{w} - A(S) \|^2
+	\end{equation*} 
+	Thus
+	\begin{equation} \label{scr:l2reg}
+		\| A(S) - A(S^i) \| \le \frac{2L}{\lambda n}
+	\end{equation}	
+	By Eq.~\ref{scr:l2reg} and $L$-Lipschitz of $\ell_i$.
+	\begin{equation*}
+		\sup_Z \abs{\ell(A(S), Z) - \ell(A(S^i), Z)} \le \frac{2L^2}{\lambda n}
+	\end{equation*}
+	$A(S)$ is $\frac{2L^2}{\lambda n}$ stable.
+\end{proof}
+\end{document}
+
