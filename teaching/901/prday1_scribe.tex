@@ -1,0 +1,163 @@
+% -----------------------------*- LaTeX -*------------------------------
+\documentclass[12pt]{report}
+\usepackage{scribe}
+\usepackage{color}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+
+\begin{document}
+\scribe{Devin Conathan, Ari Biswas}
+\lecturenumber{0}			% required, must be a number
+\lecturedate{10/24}		% required, omit year
+
+\maketitle
+
+\framebox[.95\textwidth]{\parbox{.93\textwidth}{ {{\bf Note:}} These
+lecture notes are still rough, and have only have been mildly proofread.  }}
+\vspace*{.1in}
+
+
+% ----------------------------------------------------------------------
+
+\section{Stochastic Dual Coordinate Ascent Methods for Regularized Loss Minimization}
+
+\subsection{General Idea}
+The problem in mind here is solving something like an SVM, where you are minimizing a set of scalar convex loss functions.  Stochastic Gradient Descent (SGD) has some disadvantages, so instead we're going to consider an alternative called dual coordinate ascent (DCA), which solves the dual problem.  The paper proposes a basic ``Stochastic Dual Coordinate Ascent'' (SDCA) algorithm and a few varients, and proves some results about their convergence.
+
+\subsection{Problem Setup}
+We are looking for the solution:
+\begin{equation}\label{primal}
+	w^*=\argmin_{w\in\mathbb{R}^d} P(w) = \argmin_{w\in\mathbb{R}^d}\left[
+		\frac1n \sum_{i=1}^n \phi_i(w^T x_i) + \frac\lambda2||w||^2
+	\right]
+\end{equation}
+Where $x_1, \ldots, x_n$ are vectors in $\mathbb{R}^d$ and $\phi_1,\ldots, \phi_n$ are your scalar convex loss functions. Instead we solve the dual problem:
+\begin{equation}\label{dual}
+	\alpha^*=\argmax_{\alpha\in\mathbb{R}^n} D(\alpha)
+	= \argmax_{\alpha\in\mathbb{R}^n} \left[
+		\frac1n\sum_{i=1}^n-\phi_i^*(-\alpha_i)-\frac\lambda2\left\Vert\frac1{\alpha n}\sum_{i=1}^n\alpha_ix_i\right\Vert^2
+		\right]
+\end{equation}\label{dual}
+
+Where $\phi^*_i(u) = \max_z(zu - \phi_i(z))$, the convex conjugate of $\phi_i$. If we have $\alpha^*$, we can compute $\frac1{\lambda n}\sum_{i=1}^n\alpha_i^*x_i = w^*$, to get the solution for (\ref{primal}).
+
+It is known that $P(w^*) = D(\alpha^*)$ which implies that $P(w) \geq D(\alpha)$ for all $\alpha,~w$, so we can define the \textit{duality gap} for a given $\alpha$ as:
+\begin{equation}
+	P\left(\frac1{\lambda n}\sum_{i=1}^n\alpha_ix_i\right) - D(\alpha)
+\end{equation}
+The duality gap is 0 at the optimal solution, so we wish to make the duality gap as small as possible.
+
+\subsection{Results}
+
+The paper proposes ``Vanilla SDCA'', which is essentially running coordinate ascent on the dual problem for a random coordinate direction at each iteration.  There are two variations: one is a ``two stage'' approach that starts out using SGD and switches to SDCA.  Another variation is SDCA-Perm, which cycles through random permutations of coordinates rather than sampling a random coordinate each time.  The paper proves some results about the ``Vanilla SDCA'' and does some experiments with the variations.
+
+For Vanilla SDCA, the paper is able to show the following for a achieving a duality gap of $\epsilon$:
+\begin{enumerate}
+	\item For $L$-Lipschitz loss functions, convergence in $O\left(n + \frac{L^2}{\lambda \epsilon}\right)$ steps.
+	\item An even better rate for loss functions that are "almost everywhere smooth" (e.g. hinge-loss)
+	\item For $\frac1\gamma$-smooth loss functions, convergence in $O\left(\left(n + \frac1{\lambda\epsilon}\right)\log\frac1\epsilon \right)$ steps.
+\end{enumerate}
+
+\section{Variance Reduction for Faster Non-Convex Optimization}
+
+\subsection{General Idea}
+The problem here is minimizing a set of smooth but non-convex loss functions, which is typical in machine learning problems like training neural networks. The issue is that the convergence guarantees using vanilla Stochastic Gradient Descent are pretty bad for the non-convex case because the number of steps depends on the variance of the stochastic gradient, which can be quite large for these sorts of problems.  The paper demonstrates (with a proof and some experiments) that the convergence of the Stochastic Variance Reduced Gradients (SVRG) algorithm does does depend on this variance and thus is better in practice.
+
+
+\subsection{Problem Setup}
+We are trying to solve:
+\begin{equation}
+	\min_{x\in\mathbb{R}^d} f(x) = \frac1n\sum_{i=1}^nf_i(x)
+\end{equation}
+Where the $f_i$ are $L$-smooth but not convex, which is typical for problems like neural networks.  Since we don't have complexity we cannot guarantee finding the global optimum, but instead can only find \textit{stationary points}, i.e. points $x$ where $||\nabla f(x)|| = 0$. We say $x$ is an $\epsilon$-approximate stationary point if $||\nabla f(x)||^2 < \epsilon$.
+
+Normal Stochastic Gradient Descent (SGD) can be bad for these problems because you get $\epsilon-$approximate stationary points in $O\left(\frac L\epsilon + \frac{L\sigma^2}{\epsilon^2} \right)$ steps, where $\sigma^2$ is the variance of the stochastic gradient ($\frac{\sigma^2}{\epsilon^2}$ is typically very large!).
+
+\subsection{Results}
+
+The paper proposes Stochatic Variance Reduced Gradients (SVRG) and shows that the number of iterations does not depend on $\sigma^2$ and has an overall computational cost of:
+\begin{equation}
+	O\left( \frac{n^{2/3}L}{\epsilon}\right)
+\end{equation}
+
+which is cheaper than gradient descent. 
+
+
+\subsection{General Approach}
+The complete proof is really complex. Refer to slides and paper for a more detailed explanation.
+
+The general idea is instead of minimizing $G=\frac1n \sum_{i=1}^n g(x_i)$, we minimize $\hat{G}$, where $\mathbb{E}G = \mathbb{E}\hat{G}$ and $Var(G) \geq Var(\hat{G})$. That is, $\hat{G}$ is an unbiased estimator of $G$ with a smaller variance.
+
+The convergence is divided into epochs $s = 1, \ldots, S$.
+For each epoch, you have $x_0^s$, the average from previous epoch and compute $\tilde{\mu} = \nabla f (x_0^s)$, the full gradient.
+
+Then for this epoch for your updates become:
+\begin{equation}
+	x^s_{k+1} = x_k^s - \eta \tilde{\nabla}_k^s
+\end{equation}
+Where $\nabla_k^s = \nabla f_i(x_k^s) - \nabla f_i(x_0^s) + \tilde{\mu}$.  This asymptotically reduces the variance of the gradient.
+
+Then the basic idea is to bound $\mathbb{E}(\sigma_k^s)^2$. This is done by showing that $\mathbb{E}(\sigma_k^s)^2 \leq O(||x_k^s - x_0^s||^2)$. and then showing $||x_k^s - x_0^s||^2$ is bounded by a constant times $f(x_k^s) - f(x_0^s)$. The former follows from $L$-smoothness. The latter is derived through a complicated telescoping trick that involves dividing the epochs into subepochs.
+
+The overall convergence result follows from being able to achieve this bound on on $\mathbb{E}(\sigma_k^s)^2$.
+
+
+\section{Second Order Stochastic Optimization in Linear Time}
+
+\subsection{Big picture}
+
+The goal is solve the following unconstrained optimization:
+
+$$ \text{min}_{w \in \mathbb{R}^d } \sum_{i=1}^m f_i(w) + R(w) $$
+
+\color{blue}
+NOTE: f is $\alpha$ strongly convex and $\beta$ smooth, $\nabla^2 f\big( x) $ is M-lipschitz. Pretty much all the good properties you want a function to have we assume. \\
+\color{black}
+
+This kind of optimization shows up all the time in Machine learning in cases like sparse logistic regression, ridge regression etc. In fact most of the theorems proved in this paper only apply to Generalized Linear Models\newline
+
+Popular first order methods like gradient descent or stochastic gradient descent can be used to solve this optimization but the those algorithms may not as quickly as desired. In this case it is common to use second order information of the function to approximate the optimal solution. A classical second order method, known as Newtons method, is an example of algorithm that has super linear convergence under certain assumptions, can be used to solve the above problem. \newline
+
+The update step looks of Newtons method like the following:
+
+$$ w^{t+1} = w^t  - \nabla^2 f\big( w^t\big)^{-1} \nabla f\big( w^t\big)$$
+
+Though we may have faster convergence i.e take less iterations to get to optimal solution; the cost per iteration is very expensive as hessians are expensive to calculate $\Omega(md^2 + d^2)$ \newline
+
+\textbf{To handle this computational cost issue, the authors of this paper have come up with LiSSA which claims that the hessian can be updated in linear time $\Omega(md)$} \newline
+
+
+
+\subsection{LiSSA- Linear Stochastic second order algorithm}
+
+\textbf{Key idea}: The bottle neck is computing the hessian inverse. If we could do that easily we have solved the problem. 
+They use taylor expansion to construct an unbiased estimator of the inverse of the hessian. \\
+
+For any matrix A s.t $||A|| \leq 1$ and $A \succeq 0$ we have 
+
+$$ A^{-1} = \sum_{i=1}^\infty (I - A)^i $$ 
+
+Equivalently this can be written as a recursive equation: 
+$$ A_j^{-1} = I + (I - A)A^{-1}_{j-1} $$
+
+where $A_j^{-1}$  is the approximation of $A^{-1}$ using only j summands from the above equation. Note as j goes to infinity, we get a perfect estimate. \newline
+
+Now if we are given j unbiased samples $\{ X_1, X_2,...., X_j\}$ we can approximate the hessian inverse by the following recursive formula:
+
+$$ \tilde{\nabla}^2 f_0^{-1} = I \text { and } \tilde{\nabla}^2 f_t^{-1} = I + (I - X_j) \tilde{\nabla}^2 f_{t-1}$$
+
+It is easy to show that the above approximate of the hessian is asymptotically unbiased. \\
+
+\color{blue} This little math trick is the essence of the whole paper, now you can approximate the hessian inverse recursively and this is what gives huge savings in their algorithm\color{black}. 
+
+\subsection{Major claim:}
+For GLM's LiSSA gets epsilon close to the optimal with high probability in total time complexity $O(m + \kappa)d\log(\frac{1}{\epsilon})$ where $\kappa$ is a function of the conditional number of the hessian and the cost per iteration $O(md + \kappa^2d)$\\
+
+For a more detailed description of the algorithm refer to the slides or the paper \newline
+
+
+
+\end{document}
+

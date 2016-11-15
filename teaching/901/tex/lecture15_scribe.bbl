@@ -1,0 +1,48 @@
+\begin{thebibliography}{6}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bertsekas and Tsitsiklis(1989)]{bertsekas1989convergence}
+D.~P. Bertsekas and J.~N. Tsitsiklis.
+\newblock Convergence rate and termination of asynchronous iterative
+  algorithms.
+\newblock In \emph{Proceedings of the 3rd international conference on
+  Supercomputing}, pages 461--470. ACM, 1989.
+
+\bibitem[Chazan and Miranker(1969)]{chazan1969chaotic}
+D.~Chazan and W.~Miranker.
+\newblock Chaotic relaxation.
+\newblock \emph{Linear algebra and its applications}, 2\penalty0 (2):\penalty0
+  199--222, 1969.
+
+\bibitem[Recht et~al.(2011)Recht, Re, Wright, and Niu]{recht2011hogwild}
+B.~Recht, C.~Re, S.~Wright, and F.~Niu.
+\newblock Hogwild: A lock-free approach to parallelizing stochastic gradient
+  descent.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pages
+  693--701, 2011.
+
+\bibitem[Tsitsiklis and Bertsekas(1986)]{tsitsiklis1986distributed}
+J.~Tsitsiklis and D.~Bertsekas.
+\newblock Distributed asynchronous optimal routing in data networks.
+\newblock \emph{IEEE Transactions on Automatic Control}, 31\penalty0
+  (4):\penalty0 325--332, 1986.
+
+\bibitem[Zinkevich et~al.(2009)Zinkevich, Langford, and
+  Smola]{zinkevich2009slow}
+M.~Zinkevich, J.~Langford, and A.~J. Smola.
+\newblock Slow learners are fast.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pages
+  2331--2339, 2009.
+
+\bibitem[Zinkevich et~al.(2010)Zinkevich, Weimer, Li, and
+  Smola]{zinkevich2010parallelized}
+M.~Zinkevich, M.~Weimer, L.~Li, and A.~J. Smola.
+\newblock Parallelized stochastic gradient descent.
+\newblock In \emph{Advances in neural information processing systems}, pages
+  2595--2603, 2010.
+
+\end{thebibliography}
