@@ -1,5 +1,0 @@
-\BOOKMARK [1][-]{section.15.1}{Introduction}{}% 1
-\BOOKMARK [1][-]{section.15.2}{Stochastic Gradient Descent}{}% 2
-\BOOKMARK [1][-]{section.15.3}{Scaling Up SGD}{}% 3
-\BOOKMARK [1][-]{section.15.4}{Lock-Free Parallelization of SGD}{}% 4
-\BOOKMARK [1][-]{section.15.5}{Convergence Analysis}{}% 5
