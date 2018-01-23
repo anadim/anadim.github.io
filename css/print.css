@@ -10,7 +10,10 @@ a {text-decoration: underline;}
 .noprint {display: none;}
 .printonly {display: inline;}
 
-body {font-family: "Helvetica Neue", arial, sans-serif;}
+body {
+	font-family: 'Droid Sans', sans-serif;
+	/*font-family: "Helvetica Neue", arial, sans-serif;*/
+}
 #main-content {width: 100%;}
 
 .clear{

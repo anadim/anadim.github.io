@@ -335,7 +335,7 @@ body.dark {color:#eee; background: #1b1b1b;}
 
 .paper-authors { font-style: italic ; font-size: 14px }
 .paper-other { font-size: 15px}
-.paper-title { font-weight: bold ; font-size: 15px }
+.paper-title { font-family: 'arial', sans-serif; font-weight: bold ; font-size: 15px }
 
 ul.papers {
     margin: 0 0 10px 0;
