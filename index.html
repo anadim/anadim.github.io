@@ -1,156 +1,171 @@
-    <!DOCTYPE html>
-    <html>
-        <head>
-            <meta charset="utf-8">
-            <title>Dimitris Papailiopoulos</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <!-- jQuery -->
-            <script src="./js/jquery.min.js"></script>
-            <!-- Bootstrap -->
-            <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-            <link href="./bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
-            <script src="./bootstrap/js/bootstrap.min.js"></script>
-            <!-- Glyphicons -->
-            <link href="./css/glyphicons.css" rel="stylesheet" media="screen">
-            <!-- Plugins -->
-            <script src="./js/jquery.easing.1.3.js"></script>
-            <script src="./js/jquery.isotope.min.js"></script>
-            <script src="./js/jquery.ba-resize.min.js"></script>
-            <link href="./css/jquery.fancybox-1.3.4.css" rel="stylesheet" media="screen">
-            <script src="./js/jquery.fancybox-1.3.4.pack.js"></script>
-            <script src="./js/klass.min.js"></script>
-            <script src="./js/code.photoswipe.jquery-3.0.4.min.js"></script>
-            <link href="./css/photoswipe.css" rel="stylesheet" media="screen">
-            <!-- Theme -->
-            <link href='http://fonts.googleapis.com/css?family=Open+Sans|Oswald|Droid+Sans|Yanone+Kaffeesatz|Droid+Serif|Ubuntu|Lobster|Francois+One|Arvo|Changa+One|Rokkitt|Nunito|Bitter|Merriweather|Raleway|Pacifico|Josefin+Sans|Questrial|Cantarell|Norican|Vollkorn|Quicksand|Limelight|Cantata+One|Bree+Serif|Oleo+Script|Playfair+Display|Quattrocento+Sans|Berkshire+Swash|Passion+One|Cuprum' rel='stylesheet' type='text/css'>
-            <link href="./style.css" rel="stylesheet" media="screen">
-            <!-- Skin -->
-            <link type="text/css" rel="stylesheet" href="./css/skin.css" media="screen">
-            <script src="./js/scripts.js"></script>
-            <!--[if lt IE 9]>
-            <link rel="stylesheet" type="text/css" href="./css/ie.css" />
-            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-            <![endif]-->
-            <!-- PRINT CSS -->
-            <link type="text/css" rel="stylesheet" href="./css/print.css" media="print">
-            <script>
-              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-              })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-              ga('create', 'UA-41942216-1', 'auto');
-              ga('send', 'pageview');
-            </script>
-        </head>
-        <body class="backgrounded" data-spy="scroll" data-target=".sidebar-nav">
-            <div class="navbar navbar-inverse navbar-fixed-top visible-phone noprint" id="phone-navbar">
-                <div class="navbar-inner">
-                    <div class="container">
-                        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </a>
-                        <a class="brand" href="#">Dimitris</a>
-                        <div class="nav-collapse collapse">
-                            <ul class="nav">
-                                <li><a href="#about-me" class="scroller">About</a></li>
-                                <li><a href="#news" class="scroller">News</a></li>                                                                
-                                <li><a href="#teaching" class="scroller">Teaching</a></li>                                
-                                <li><a href="#papers2" class="scroller">Publications</a></li>                                
-                                <li><a href="#coauthors" class="scroller">Coauthors</a></li>
-                                <li><a href="#contact" class="scroller">Contact</a></li>
-                            </ul>
-                        </div>
-                        <!--/.nav-collapse -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Dimitris Papailiopoulos</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- jQuery -->
+        <script src="./js/jquery.min.js"></script>
+        <!-- Bootstrap -->
+        <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="./bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <script src="./bootstrap/js/bootstrap.min.js"></script>
+        <!-- Glyphicons -->
+        <link href="./css/glyphicons.css" rel="stylesheet" media="screen">
+        <!-- Plugins -->
+        <script src="./js/jquery.easing.1.3.js"></script>
+        <script src="./js/jquery.isotope.min.js"></script>
+        <script src="./js/jquery.ba-resize.min.js"></script>
+        <link href="./css/jquery.fancybox-1.3.4.css" rel="stylesheet" media="screen">
+        <script src="./js/jquery.fancybox-1.3.4.pack.js"></script>
+        <script src="./js/klass.min.js"></script>
+        <script src="./js/code.photoswipe.jquery-3.0.4.min.js"></script>
+        <link href="./css/photoswipe.css" rel="stylesheet" media="screen">
+        <!-- Theme -->
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans|Oswald|Droid+Sans|Yanone+Kaffeesatz|Droid+Serif|Ubuntu|Lobster|Francois+One|Arvo|Changa+One|Rokkitt|Nunito|Bitter|Merriweather|Raleway|Pacifico|Josefin+Sans|Questrial|Cantarell|Norican|Vollkorn|Quicksand|Limelight|Cantata+One|Bree+Serif|Oleo+Script|Playfair+Display|Quattrocento+Sans|Berkshire+Swash|Passion+One|Cuprum' rel='stylesheet' type='text/css'>
+        <link href="./style.css" rel="stylesheet" media="screen">
+        <!-- Skin -->
+        <link type="text/css" rel="stylesheet" href="./css/skin.css" media="screen">
+        <script src="./js/scripts.js"></script>
+        <!--[if lt IE 9]>
+        <link rel="stylesheet" type="text/css" href="./css/ie.css" />
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <!-- PRINT CSS -->
+        <link type="text/css" rel="stylesheet" href="./css/print.css" media="print">
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-41942216-1', 'auto');
+            ga('send', 'pageview');
+
+            $(function() {
+                $('a[href*="#"]:not([href="#"])').click(function() {
+                    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+                        var target = $(this.hash);
+                        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+                        if (target.length) {
+                            $('html, body').animate({
+                                scrollTop: target.offset().top
+                            }, 500);
+                            return false;
+                        }
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body class="backgrounded" data-spy="scroll" data-target=".sidebar-nav">
+        <div class="navbar navbar-inverse navbar-fixed-top visible-phone noprint" id="phone-navbar">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="#">Dimitris</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li><a href="#about-me" class="scroller">About</a></li>
+                            <li><a href="#news" class="scroller">News</a></li>
+                            <li><a href="#teaching" class="scroller">Teaching</a></li>
+                            <li><a href="#papers2" class="scroller">Publications</a></li>
+                            <li><a href="#coauthors" class="scroller">Coauthors</a></li>
+                            <li><a href="#contact" class="scroller">Contact</a></li>
+                        </ul>
                     </div>
+                    <!--/.nav-collapse -->
                 </div>
             </div>
-            <!--/#phone-navbar -->
-            <div class="container">
-                <div class="row" id="content">
-                    <!-- If you want the sidebar placed on the left, place it just after this and change the sbright class by sbleft -->
-                    <!-- MAIN CONTENT -->
-                    <div class="span9 equal" id="main-content">
-                        <div class="tools noprint visible-desktop">
-                        </div>
-                        <!-- 1 -------------------------------------------------------------------->
-                        <!-- TITLE -------------------------------------------------------------------->
-                        <div class="section first-section" id="about-me">
-                            <div class="row author">
+        </div>
+        <!--/#phone-navbar -->
+        <div class="container">
+            <div class="row" id="content">
+                <!-- If you want the sidebar placed on the left, place it just after this and change the sbright class by sbleft -->
+                <!-- MAIN CONTENT -->
+                <div class="span9 equal" id="main-content">
+                    <div class="tools noprint visible-desktop">
+                    </div>
+                    <!-- 1 -------------------------------------------------------------------->
+                    <!-- TITLE -------------------------------------------------------------------->
+                    <div class="section first-section" id="about-me">
+                        <div class="row author">
 
 
-                                <!-- <div class="span5"> -->
-                                
-                                    <img class="img-rounded" src="./images/cyclades.jpg"  alt="" style="width:400px;">                                    
+                            <!-- <div class="span5"> -->
+
+                                <img class="img-rounded" src="./images/cyclades.jpg"  alt="" style="width:400px;">
                                 <!-- </div> -->
-                                <div class="span5"><div align="center">
+                            <div class="span5"><div align="center">
                                     <h2>Dimitris Papailiopoulos</h2>
                                     <h4>Assistant Professor @ <a href="http://www.wisc.edu/">UW-Madison</a> </br>
 
-                                        <a href="http://ece.wisc.edu/"> Electrical and Computer Engineering</a> 
+                                        <a href="http://ece.wisc.edu/"> Electrical and Computer Engineering</a>
                                         </br>
                                         <a href="http://cs.wisc.edu/"> Computer Sciences</a> (by courtesy)
-                                    </br></br>
-                                      	
-                                    <center><img class="img-rounded" src="./images/UW.jpg"  alt="" style="width:41px;">         
-    								</h4></h2>
-    								     
+                                        </br></br>
+
+                                        <center><img class="img-rounded" src="./images/UW.jpg"  alt="" style="width:41px;">
+                                    </h4></h2>
 
 
-                                
-                                </div></div>
 
-                            </div>
 
-                            <!-- 2 -------------------------------------------------------------------->
-                            <!-- About -------------------------------------------------------------------->
-                            <div class="well">
+                            </div></div>
 
-                                
-                                
-                                <!-- <h3> About </h3> -->
-                                <div align="justify">
+                        </div>
+
+                        <!-- 2 -------------------------------------------------------------------->
+                        <!-- About -------------------------------------------------------------------->
+                        <div class="well">
+
+
+
+                            <!-- <h3> About </h3> -->
+                            <div align="justify">
                                 <h5> I am an assistant professor of <a href="http://ece.wisc.edu/"><b>Electrical and Computer Engineering</a></b> and <a href="http://cs.wisc.edu/"><b>Computer Sciences</a></b> (by courtesy) at the <a href="http://www.wisc.edu/"><b>University of Wisconsin-Madison</b></a>, a faculty fellow at the  <a href="https://graingerinstitute.engr.wisc.edu/"><b>Grainger Institute</b></a>, and a faculty affiliate with the <a href="http://wid.wisc.edu/research/optimization/people/"><b>Optimization group</a></b> at the <a href="http://wid.wisc.edu"><b>Wisconsin Institute for Discovery</b></a>. I am also very excited to be co-organizing <a href="http://www.sysml.cc"><b>SysML</b></a>, a new conference on machine learning and systems.
-</br></br>
-                                    My research lies in the intersection of <b>machine learning</b>, <b>coding theory</b>, and <b> distributed systems</b>. I am particularly interested in the theory and practice of large-scale machine learning and the challenges that arise due to communication bottlenecks, straggler nodes, and adversarial attacks. 
+                                    </br></br>
+                                    My research lies in the intersection of <b>machine learning</b>, <b>coding theory</b>, and <b> distributed systems</b>. I am particularly interested in the theory and practice of large-scale machine learning and the challenges that arise due to communication bottlenecks, straggler nodes, and adversarial attacks.
 
-                                 </br></br>
+                                    </br></br>
 
-                                  Before coming to Madison, I spent two wonderful years as a postdoc at <b><a href="http://www.berkeley.edu">UC Berkeley</a></b>. At Berkeley, I was a member of the <b><a href="http://amplab.cs.berkeley.edu">AMPLab</a></b> and <b><a href="http://wifo.eecs.berkeley.edu/">BLISS</a></b>, and had the pleasure to collaborate with
-                                    <a href="http://www.eecs.berkeley.edu/~brecht/ "><b>Ben Recht</b></a> and <a href="http://www.eecs.berkeley.edu/~kannanr/"><b>Kannan Ramchandran</b></a>.                                
-                                     I received my Ph.D. in 2014 from <a href="http://www.utexas.edu/"><b>UT Austin</b></a>, where I was fortunate to be advised by                               
-                                     <a href="http://users.ece.utexas.edu/~dimakis/index.html "><b>Alex Dimakis</b></a>. Before UT, I spent 3.5 years as a grad student at <a href="https://www.usc.edu/"><b>USC</b></a>. 
-                                     Before all that, I received my M.Sc. (2009) and ECE Diploma (2007) from the <b><a href="http://www.tuc.gr/5397.html">Technical University of Crete (TUC)</a></b>, located in the beautiful city of <b><a href="https://en.wikipedia.org/wiki/Chania">Chania</a></b>.  </p>
+                                    Before coming to Madison, I spent two wonderful years as a postdoc at <b><a href="http://www.berkeley.edu">UC Berkeley</a></b>. At Berkeley, I was a member of the <b><a href="http://amplab.cs.berkeley.edu">AMPLab</a></b> and <b><a href="http://wifo.eecs.berkeley.edu/">BLISS</a></b>, and had the pleasure to collaborate with
+                                    <a href="http://www.eecs.berkeley.edu/~brecht/ "><b>Ben Recht</b></a> and <a href="http://www.eecs.berkeley.edu/~kannanr/"><b>Kannan Ramchandran</b></a>.
+                                    I received my Ph.D. in 2014 from <a href="http://www.utexas.edu/"><b>UT Austin</b></a>, where I was fortunate to be advised by
+                                    <a href="http://users.ece.utexas.edu/~dimakis/index.html "><b>Alex Dimakis</b></a>. Before UT, I spent 3.5 years as a grad student at <a href="https://www.usc.edu/"><b>USC</b></a>.
+                                    Before all that, I received my M.Sc. (2009) and ECE Diploma (2007) from the <b><a href="http://www.tuc.gr/5397.html">Technical University of Crete (TUC)</a></b>, located in the beautiful city of <b><a href="https://en.wikipedia.org/wiki/Chania">Chania</a></b>.  </p>
 
-                                     
-                                     
-                                      </p>
-                                  </br>
-                                  <center> 
-                                      
-                                      <!-- <div class="social-media noprint"> -->
-                                      <b><a href="http://scholar.google.com/citations?user=hYi6i9sAAAAJ&hl=en"> Google Scholar</a></b></br>                                      
-                                        <!-- <h5>
-                                            <div>
-                                                <div class="tips icon-btn" title="Google Scholar" data-placement="bottom"> 
-                                                    <a href="http://scholar.google.com/citations?user=hYi6i9sAAAAJ&hl=en" class="glyphicons white vector_path_polygon"><i></i></a>
-                                                </div> 
-                                            </div>                                    
-                                         --></h5> 
-                                    <!-- </div> -->
-                                </div>   
-                                 </h5>
 
-                            
-                                 
-                                 
 
-                                
+                                    </p>
+                                    </br>
+                                    <center>
+
+                                        <!-- <div class="social-media noprint"> -->
+                                            <b><a href="http://scholar.google.com/citations?user=hYi6i9sAAAAJ&hl=en"> Google Scholar</a></b></br>
+                                            <!-- <h5>
+                                                <div>
+                                                    <div class="tips icon-btn" title="Google Scholar" data-placement="bottom">
+                                                        <a href="http://scholar.google.com/citations?user=hYi6i9sAAAAJ&hl=en" class="glyphicons white vector_path_polygon"><i></i></a>
+                                                    </div>
+                                                </div>
+                                                --></h5>
+                                            <!-- </div> -->
+                                    </div>
+                                </h5>
+
+
+
+
+
+
                             </div>
                         </div>
-                        
-                        
+
+
                         <!-- 3 -------------------------------------------------------------------->
                         <!-- news -------------------------------------------------------------------->
                         <div class="section" id="news">
@@ -159,10 +174,10 @@
                             </br>
 
 
-                            <div class="timeline">     
-                                
+                            <div class="timeline">
+
                                 <div class="timeline-item">
-                                    
+
                                     <div class="timeline-item-date">
                                         <b>Mar. 2018</b>
                                     </div>
@@ -174,8 +189,8 @@
                                     </div>
                                     <div class="timeline-item-content">
                                         <h5 class="timeline-item-title" data-toggle="collapse" data-target="#ita17"><b>Very excited to be co-organizing a</b>  <a href="https://portal.dagstuhl.de/orgtools/response.php?seminar=18112"> <b>Dagstuhl Workshop</b></a> on </br> <i>"Coding Theory for Inference, Learning and Optimization"</i></h5>
-                                                                            
-                                        </div>
+
+                                    </div>
                                 </div>
 
                                 <div class="timeline-item">
@@ -191,11 +206,11 @@
                                     </div>
                                     <div class="timeline-item-content">
                                         <h5 class="timeline-item-title" data-toggle="collapse" data-target="#ita17"><b>Very excited to be co-organizing</b> <a href="http://www.sysml.cc"> <b>SysML</b></a>!</h5>
-                                                                            
-                                        </div>
+
+                                    </div>
                                 </div>
 
-                                 
+
 
 
                                 <div class="timeline-item">
@@ -210,9 +225,9 @@
                                     </div>
                                     <div class="timeline-item-content">
                                         <h5 class="timeline-item-title" data-toggle="collapse" data-target="#ita17"><b>Invited talk</b> at <a href="http://ita.ucsd.edu/workshop/18"> <b>ITA 2018</b></a></h5>
-                                    
-                                        
-                                        </div>
+
+
+                                    </div>
                                 </div>
 
                                 <div class="timeline-item">
@@ -228,8 +243,8 @@
                                     </div>
                                     <div class="timeline-item-content">
                                         <h5 class="timeline-item-title" data-toggle="collapse" data-target="#ita17"><b>AISTATS 2018</b>:</br> <a href="https://arxiv.org/pdf/1706.05699.pdf"> <b>Gradient Diversity: a Key Ingredient for Scalable Distributed Learning</b></a></h5>
-                                                                            
-                                        </div>
+
+                                    </div>
                                 </div>
 
 
@@ -245,32 +260,32 @@
                                     </div>
                                     <div class="timeline-item-content">
                                         <h5 class="timeline-item-title" data-toggle="collapse" data-target="#allerton17"><b>Invited talk</b> at <a href="allerton.csl.illinois.edu"> <b>Allerton 2017</b></a></h5>
-                                        
-                                        </div>
+
+                                    </div>
                                 </div>
 
-                                        
-
-
-                                
-
-                                
-
-                                 
-
-                                
 
 
 
-    <span class="clear"></span>
+
+
+
+
+
+
+
+
+
+
+                                <span class="clear"></span>
                             </div></br>
                         </div>
-                        
-                                        <span class="clear"></span>
+
+                        <span class="clear"></span>
                         <!-- 5 -------------------------------------------------------------------->
                         <!-- Papers -------------------------------------------------------------------->
-                        
-                    <!--/section-->
+
+                        <!--/section-->
 
 
 
@@ -278,29 +293,29 @@
 
 
 
- 
-                        
 
-                    <span class="clear"></span>
 
-                        
+
+                        <span class="clear"></span>
+
+
                         <div class="section" id="teaching">
                             <h2 class="section-title"><span class="glyphicons log_book"><i></i></span>Teaching<a href="#phone-navbar" class="top visible-phone"><span class="glyphicons white up_arrow"><i></i></span></a></h2>
                             <div class="testimonial">
 
 
-                                
-                                <p style="font-size:17px; color: #3F3F3F; font-weight: normal; margin-top: 30px; margin-bottom: 20px;"> 
+
+                                <p style="font-size:17px; color: #3F3F3F; font-weight: normal; margin-top: 30px; margin-bottom: 20px;">
                                 <h4>
-                                <a href="http://papail.io/901"><b>ECE901/CS838: Large-scale Machine Learning and Optimization</b></a>  (Spring 2018, Fall 2016)                                 
-                                </br>    
-                                <a href="https://ay17-18.moodle.wisc.edu/prod/course/view.php?id=32"><b>ECE330: Signals and Systems</b></a>  (Fall 2017)
+                                    <a href="http://papail.io/901"><b>ECE901/CS838: Large-scale Machine Learning and Optimization</b></a>  (Spring 2018, Fall 2016)
+                                    </br>
+                                    <a href="https://ay17-18.moodle.wisc.edu/prod/course/view.php?id=32"><b>ECE330: Signals and Systems</b></a>  (Fall 2017)
                                 </h2>
-                                 </p>                                
-                                
+                                </p>
+
                             </div>
-                            
-                    </div>  
+
+                        </div>
 
 
 
@@ -317,27 +332,27 @@
                         <span class="clear"></span>
                         <!-- 5 -------------------------------------------------------------------->
                         <!-- Papers -------------------------------------------------------------------->
-                        
-                                
-                            <div class="section" id="papers2">
+
+
+                        <div class="section" id="papers2">
                             <h2 class="section-title"><span class="glyphicons file"><i></i></span>Publications<a href="#phone-navbar" class="top visible-phone"><span class="glyphicons white up_arrow"><i></i></span></a></h2>
                             <div class="testimonial">
-                                            
+
 
                                 <p style="font-size:26px; color: #3F3F3F; font-weight: normal; margin-top: 10px; margin-bottom: 20px;">2018</p>
 
                                 <ul class="papers">
                                     <li>
                                     <div class="paper-title">
-                                    Gradient Diversity: a Key Ingredient for Scalable Distributed Learning
-                                    </div> 
+                                        Gradient Diversity: a Key Ingredient for Scalable Distributed Learning
+                                    </div>
                                     <div class="paper-authors">
-                                         D. Yin, A. Pananjady, M. Lam, D. Papailiopoulos, K. Ramchandran, P. Bartlett
+                                        D. Yin, A. Pananjady, M. Lam, D. Papailiopoulos, K. Ramchandran, P. Bartlett
                                     </div>
                                     <div class="paper-other">
-                                        AISTATS 2018. <a href="https://arxiv.org/abs/1706.05699">[arxiv]</a> 
-                                    </div>                                    
-                                    </li> 
+                                        AISTATS 2018. <a href="https://arxiv.org/abs/1706.05699">[arxiv]</a>
+                                    </div>
+                                    </li>
 
 
                                 </ul>
@@ -350,70 +365,70 @@
 
                                     <li>
                                     <div class="paper-title">
-                                    Gradient Diversity: a Key Ingredient for Scalable Distributed Learning
-                                    </div> 
-                                 <div class="paper-authors">
-                                         D. Yin, A. Pananjady, M. Lam, D. Papailiopoulos, K. Ramchandran, P. Bartlett
+                                        Gradient Diversity: a Key Ingredient for Scalable Distributed Learning
+                                    </div>
+                                    <div class="paper-authors">
+                                        D. Yin, A. Pananjady, M. Lam, D. Papailiopoulos, K. Ramchandran, P. Bartlett
                                     </div>
                                     <div class="paper-other">
-                                        NIPS 2017, OPT Workshop (oral). <a href="https://arxiv.org/abs/1706.05699">[arxiv]</a> 
-                                    </div>                                    
-                                    </li> 
+                                        NIPS 2017, OPT Workshop (oral). <a href="https://arxiv.org/abs/1706.05699">[arxiv]</a>
+                                    </div>
+                                    </li>
 
                                     <li>
                                     <div class="paper-title">
-                                    UberShuffle: Communication-efficient Data Shuffling for SGD via Coding Theory
-                                    </div> 
+                                        UberShuffle: Communication-efficient Data Shuffling for SGD via Coding Theory
+                                    </div>
                                     <div class="paper-authors">
-                                         J. Chung, K. Lee, R. Pedarsani, D. Papailiopoulos, K. Ramchandran
+                                        J. Chung, K. Lee, R. Pedarsani, D. Papailiopoulos, K. Ramchandran
                                     </div>
                                     <div class="paper-other">
-                                            NIPS 2017, ML Systems Workshop
+                                        NIPS 2017, ML Systems Workshop
                                         <a href="http://learningsys.org/nips17/assets/papers/paper_12.pdf">[pdf]</a>
-                                    </div>                                    
-                                    </li> 
+                                    </div>
+                                    </li>
 
                                     <li>
                                     <div class="paper-title">
-                                    Perturbed Iterate Analysis for Asynchronous Stochastic Optimization
-                                    </div> 
+                                        Perturbed Iterate Analysis for Asynchronous Stochastic Optimization
+                                    </div>
                                     <div class="paper-authors">
-                                         H. Mania, X. Pan, D. Papailiopoulos, B. Recht, K. Ramchandran, M. I. Jordan
+                                        H. Mania, X. Pan, D. Papailiopoulos, B. Recht, K. Ramchandran, M. I. Jordan
                                     </div>
                                     <div class="paper-other">
                                         SIAM Journal on Optimization.
                                         <a href="http://arxiv.org/abs/1507.06970">[arxiv]</a>
-                                    </div>                                    
-                                    </li> 
+                                    </div>
+                                    </li>
 
                                     <li>
                                     <div class="paper-title">
-                                    Speeding-up Distributed Machine Learning Using Codes 
-                                    </div> 
+                                        Speeding-up Distributed Machine Learning Using Codes
+                                    </div>
                                     <div class="paper-authors">
-                                         K. Lee, M. Lam, R. Pedarsani, D. Papailiopoulos, K. Ramchandran
+                                        K. Lee, M. Lam, R. Pedarsani, D. Papailiopoulos, K. Ramchandran
                                     </div>
                                     <div class="paper-other">
-                                        IEEE Transactions on Information Theory. <a href="http://arxiv.org/abs/1512.02673">[arxiv]</a> 
-                                    </div>                                    
-                                    </li> 
+                                        IEEE Transactions on Information Theory. <a href="http://arxiv.org/abs/1512.02673">[arxiv]</a>
+                                    </div>
+                                    </li>
 
                                     <li>
                                     <div class="paper-title">
-                                    Coded Computation for Multicore Setups
-                                    </div> 
+                                        Coded Computation for Multicore Setups
+                                    </div>
                                     <div class="paper-authors">
-                                         K. Lee,  R. Pedarsani, D. Papailiopoulos, K. Ramchandran
+                                        K. Lee,  R. Pedarsani, D. Papailiopoulos, K. Ramchandran
                                     </div>
                                     <div class="paper-other">
-                                        ISIT 2017. <a href="http://www.ece.ucsb.edu/~ramtin/ISIT_2017.pdf">[pdf]</a> 
-                                    </div>                                    
-                                    </li> 
+                                        ISIT 2017. <a href="http://www.ece.ucsb.edu/~ramtin/ISIT_2017.pdf">[pdf]</a>
+                                    </div>
+                                    </li>
 
 
                                 </ul>
 
-                            </br>
+                                </br>
 
                                 <p style="font-size:26px; color: #3F3F3F; font-weight: normal; margin-top: 10px; margin-bottom: 20px;">2016</p>
 
@@ -421,60 +436,60 @@
 
                                     <li>
                                     <div class="paper-title">
-                                    CYCLADES: Conflict-free Asynchronous Machine Learning
-                                    </div> 
+                                        CYCLADES: Conflict-free Asynchronous Machine Learning
+                                    </div>
                                     <div class="paper-authors">
-                                         X. Pan, M. Lam, S. Tu, D. Papailiopoulos, C. Zhang, M. I. Jordan, K. Ramchandran, C. Re, B. Recht                          
+                                        X. Pan, M. Lam, S. Tu, D. Papailiopoulos, C. Zhang, M. I. Jordan, K. Ramchandran, C. Re, B. Recht
                                     </div>
                                     <div class="paper-other">
                                         NIPS 2016. <a href="http://arxiv.org/abs/1605.09721">[arxiv]</a>
-                                    </div>                                    
-                                    </li> 
+                                    </div>
+                                    </li>
 
-                                                                        
-                                    
+
+
 
 
                                     <li>
                                     <div class="paper-title">
-                                    Speeding-up Distributed Machine Learning Using Codes 
-                                    </div> 
+                                        Speeding-up Distributed Machine Learning Using Codes
+                                    </div>
                                     <div class="paper-authors">
-                                         K. Lee, M. Lam, R. Pedarsani, D. Papailiopoulos, K. Ramchandran
+                                        K. Lee, M. Lam, R. Pedarsani, D. Papailiopoulos, K. Ramchandran
                                     </div>
                                     <div class="paper-other">
-                                        ISIT 2016. <a href="http://arxiv.org/abs/1512.02673">[arxiv]</a> 
-                                    </div>                                    
-                                    </li> 
+                                        ISIT 2016. <a href="http://arxiv.org/abs/1512.02673">[arxiv]</a>
+                                    </div>
+                                    </li>
 
-                                   
+
 
 
                                     <li>
                                     <div class="paper-title">
-                                    On the Worst-Case Approximability of Sparse PCA
-                                    </div> 
+                                        On the Worst-Case Approximability of Sparse PCA
+                                    </div>
                                     <div class="paper-authors">
-                                         S. O. Chan, D. Papailiopoulos, A. Rubinstein
+                                        S. O. Chan, D. Papailiopoulos, A. Rubinstein
                                     </div>
                                     <div class="paper-other">
                                         COLT 2016. <a href="http://arxiv.org/abs/1507.05950">[arxiv]</a>
-                                    </div>                                    
-                                    </li> 
+                                    </div>
+                                    </li>
 
 
-                                     <li>
+                                    <li>
                                     <div class="paper-title">
-                                    Bipartite Correlation Clustering - Maximizing Agreements
-                                    </div> 
+                                        Bipartite Correlation Clustering - Maximizing Agreements
+                                    </div>
                                     <div class="paper-authors">
-                                         M. Asteris, A. Kyrillidis, D. Papailiopoulos, A. G. Dimakis
+                                        M. Asteris, A. Kyrillidis, D. Papailiopoulos, A. G. Dimakis
                                     </div>
                                     <div class="paper-other">
                                         AISTATS 2016.
                                         <a href="http://arxiv.org/abs/1603.02782">[arxiv]</a>
-                                    </div>                                    
-                                    </li> 
+                                    </div>
+                                    </li>
 
                                     <li>
                                     <div class="paper-title">
@@ -499,99 +514,99 @@
                                     </div>
                                     </li>
 
-                                    
 
-                                </ul>    
+
+                                </ul>
 
                                 <p style="font-size:27px; color: #3F3F3F; font-weight: normal; margin-top: 30px; margin-bottom: 20px;">2015</p>
                                 <ul class="papers">
 
-                                     <li>
+                                    <li>
                                     <div class="paper-title">
-                                    Perturbed Iterate Analysis for Asynchronous Stochastic Optimization
-                                    </div> 
+                                        Perturbed Iterate Analysis for Asynchronous Stochastic Optimization
+                                    </div>
                                     <div class="paper-authors">
-                                         H. Mania, X. Pan, D. Papailiopoulos, B. Recht, K. Ramchandran, M. I. Jordan
+                                        H. Mania, X. Pan, D. Papailiopoulos, B. Recht, K. Ramchandran, M. I. Jordan
                                     </div>
                                     <div class="paper-other">
                                         NIPS 2015, OPT Workshop (oral).
                                         <a href="http://arxiv.org/abs/1507.06970">[long version]</a>
-                                    </div>                                    
-                                    </li> 
+                                    </div>
+                                    </li>
 
-                                     <li>
+                                    <li>
                                     <div class="paper-title">
-                                    Speeding-up Distributed Machine Learning Using Codes
-                                    </div> 
+                                        Speeding-up Distributed Machine Learning Using Codes
+                                    </div>
                                     <div class="paper-authors">
-                                         K. Lee, M. Lam, R. Pedarsani, Dimitris Papailiopoulos, Kannan Ramchandran
+                                        K. Lee, M. Lam, R. Pedarsani, Dimitris Papailiopoulos, Kannan Ramchandran
                                     </div>
                                     <div class="paper-other">
-                                        NIPS 2015, ML-Systems Workshop. <a href="http://arxiv.org/abs/1512.02673">[arxiv]</a> 
-                                    </div>                                    
-                                    </li> 
+                                        NIPS 2015, ML-Systems Workshop. <a href="http://arxiv.org/abs/1512.02673">[arxiv]</a>
+                                    </div>
+                                    </li>
 
 
                                     <li>
                                     <div class="paper-title">
-                                    Parallel Correlation Clustering on Big Graphs
-                                    </div> 
+                                        Parallel Correlation Clustering on Big Graphs
+                                    </div>
                                     <div class="paper-authors">
-                                         X. Pan, D. Papailiopoulos, S. Oymak, B. Recht, K. Ramchandran, M. I. Jordan
+                                        X. Pan, D. Papailiopoulos, S. Oymak, B. Recht, K. Ramchandran, M. I. Jordan
                                     </div>
                                     <div class="paper-other">
                                         NIPS 2015.
                                         <a href="http://arxiv.org/abs/1507.05086">[long version]</a>
-                                    </div>                                    
-                                    </li> 
+                                    </div>
+                                    </li>
 
                                     <li>
                                     <div class="paper-title">
-                                    Sparse PCA via Bipartite Matchings 
-                                    </div> 
+                                        Sparse PCA via Bipartite Matchings
+                                    </div>
                                     <div class="paper-authors">
-                                         M. Asteris,  D. Papailiopoulos,  A. Kyrillidis,  A. G. Dimakis
+                                        M. Asteris,  D. Papailiopoulos,  A. Kyrillidis,  A. G. Dimakis
                                     </div>
                                     <div class="paper-other">
                                         NIPS 2015.
                                         <a href="http://arxiv.org/abs/1508.00625">[long version]</a>
-                                    </div>                                    
-                                    </li> 
+                                    </div>
+                                    </li>
 
                                     <li>
                                     <div class="paper-title">
-                                    Orthogonal NMF through Subspace Exploration 
-                                    </div> 
+                                        Orthogonal NMF through Subspace Exploration
+                                    </div>
                                     <div class="paper-authors">
-                                         M. Asteris,  D. Papailiopoulos,  A. G. Dimakis
+                                        M. Asteris,  D. Papailiopoulos,  A. G. Dimakis
                                     </div>
                                     <div class="paper-other">
                                         NIPS 2015.     <a href="http://megasthenis.github.io/repository/onmf-nips2015.pdf">[long version]</a>
-                                    </div>                                    
-                                    </li> 
+                                    </div>
+                                    </li>
 
 
-                                    
+
 
                                 </ul>
 
 
                                 <p style="font-size:27px; color: #3F3F3F; font-weight: normal; margin-top: 30px; margin-bottom: 20px;">2014</p>
                                 <ul class="papers">
-    								<li>
+                                    <li>
                                     <div class="paper-title">
-    								Provable Deterministic Leverage Score Sampling
-                                    </div> 
+                                        Provable Deterministic Leverage Score Sampling
+                                    </div>
                                     <div class="paper-authors">
-    									 D. Papailiopoulos, A. Kyrillidis, C. Boutsidis
+                                        D. Papailiopoulos, A. Kyrillidis, C. Boutsidis
                                     </div>
                                     <div class="paper-other">
                                         KDD 2014.
                                         <a href="http://arxiv.org/pdf/1404.1530.pdf">[long version]</a>
                                     </div>
-                                    
-                                	</li>
-                                
+
+                                    </li>
+
                                     <li>
                                     <div class="paper-title">
                                         Finding Dense Subgraphs via Low-Rank Bilinear Optimization
@@ -603,8 +618,8 @@
                                         ICML 2014.
                                         <a href="http://jmlr.org/proceedings/papers/v32/papailiopoulos14.html">[short version]</a>,
                                         <a href="http://mitliagkas.github.io/icml2014Presentation.pdf">[slides]</a>, recorded
-                                        <a href="http://techtalks.tv/talks/finding-dense-subgraphs-via-low-rank-bilinear-optimization/61123/">ICML'14 talk</a> given by 
-                                        <a href="http://mitliagkas.github.io/">Yannis.</a>                                    
+                                        <a href="http://techtalks.tv/talks/finding-dense-subgraphs-via-low-rank-bilinear-optimization/61123/">ICML'14 talk</a> given by
+                                        <a href="http://mitliagkas.github.io/">Yannis.</a>
                                     </div>
 
 
@@ -619,10 +634,10 @@
                                     </div>
                                     <div class="paper-other">
                                         ICML 2014.
-                                        <a href="http://users.ece.utexas.edu/~dimakis/NNSPCA_ICML.pdf">[long version]</a>,                  
+                                        <a href="http://users.ece.utexas.edu/~dimakis/NNSPCA_ICML.pdf">[long version]</a>,
                                         <a href="http://megasthenis.github.io/repository/nnspca-icml-2014-slides.pdf">[slides]</a>, recorded
-                                        <a href="http://techtalks.tv/talks/nonnegative-sparse-pca-with-provable-guarantees/61122/">ICML'14 talk</a> given by 
-                                        <a href="http://megasthenis.github.io/">Megas</a>.                                                                         
+                                        <a href="http://techtalks.tv/talks/nonnegative-sparse-pca-with-provable-guarantees/61122/">ICML'14 talk</a> given by
+                                        <a href="http://megasthenis.github.io/">Megas</a>.
                                     </div>
                                     </li>
                                     <li>
@@ -637,7 +652,7 @@
                                         <a href="http://arxiv.org/pdf/1402.2011.pdf">[long version]</a>
                                     </div>
                                     </li>
-                                   
+
 
 
 
@@ -648,7 +663,7 @@
                                     <div class="paper-authors">
                                         D. Papailiopoulos and A. G. Dimakis
                                     </div>
-                                    <div class="paper-other"> IEEE Transactions on Information Theory, September 2014. 
+                                    <div class="paper-other"> IEEE Transactions on Information Theory, September 2014.
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6818438&queryText%3Dlocally+repairable+codes" title="" class="noprint"> [IEEEXplore]</a>,
                                         <a href="http://arxiv.org/pdf/1206.3804.pdf" title="" class="noprint"> [arXiv]</a>
                                     </div>
@@ -658,14 +673,14 @@
                                     <div class="paper-title">
                                         A Repair Framework for Scalar MDS Codes
                                     </div>
-                                   <div class="paper-authors">
+                                    <div class="paper-authors">
                                         K. Shanmugam, D. Papailiopoulos, A. G. Dimakis, and G. Caire
                                     </div>
-                                    <div class="paper-other"> IEEE Journal on Selected Areas in Communications, May 2014.                                
-                                        <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6804944&queryText%3DA+Repair+Framework+for+Scalar+MDS+Codes" title="" class="noprint"> 
-                                        [IEEEXplore]</a>,
-                                        <a href="http://arxiv.org/pdf/1312.2135.pdf" title="" class="noprint"> 
-                                        [arXiv]</a>                                    
+                                    <div class="paper-other"> IEEE Journal on Selected Areas in Communications, May 2014.
+                                        <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6804944&queryText%3DA+Repair+Framework+for+Scalar+MDS+Codes" title="" class="noprint">
+                                            [IEEEXplore]</a>,
+                                        <a href="http://arxiv.org/pdf/1312.2135.pdf" title="" class="noprint">
+                                            [arXiv]</a>
                                     </div>
                                     </li>
 
@@ -677,20 +692,20 @@
                                     <div class="paper-authors">
                                         M. Asteris, D. Papailiopoulos, and G. N. Karystinos
                                     </div>
-                                    <div class="paper-other">IEEE Transactions on Information Theory, March 2014. 
+                                    <div class="paper-other">IEEE Transactions on Information Theory, March 2014.
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6730662&queryText%3DThe+Sparse+Principal+Component+of+a+Constant-rank+Matrix" title="" class="noprint">[IEEEXplore]</a>,
-                                        <a href="http://arxiv.org/pdf/1312.5891.pdf" title="" class="noprint">[arXiv].</a> 
-                                        
-                                        <a href="http://megasthenis.github.io/repository/sparsePC-matlab.zip" title="" class="noprint">MATLAB</a> implementation by <a href="http://megasthenis.github.io/">Megas</a>.                         
+                                        <a href="http://arxiv.org/pdf/1312.5891.pdf" title="" class="noprint">[arXiv].</a>
+
+                                        <a href="http://megasthenis.github.io/repository/sparsePC-matlab.zip" title="" class="noprint">MATLAB</a> implementation by <a href="http://megasthenis.github.io/">Megas</a>.
                                     </div>
-                                    </li>  
+                                    </li>
 
 
                                 </ul>
-                                
+
                                 <p style="font-size:27px; color: #3F3F3F; font-weight: normal; margin-top: 30px; margin-bottom: 20px;">2013</p>
                                 <ul class="papers">
-                                    
+
 
                                     <li>
                                     <div class="paper-title">
@@ -705,7 +720,7 @@
                                         <a href="https://www.dropbox.com/s/xd3us06jfhrw9yr/spannogram.zip?dl=0">[MATLAB code]</a>,
                                         <a href="https://www.dropbox.com/s/uprywyvmxc3qhod/spannogram_ICML_presentation.pptx?dl=0">[slides]</a>,
                                         recorded <a href="http://techtalks.tv/talks/sparse-pca-through-low-rank-approximations/58198/">ICML'13 talk</a>.
-                                                                            
+
                                     </div>
                                     </li>
 
@@ -720,7 +735,7 @@
                                         ISIT 2013.
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6620540">[IEEEXplore]</a>,
                                         <a href="http://arxiv.org/pdf/1301.7693.pdf">[arXiv]</a>
-                                        
+
                                     </div>
                                     </li>
 
@@ -733,11 +748,11 @@
                                     </div>
                                     <div class="paper-other">
                                         VLDB 2013.
-                                    <!-- </div>
+                                        <!-- </div>
                                     <div class="paper-other"> -->
-                                                                                
-                                        <a href="http://smahesh.com/HadoopUSC/">project homepage</a>. 
-                                        <i>Press coverage</i>: 
+
+                                        <a href="http://smahesh.com/HadoopUSC/">project homepage</a>.
+                                        <i>Press coverage</i>:
                                         <a href="http://highscalability.com/blog/2013/6/27/paper-xoring-elephants-novel-erasure-codes-for-big-data.html">high scalability,</a>
                                         <a href="http://storagemojo.com/2013/06/21/facebooks-advanced-erasure-codes/">StorageMojo,</a>
                                         <a href="http://techcrunch.com/2013/05/16/facebook-research-papers/">TechCrunch</a>
@@ -753,8 +768,8 @@
                                         D. Papailiopoulos, A. G. Dimakis, and V. R. Cadambe,
                                     </div>
                                     <div class="paper-other">
-                                        IEEE Transactions on Information Theory, May 2013.                                    
-                                        <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6416066&queryText%3DRepair+Optimal+Erasure+Codes+through+Hadamard+Designs"> [IEEEXplore]</a>, 
+                                        IEEE Transactions on Information Theory, May 2013.
+                                        <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6416066&queryText%3DRepair+Optimal+Erasure+Codes+through+Hadamard+Designs"> [IEEEXplore]</a>,
                                         <a href="http://arxiv.org/pdf/1106.1634.pdf">[arXiv]</a>
                                     </div>
                                     </li>
@@ -768,7 +783,7 @@
                                         D. Papailiopoulos, G. A.-Elkheir, G. N. Karystinos,
                                     </div>
                                     <div class="paper-other">
-                                        IEEE Transactions on Communications, March 2013.                                    
+                                        IEEE Transactions on Communications, March 2013.
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6415956&queryText%3DMaximum-Likelihood+Noncoherent+PAM+Detection">[IEEEXplore]</a>,
                                         <a href="https://www.dropbox.com/s/qfbg5kaq81fwaqs/PAM_TCOM.pdf?dl=0">[draft]</a>
                                     </div>
@@ -780,7 +795,7 @@
                                 </ul>
                                 <p style="font-size:27px; color: #3F3F3F; font-weight: normal; margin-top: 30px; margin-bottom: 20px;">2012</p>
                                 <ul class="papers">
-                                    
+
                                     <li>
                                     <div class="paper-title">
                                         A Repair Framework for Scalar MDS Codes
@@ -792,7 +807,7 @@
                                         Allerton 2012.
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6483350">[IEEEXplore]</a>,
                                         <a href="http://arxiv.org/pdf/1312.2135.pdf">[arXiv]</a>
-                                        
+
                                     </div>
                                     </li>
                                     <li>
@@ -807,8 +822,8 @@
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6284027">[IEEEXplore]</a>,
                                         <a href="http://arxiv.org/pdf/1206.3804.pdf">[arXiv]</a>,
                                         <a href="https://www.dropbox.com/s/8apzjg2yjnlhh2v/LRC_ISIT.pptx?dl=0">[slides]</a>
-                                        
-                                        
+
+
                                     </div>
                                     </li>
                                     <li>
@@ -819,12 +834,12 @@
                                         D.  Papailiopoulos, Changho Suh, Alexandros G. Dimakis
                                     </div>
                                     <div class="paper-other">
-                                     ISIT 2012.
-                                     
+                                        ISIT 2012.
+
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6284140">[IEEEXplore]</a>,
                                         <a href="https://www.dropbox.com/s/lyioqt7aildckgk/fdof_long.pdf?dl=0">[long]</a>,
                                         <a href="https://www.dropbox.com/s/2aduq1js0uobb23/fdof_ISIT.pptx?dl=0">[slides]</a>
-                                     
+
                                     </div>
                                     </li>
                                     <li>
@@ -839,8 +854,8 @@
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6195703">[IEEEXplore]</a>,
                                         <a href="http://arxiv.org/pdf/1109.0264.pdf">[arXiv]</a>,
                                         <a href="https://www.dropbox.com/s/sjbgm4ql043il2f/SRC_presentation_infocom.pptx?dl=0">[slides]</a>
-                                        
-                                        
+
+
                                     </div>
                                     </li>
                                     <li>
@@ -866,9 +881,9 @@
                                         D.  Papailiopoulos and A. G. Dimakis,
                                     </div>
                                     <div class="paper-other">
-                                        IEEE Transactions on Signal Processing, August 2012.                            
-                                        <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6193456&queryText%3DInterference+Alignment+as+a+Rank+Constrained+Rank+Minimization">[IEEEXplore]</a>, 
-                                        <a href="http://arxiv.org/pdf/1010.0476.pdf">[arXiv]</a>               
+                                        IEEE Transactions on Signal Processing, August 2012.
+                                        <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6193456&queryText%3DInterference+Alignment+as+a+Rank+Constrained+Rank+Minimization">[IEEEXplore]</a>,
+                                        <a href="http://arxiv.org/pdf/1010.0476.pdf">[arXiv]</a>
                                         <a href="https://www.dropbox.com/s/jzazft8bcyizuhh/K_user_IC.zip?dl=0">MATLAB Implementation</a>
                                     </div>
                                     </li>
@@ -889,9 +904,9 @@
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6120328">[IEEEXplore]</a>,
                                         <a href="http://arxiv.org/pdf/1106.1634.pdf">[long]</a>,
                                         <a href="https://www.dropbox.com/s/pp6a4jdljiwlxf2/hadamard_presentation.pptx?dl=0">[slides]</a>
-                                        
 
-                                        
+
+
                                     </div>
                                     </li>
                                     <li>
@@ -905,7 +920,7 @@
                                         ISIT 2011.
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6033731">[IEEEXplore]</a>,
                                         <a href="https://www.dropbox.com/s/x9lko6kpgqvhxez/Hadamard_ISIT2011_long.pdf?dl=0">[long]</a>
-                                        <a href="https://www.dropbox.com/s/gvjefktl0cuoxq0/hadamard_presentationISIT2011.pptx?dl=0">[slides]</a>                                        
+                                        <a href="https://www.dropbox.com/s/gvjefktl0cuoxq0/hadamard_presentationISIT2011.pptx?dl=0">[slides]</a>
                                     </div>
                                     </li>
 
@@ -918,11 +933,11 @@
                                         M. Asteris, D.  Papailiopoulos, G. N. Karystinos
                                     </div>
                                     <div class="paper-other">
-                                        ISIT 2011.                                        
+                                        ISIT 2011.
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6034216">[IEEEXplore]</a>,
                                         <a href="https://www.dropbox.com/s/d09d4qc6dw121au/1569421223.pdf?dl=0">[long]</a>,
                                         <a href="https://www.dropbox.com/s/kcold0qt7y76zgv/sparce_PCA_presentation.pptx?dl=0">[slides]</a>
-                                        
+
                                     </div>
                                     </li>
 
@@ -937,10 +952,10 @@
                                     <div class="paper-other">
                                         USENIX FAST 2011, Work-In-Progress (WiP).
                                         <a href="https://www.usenix.org/legacy/event/fast11/posters_files/Papailiopoulos.pdf">[short abstract]</a>
-                                        
+
                                     </div>
                                     </li>
-                                   
+
                                 </ul>
 
                                 <p style="font-size:27px; color: #3F3F3F; font-weight: normal; margin-top: 30px; margin-bottom: 20px;">2010</p>
@@ -957,10 +972,10 @@
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=5707080">[IEEEXplore]</a>,
                                         <a href="https://www.dropbox.com/s/tmh94zfy2veffp6/IA_connections_allerton_2010.pdf?dl=0">[long]</a>,
                                         <a href="https://www.dropbox.com/s/py9vp2avq008umk/IA_connections_allerton_presentation.pdf?dl=0">[slides]</a>
-                                        
-                                        
+
+
                                     </div>
-                                    </li>                                
+                                    </li>
                                     <li>
                                     <div class="paper-title">
                                         MCMC Methods for Integer Least-Squares Problems
@@ -969,14 +984,14 @@
                                         B. Hassibi, A. G. Dimakis, and D. Papailiopoulos
                                     </div>
                                     <div class="paper-other">
-                                     	Allerton 2010.
+                                        Allerton 2010.
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=5706947">[IEEEXplore]</a>,
                                         <a href="http://www-scf.usc.edu/~papailio/papers/ALLER10_0446_FI.pdf">[draft]</a>
-                                        
-                                        
+
+
                                     </div>
                                     </li>
-                                    
+
                                     <li>
                                     <div class="paper-title">
                                         Interference Alignment as a Rank Constrained Rank Minimization
@@ -990,12 +1005,12 @@
                                         <a href="https://www.dropbox.com/s/dblwdzybtivj3pl/minrank_IA_TSP.pdf?dl=0">[long]</a>,
                                         <a href="https://www.dropbox.com/s/e7hul6uf1ia6vmk/Presentation_globecom_2010.pptx?dl=0">[slides]</a>,
                                         <a href="https://www.dropbox.com/s/jzazft8bcyizuhh/K_user_IC.zip?dl=0">[MATLAB]</a>
-                                        
-                                        
+
+
                                     </div>
                                     </li>
-                                   
-                                   
+
+
 
 
                                     <li>
@@ -1006,7 +1021,7 @@
                                         D. Papailiopoulos and G. N. Karystinos,
                                     </div>
                                     <div class="paper-other">
-                                        IEEE Transactions on Wireless Communications, June 2010.                                    
+                                        IEEE Transactions on Wireless Communications, June 2010.
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=5475338">[IEEEXplore],</a>
                                         <a href="https://www.dropbox.com/s/qsivs3a52k41ofr/OSTBC_TWC.pdf?dl=0">[draft]</a>
                                     </div>
@@ -1027,11 +1042,11 @@
                                         Asilomar 2009.
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=5469839">[IEEEXplore]</a>,
                                         <a href="https://www.dropbox.com/s/y6cdl1wtire720b/Asilomar_paper_1452.pdf?dl=0">[draft]</a>
-                                        
-                                        
+
+
                                     </div>
                                     </li>
-                                <!-- </ul> -->
+                                    <!-- </ul> -->
                                 <!-- <h3>2008</h3> -->
                                 <!-- <ul class="papers"> -->
                                     <li>
@@ -1046,8 +1061,8 @@
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=4797570">[IEEEXplore]</a>,
                                         <a href="https://www.dropbox.com/s/n03ukjyau8hnk8q/paper_OSTBC_Asilomar2009.pdf?dl=0">[draft]</a>,
                                         <a href="https://www.dropbox.com/s/nocg385vj4wamae/allerton_OSTBC_presentation.pdf?dl=0">[slides]</a>
-                                        
-                                        
+
+
                                     </div>
                                     </li>
                                     <li>
@@ -1061,11 +1076,11 @@
                                         ICASSP 2008.
                                         <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=4518201">[IEEEXplore]</a>,
                                         <a href="https://www.dropbox.com/s/a38hmz7es75ld3z/MPSKrankD.pdf?dl=0">[draft]</a>
-                                        
-                                        
+
+
                                     </div>
                                     </li>
-                                <!-- </ul> -->
+                                    <!-- </ul> -->
                                 <!-- <h3>2007</h3> -->
                                 <!-- <ul class="papers"> -->
                                     <li>
@@ -1077,9 +1092,9 @@
                                 </div>
                                 <div class="paper-other">
                                     Asilomar 2007.
-                                    <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=4487534">[IEEEXplore]</a>,                                
+                                    <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=4487534">[IEEEXplore]</a>,
                                     <a href="https://www.dropbox.com/s/s6pfp5nm6kgvzkh/asilomar_two_col.pdf?dl=0">[draft]</a>,
-                                    <a href="https://www.dropbox.com/s/ic5ovlpnv3j52g2/poster07.ppt?dl=0">[slides]</a> 
+                                    <a href="https://www.dropbox.com/s/ic5ovlpnv3j52g2/poster07.ppt?dl=0">[slides]</a>
                                 </div>
 
                                 </li>
@@ -1088,27 +1103,27 @@
                     </div>
 
                     <!--/section-->
-                    
-                    
-                    
-                    
-                    
-                    
-                    
 
 
 
-                    
-                    
-                    
-                    
-                    
+
+
+
+
+
+
+
+
+
+
+
+
                     <span class="clear"></span>
-                    
-                    
-                    
-                    
-                    
+
+
+
+
+
                     <div class="section" id="coauthors">
                         <h2 class="section-title"><span class="glyphicons group"><i></i></span>Collaborators<a href="#phone-navbar" class="top visible-phone"><span class="glyphicons white up_arrow"><i></i></span></a></h2>
                         <div class="well">
@@ -1117,57 +1132,57 @@
                         </h5>
                         <!-- 					</br> -->
 
-                            <div class="paper-title">
-                                <p align="justify">                                                        
+                        <div class="paper-title">
+                            <p align="justify">
 
-                                <a href="https://zachcharles.com/">Zachary Charles</a> (UW-Madison),
-                                <a href="http://www.math.wisc.edu/~ellenber/"> Jordan Ellenberg</a> (UW-Madison),
-                                <a href="link">Jichan Chung</a> (KAIST),
-                                <a href="https://people.eecs.berkeley.edu/~dongyin/">Dong Yin</a> (UC Berkeley),
-                                <a href="https://people.eecs.berkeley.edu/~ashwinpm/">Ashwin Pananjady</a> (UC Berkeley),                                    
-                                <a href="https://www.stat.berkeley.edu/~bartlett/">Peter L. Bartlett</a> (UC Berkeley),    
-                                <a href="http://cs.stanford.edu/people/chrismre/">Chris Ré</a> (Stanford),
-                                <a href="http://cs.stanford.edu/people/czhang/">Ce Zhang</a> (ETH Zurich),
-                                <a href="https://people.eecs.berkeley.edu/~stephentu/">Stephen Tu</a> (UC Berkeley),
-                                <a href="http://www.eecs.berkeley.edu/~ramtin/">Ramtin Pedarsani</a> (UC Santa Barbara),
-                                <a href="https://www.linkedin.com/pub/max-lam/72/448/b91">Maximilian Lam</a> (Stanford),
-                                <a href="http://www.eecs.berkeley.edu/~kw1jjang/">Kangwook Lee</a> (KAIST),
-                                <a href="http://www.cse.cuhk.edu.hk/~siuon/">Siu On Chan</a> (CUHK),
-                                <a href="https://cs.stanford.edu/~aviad/">Aviad Rubinstein</a> (Stanford)
-                                <a href="https://amplab.cs.berkeley.edu/author/hmania/">Horia Mania</a> (UC Berkeley),
-                                <a href="http://www.cs.berkeley.edu/~jordan/">Michael I. Jordan</a> (UC Berkeley),
-                                <a href="https://www.eecs.berkeley.edu/~kannanr/">Kannan Ramchandran</a> (UC Berkeley),
-                                <a href="http://www.eecs.berkeley.edu/~brecht/">Ben Recht</a> (UC Berkeley),
-                                <a href="http://www.sametoymak.com/">Samet Oymak</a> (UC Riverside),
-                                <a href="http://www.cs.berkeley.edu/~xinghao/">Xinghao Pan</a> (UC Berkeley),
-                                <a href="http://www.boutsidis.org/">Christos Boutsidis</a> (Goldman Sachs),
-                                <a href="http://akyrillidis.github.io/about/">Anastasios Kyrillidis</a> (IBM TJ Watson),
-                                <a href="http://www.ece.utexas.edu/people/faculty/sriram-vishwanath">Sriram Vishwanath</a> (UT Austin),
-                                <a href="http://ankitsrawat.github.io/home/">Ankit Singh Rawat</a> (MIT),
-                                <a href="http://users.ece.utexas.edu/~cmcaram/constantine_caramanis/Home.html">Constantine Caramanis</a> (UT Austin), 
-                                <a href="http://mitliagkas.github.io/">Ioannis Mitliagkas</a> (UMontreal), 
-                                <a href="http://www.linkedin.com/in/dhruba">Dhruba Borthakur</a> (facebook), 
-                                <a href="http://www.linkedin.com/in/cyscottchen">Scott Chen</a> (facebook), 
-                                <a href="http://www.linkedin.com/in/ramkumarvadali">Ramkumar Vadali</a> (facebook), 
-                                <a href="http://smahesh.com/">Maheswaran Sathiamoorthy</a> (Google), 
-                                <a href="http://www.stavros.io/">Stavros Korokythakis</a> (Stochastic Technologies), 
-                                <a href="http://www.its.caltech.edu/~tamo/">Itzhak Tamo</a> (Tel Aviv University), 
-                                <a href="http://www.commit.tu-berlin.de/menue/mitarbeiter/fachgebietsleiter/">Guiseppe Caire</a> (TU Berlin), 
-                                <a href="https://sites.google.com/a/utexas.edu/karthiksh/">Karthikeyan Shanmugam</a> (IBM TJ Watson),
-                                <a href="http://research.microsoft.com/en-us/um/people/jinl/redesign/default.aspx">Jin Li</a> (MSR Redmond), 
-                                <a href="http://research.microsoft.com/en-us/um/people/chengh/">Cheng Huang</a> (MSR Redmond), 
-                                <a href="http://www.linkedin.com/pub/jianqiang-luo/12/14b/887">Jianqiang Luo</a> (Google), 
-                                <a href="http://gr.linkedin.com/pub/georgina-abou-elkheir/8/357/a89">Georgina Abou-Elkheir</a> (UPiraeus), 
-                                <a href="https://sites.google.com/site/changhosuh/">Changho Suh</a> (KAIST), 
-                                <a href="http://www.ee.psu.edu/viveck/">Viveck Cadambe</a> (Penn State), 
-                                <a href="http://megasthenis.github.io/">Asteris Megasthenis</a> (Google), 
-                                <a href="http://www.ee2.caltech.edu/Faculty/babak/ ">Babak Hassibi</a> (Caltech), 
-                                <a href="http://users.ece.utexas.edu/~dimakis/ ">Alex Dimakis</a> (UT Austin),
-                                <a href="http://www.telecom.tuc.gr/~karystinos/ ">George Karystinos</a> (TUC). 
+                            <a href="https://zachcharles.com/">Zachary Charles</a> (UW-Madison),
+                            <a href="http://www.math.wisc.edu/~ellenber/"> Jordan Ellenberg</a> (UW-Madison),
+                            <a href="link">Jichan Chung</a> (KAIST),
+                            <a href="https://people.eecs.berkeley.edu/~dongyin/">Dong Yin</a> (UC Berkeley),
+                            <a href="https://people.eecs.berkeley.edu/~ashwinpm/">Ashwin Pananjady</a> (UC Berkeley),
+                            <a href="https://www.stat.berkeley.edu/~bartlett/">Peter L. Bartlett</a> (UC Berkeley),
+                            <a href="http://cs.stanford.edu/people/chrismre/">Chris Ré</a> (Stanford),
+                            <a href="http://cs.stanford.edu/people/czhang/">Ce Zhang</a> (ETH Zurich),
+                            <a href="https://people.eecs.berkeley.edu/~stephentu/">Stephen Tu</a> (UC Berkeley),
+                            <a href="http://www.eecs.berkeley.edu/~ramtin/">Ramtin Pedarsani</a> (UC Santa Barbara),
+                            <a href="https://www.linkedin.com/pub/max-lam/72/448/b91">Maximilian Lam</a> (Stanford),
+                            <a href="http://www.eecs.berkeley.edu/~kw1jjang/">Kangwook Lee</a> (KAIST),
+                            <a href="http://www.cse.cuhk.edu.hk/~siuon/">Siu On Chan</a> (CUHK),
+                            <a href="https://cs.stanford.edu/~aviad/">Aviad Rubinstein</a> (Stanford)
+                            <a href="https://amplab.cs.berkeley.edu/author/hmania/">Horia Mania</a> (UC Berkeley),
+                            <a href="http://www.cs.berkeley.edu/~jordan/">Michael I. Jordan</a> (UC Berkeley),
+                            <a href="https://www.eecs.berkeley.edu/~kannanr/">Kannan Ramchandran</a> (UC Berkeley),
+                            <a href="http://www.eecs.berkeley.edu/~brecht/">Ben Recht</a> (UC Berkeley),
+                            <a href="http://www.sametoymak.com/">Samet Oymak</a> (UC Riverside),
+                            <a href="http://www.cs.berkeley.edu/~xinghao/">Xinghao Pan</a> (UC Berkeley),
+                            <a href="http://www.boutsidis.org/">Christos Boutsidis</a> (Goldman Sachs),
+                            <a href="http://akyrillidis.github.io/about/">Anastasios Kyrillidis</a> (IBM TJ Watson),
+                            <a href="http://www.ece.utexas.edu/people/faculty/sriram-vishwanath">Sriram Vishwanath</a> (UT Austin),
+                            <a href="http://ankitsrawat.github.io/home/">Ankit Singh Rawat</a> (MIT),
+                            <a href="http://users.ece.utexas.edu/~cmcaram/constantine_caramanis/Home.html">Constantine Caramanis</a> (UT Austin),
+                            <a href="http://mitliagkas.github.io/">Ioannis Mitliagkas</a> (UMontreal),
+                            <a href="http://www.linkedin.com/in/dhruba">Dhruba Borthakur</a> (facebook),
+                            <a href="http://www.linkedin.com/in/cyscottchen">Scott Chen</a> (facebook),
+                            <a href="http://www.linkedin.com/in/ramkumarvadali">Ramkumar Vadali</a> (facebook),
+                            <a href="http://smahesh.com/">Maheswaran Sathiamoorthy</a> (Google),
+                            <a href="http://www.stavros.io/">Stavros Korokythakis</a> (Stochastic Technologies),
+                            <a href="http://www.its.caltech.edu/~tamo/">Itzhak Tamo</a> (Tel Aviv University),
+                            <a href="http://www.commit.tu-berlin.de/menue/mitarbeiter/fachgebietsleiter/">Guiseppe Caire</a> (TU Berlin),
+                            <a href="https://sites.google.com/a/utexas.edu/karthiksh/">Karthikeyan Shanmugam</a> (IBM TJ Watson),
+                            <a href="http://research.microsoft.com/en-us/um/people/jinl/redesign/default.aspx">Jin Li</a> (MSR Redmond),
+                            <a href="http://research.microsoft.com/en-us/um/people/chengh/">Cheng Huang</a> (MSR Redmond),
+                            <a href="http://www.linkedin.com/pub/jianqiang-luo/12/14b/887">Jianqiang Luo</a> (Google),
+                            <a href="http://gr.linkedin.com/pub/georgina-abou-elkheir/8/357/a89">Georgina Abou-Elkheir</a> (UPiraeus),
+                            <a href="https://sites.google.com/site/changhosuh/">Changho Suh</a> (KAIST),
+                            <a href="http://www.ee.psu.edu/viveck/">Viveck Cadambe</a> (Penn State),
+                            <a href="http://megasthenis.github.io/">Asteris Megasthenis</a> (Google),
+                            <a href="http://www.ee2.caltech.edu/Faculty/babak/ ">Babak Hassibi</a> (Caltech),
+                            <a href="http://users.ece.utexas.edu/~dimakis/ ">Alex Dimakis</a> (UT Austin),
+                            <a href="http://www.telecom.tuc.gr/~karystinos/ ">George Karystinos</a> (TUC).
                             </p>
-                                
-                            </div>
-                            </br>
+
+                        </div>
+                        </br>
                         <!--If you like graphs, here are my collaborators, appearing as the right vertex set of <a href="https://www.dropbox.com/s/l8s7duuflxnv5c6/coauthor_graph.pdf?dl=0" title="" class="noprint"> my bipartite-coauthor graph</a>. -->
 
 
@@ -1185,7 +1200,7 @@
                             <div class="span7">
                                 1415 Engineering Drive, Engineering Hall,</br>
                                 University of Wisconsin-Madison </br>
-                                Madison, WI 53706                                
+                                Madison, WI 53706
                             </div>
                         </div>
                     </div>
@@ -1212,9 +1227,9 @@
                 <div class="sidebar-nav equal hidden-phone">
                     <ul class="nav nav-list affix" id="resumenav">
                         <li><a href="#about-me" class="scroller">About</a></li>
-                        <li><a href="#news" class="scroller">News</a></li>                        
-                        <li><a href="#teaching" class="scroller">Teaching</a></li>                        
-                        <li><a href="#papers2" class="scroller">Publications</a></li>                    
+                        <li><a href="#news" class="scroller">News</a></li>
+                        <li><a href="#teaching" class="scroller">Teaching</a></li>
+                        <li><a href="#papers2" class="scroller">Publications</a></li>
                         <li><a href="#coauthors" class="scroller">Collaborators</a></li>
                         <li><a href="#contact" class="scroller">Contact</a></li>
                     </ul>
@@ -1230,5 +1245,5 @@
         </div>
     </div>
     <!--/.container-->
-    </body>
-    </html>
+</body>
+</html>
