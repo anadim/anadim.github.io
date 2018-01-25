@@ -34,6 +34,24 @@
             <!-- PRINT CSS -->
             <link type="text/css" rel="stylesheet" href="./css/print.css" media="print">            
         </head>
+
+    <script>            
+            $(function() {
+                $('a[href*="#"]:not([href="#"])').click(function() {
+                    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+                        var target = $(this.hash);
+                        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+                        if (target.length) {
+                            $('html, body').animate({
+                                scrollTop: target.offset().top
+                            }, 500);
+                            return false;
+                        }
+                    }
+                });
+            });
+        </script>
+
         <body class="backgrounded" data-spy="scroll" data-target=".sidebar-nav">
             <div class="navbar navbar-inverse navbar-fixed-top visible-phone noprint" id="phone-navbar">
                 <div class="navbar-inner">
