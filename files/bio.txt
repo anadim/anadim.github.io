@@ -5,7 +5,7 @@ His research interests span machine learning, information theory, and distribute
 
 Between 2014 and 2016, Dimitris was a postdoctoral researcher at UC Berkeley and a member of the AMPLab. Dimitris earned his Ph.D. in ECE from UT Austin in 2014, under the supervision of Alex Dimakis. In 2007 he received his ECE Diploma and in 2009 his M.Sc. degree from the Technical University of Crete, in Greece. 
 
-Dimitris is a recipient of the NSF CAREER Award (2019), two Sony Faculty Innovation Awards (2019, 2020), the Benjamin Smith Reynolds Award for Excellence in Teaching (2019), the IEEE Joint Communications Society/Information Theory Society Best Paper Award (2020), and the IEEE Signal Processing Society, Young Author Best Paper Award (2015). 
+Dimitris is a recipient of the NSF CAREER Award (2019), two Sony Faculty Innovation Awards (2019 and  2020), the IEEE Joint Communications Society/Information Theory Society Best Paper Award (2020), the IEEE Signal Processing Society Young Author Best Paper Award (2015), the Emil Steiger Distinguished Teaching Award (2021), the Benjamin Smith Reynolds Award for Excellence in Teaching (2019), and the ECE Grainger Faculty Scholarship Award (2020). 
 
 In 2018, he co-founded MLSys, a new conference that targets research at the intersection of machine learning and systems. In 2018 and 2020 he was program co-chair for MLSys, and in 2019 he co-chaired the 3rd Midwest Machine Learning Symposium.
 
