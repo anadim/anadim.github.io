@@ -20,10 +20,29 @@ h3{font:700 1.12em/1.3 -apple-system,Helvetica,Arial,sans-serif;margin:1.6em 0 .
 .toc{font-size:15px!important;line-height:1.5!important}.toc-h{font-size:13px!important}.toc li.l3{padding-left:16px;font-size:14.5px}.toc li.l2{font-weight:600;margin-top:5px}
 hr{border:0;border-top:1px solid #e2e2e2;margin:2.4em 0}.tldr{font-size:.95em;background:#f6f8f7;border-radius:6px;padding:12px 16px}
 table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetica,Arial,sans-serif}th,td{border:1px solid #ddd;padding:4px 10px;text-align:left}th{background:#f6f8f7}
+
+h3{font:700 1.12em/1.3 -apple-system,Helvetica,Arial,sans-serif;margin:1.6em 0 .4em;scroll-margin-top:16px}
+.toc{font-size:15px!important;line-height:1.5!important}.toc-h{font-size:13px!important}.toc li.l3{padding-left:16px;font-size:14.5px}.toc li.l2{font-weight:600;margin-top:5px}
+hr{border:0;border-top:1px solid #e2e2e2;margin:2.4em 0}.tldr{font-size:.95em;background:#f6f8f7;border-radius:6px;padding:12px 16px}
+table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetica,Arial,sans-serif}th,td{border:1px solid #ddd;padding:4px 10px;text-align:left}th{background:#f6f8f7}
+
+h3{font:700 1.12em/1.3 -apple-system,Helvetica,Arial,sans-serif;margin:1.6em 0 .4em;scroll-margin-top:16px}
+.toc{font-size:15px!important;line-height:1.5!important}.toc-h{font-size:13px!important}.toc li.l3{padding-left:16px;font-size:14.5px}.toc li.l2{font-weight:600;margin-top:5px}
+hr{border:0;border-top:1px solid #e2e2e2;margin:2.4em 0}.tldr{font-size:.95em;background:#f6f8f7;border-radius:6px;padding:12px 16px}
+
+.finding{background:#eaf6f1;border:1px solid #9fd3bf;border-radius:10px;padding:14px 18px;margin:1.6em 0;font-size:.95em;line-height:1.55}
+table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetica,Arial,sans-serif}th,td{border:1px solid #ddd;padding:4px 10px;text-align:left}th{background:#f6f8f7}
+
+h3{font:700 1.12em/1.3 -apple-system,Helvetica,Arial,sans-serif;margin:1.6em 0 .4em;scroll-margin-top:16px}
+.toc{font-size:15px!important;line-height:1.5!important}.toc-h{font-size:13px!important}.toc li.l3{padding-left:16px;font-size:14.5px}.toc li.l2{font-weight:600;margin-top:5px}
+hr{border:0;border-top:1px solid #e2e2e2;margin:2.4em 0}.tldr{font-size:.95em;background:#f6f8f7;border-radius:6px;padding:12px 16px}
+
+.finding{background:#eaf6f1;border:1px solid #9fd3bf;border-radius:10px;padding:14px 18px;margin:1.6em 0;font-size:.95em;line-height:1.55}
+table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetica,Arial,sans-serif}th,td{border:1px solid #ddd;padding:4px 10px;text-align:left}th{background:#f6f8f7}
 </style></head><body><div class="draft">Draft, shared privately. Please don't circulate.</div>
 <h1 id="weight-space-micromachines-brain-implants-for-llms">Weight-Space Micromachines: Brain Implants for LLMs</h1>
-<p class="tldr"><strong>TL;DR</strong> Claude Code can write small programs straight into weight space and bolt them onto a frozen LLM: calculators, eyes, a mistake detector, even a little memory that lets the model retry and vote inside a single call. They stay silent until needed, RL teaches the model when to use them, and on GSM8K a 0.6B model goes from 28% to 80% (vs 71% for plain RL).</p>
-<hr>
+<p class="tldr"><strong>TL;DR</strong> AI Agents can write small modules ("implants") straight into weight space and bolt them onto a frozen LLM to patch some of its failure modes, like unreliable arithmetic: calculators, "eyes", a mistake detector, even a little memory module that lets the model retry and vote inside a single call, all happening in weight space. The implants stay OFF until needed, RL teaches the model when to use them, and on GSM8K, RL with the implants attached takes a 0.6B base model from 28% to 80%, vs 71% for the same RL without them.</p>
+<hr />
 <p><img alt="The calculator implant lighting up while Qwen generates" src="img/bd47c56b-2465.gif" /></p>
 <p>Today, teaching a language model a new skill means fine-tuning or RL on data that exercises it, and hoping nothing else breaks, or wrapping the model in tools, sandboxes and parsers. What if instead you could write the skill straight into the model's weights? Like having an exact co-processor that comes with the model, stays off until it's needed, and can even be trained/RL'd along with it?</p>
 <p>This was an old wish of mine! In 2023, in <a href="https://arxiv.org/abs/2301.13196">Looped Transformers as Programmable Computers</a> [1], Angeliki and Shashank hand picked the weights of a transformer and put it in a loop so that the model could run programs (a calculator, a computer, a full blown gradient descent run in context!). The process was quite painful, but the results were cute and the "looped transformer" name stuck around :).</p>
@@ -37,7 +56,7 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <p>The recipe was a simple loop: 1) run the model, 2) read its failures, 3) pick the ones that follow a pattern a small machine could fix,  4) write that machine into weights, 5) bolt it on the model, keep it if the scores go up, and repeat.</p>
 <p>Doing so on a couple of small models and evals, Claude wrote a calculator, state trackers, logic solvers, instruction-following rules as exact programs compiled into weights... plus a small machine with a small trained part: <strong>a pair of eyes</strong>!</p>
 <p>Bolted on the weights of a frozen model, each one of these little machines stays silent until it is needed for a task. When they work together, they can increase accuracy on small models by double digits on arithmetic, GSM8K, BIG-Bench Hard and IFEval type of tasks.</p>
-<p>I call these little machines, <strong>weight-space micromachines</strong>, or... <strong>brain implants</strong> for LLMs :)</p>
+<p>I call these little machines, <strong>weight-space micromachines</strong><strong> (WSMs)</strong>, or... <strong>brain implants</strong> for LLMs :)</p>
 <p>Here is a summary of results:</p>
 <ul>
 <li><strong>Implants can be exact tools, or add a new modality!</strong> A calculator takes long multiplication from near zero to 100%, and a small vision implant lets Qwen2.5-0.5B do math on handwritten MNIST digits from ~100x fewer worked examples than fine-tuning alone.</li>
@@ -50,12 +69,13 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <p><strong>And no, these are not LoRAs.</strong> A LoRA is a low-rank change applied across the model's own weights, learned from data. An implant is a separate module on the side: attaching it doesn't change the model's weights, it computes one specific thing you can read and test (the calculator was exact on every test), it stays OFF until it's needed, and you can add, remove or compose as many as you like.</p>
 <p>And yes, most of these are tools. What's different is they are in weight space operating inside the forward pass, so RL can train the model around them.</p>
 <p>Let me tell you a little bit more about it.</p>
-<hr>
+<hr />
+<hr />
 <nav class="toc"><div class="toc-h">Contents</div><ol>
 <li class="l2"><a href="#1-meet-the-implants">1. Meet the implants</a></li>
 <li class="l3"><a href="#1-1-what-an-implant-is">1.1 What an implant is</a></li>
 <li class="l3"><a href="#1-2-first-implant-a-calculator-of-course">1.2 First implant: a calculator... of course!</a></li>
-<li class="l3"><a href="#1-3-teaching-the-model-to-call-it">1.3 Teaching the model to call it</a></li>
+<li class="l3"><a href="#1-3-teaching-the-model-to-call-and-implant">1.3 Teaching the model to call  and implant</a></li>
 <li class="l3"><a href="#1-4-second-implant-give-qwen-eyes">1.4 Second implant: give Qwen eyes?</a></li>
 <li class="l3"><a href="#1-5-so-isn-t-this-just-tools">1.5 So... isn&#x27;t this just tools?</a></li>
 <li class="l2"><a href="#2-implants-that-read-and-write-thoughts">2. Implants that read and write thoughts</a></li>
@@ -72,7 +92,7 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <li class="l3"><a href="#4-2-ifeval">4.2 IFEval</a></li>
 <li class="l3"><a href="#4-3-big-bench-hard">4.3 BIG-Bench Hard</a></li>
 <li class="l3"><a href="#4-4-gsm8k-self-consistency-in-the-weights">4.4 GSM8K: self-consistency in the weights</a></li>
-<li class="l2"><a href="#5-rl-with-the-climbed-stack">5. RL with the climbed stack</a></li>
+<li class="l2"><a href="#5-rl-with-all-the-implants">5. RL with all the implants</a></li>
 <li class="l3"><a href="#5-1-rl-the-whole-stack-from-the-base-model">5.1 RL the whole stack, from the base model</a></li>
 <li class="l3"><a href="#5-2-rl-picks-among-implants">5.2 RL picks among implants</a></li>
 <li class="l2"><a href="#6-do-implants-transfer-across-models">6. Do implants transfer across models?</a></li>
@@ -90,10 +110,12 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <p><img alt="Neo: &quot;I know kung fu.&quot;" src="img/3e9206a0-a42e.webp" /></p>
 <p>Notice how there's no sandbox around Neo, and no Python code wrapped around him: it's all in his brain. That's what I'm talking about!</p>
 <p>So you (or Claude) create an implant, attach it to the model, and it does exactly one thing, and only when it's supposed to; the rest of the time it stays OFF, and the outputs are <strong>bit-for-bit identical to the original</strong>.</p>
+<p>Remove an implant and you get the original model back. (Well once you RL the model with an implant attached, the model leans on it, more on that in <a href="#5-rl-with-all-the-implants">§5</a>.)</p>
+<p><strong>When I say "all in the weights" I mean it literally:</strong> every implant is extra weights (plus a few registers, which are a small memory implant) that run inside the forward pass, and the decode only samples tokens.</p>
 <p>The implant, in weight space, sits "parallel" to the model and reads the same tokens as the model (or, as we'll see later, some of its hidden layers). Though it doesn't <em>have</em> to sit on the side: it could be wired in as a few more attention heads, an extra layer, or written into dead neurons the model doesn't use, like <a href="https://x.com/DimitrisPapail/status/2120245027804705121?a=QModSGHsBrrZImFtglU&amp;s=20">Lazarus</a>. But a separate, parallel block is just easier, and if you fine-tune the model later, you don't mess with the implant (or the other way around).</p>
 <p><img alt="One model, many implants" src="img/a2e78a74-49c4.png" /></p>
-<p><strong>A concrete example</strong> <strong>of how it works:</strong> when the model has just written <code>2595 + 3075 =</code>, the calculator implant <em>recognizes</em> that the model is about to compute an addition, and <em>it steps in</em>: it adds a vector to the model's last hidden state, right before the output layer, big enough so that the next tokens are exactly <code>5670</code>. Unlike a brain implant, <strong>the model doesn't know the implant is there</strong>: But it sees the right number show up in its own context and keeps on going.</p>
-<p><strong>OK cool! Let's see a few examples of implants.</strong></p>
+<p><strong>A concrete example of how it works:</strong> when the model has just written <code>2595 + 3075 =</code>, the calculator implant <em>recognizes</em> that the model is about to compute an addition, and <em>it steps in</em>: it adds a vector to the model's last hidden state, right before the output layer, big enough so that the next tokens are exactly <code>5670</code>. Unlike a brain implant, <strong>the model doesn't know the implant is there</strong>: But it sees the right number show up in its own context and keeps on going.</p>
+<p><strong>OK cool! </strong><strong>Let's see a few examples of </strong><strong>t</strong><strong>hese </strong><strong>micromachines.</strong></p>
 <h3 id="1-2-first-implant-a-calculator-of-course">1.2 First implant: a calculator... of course!</h3>
 <p>The first thing that came to mind was a calculator, as arithmetic is a classic failure mode of small (and <a href="https://x.com/maksym_andr/status/2100275583758327954?a=5CZU0SmBxtZ1EqCJBbM&amp;s=20">larger</a>!) models.</p>
 <p>I asked Claude Code to build one in weights and attach it to a small Qwen model. It works like a tiny ALU (the part of a CPU that does arithmetic) and does so in three steps:</p>
@@ -106,13 +128,13 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <p>The whole implant is 1.6–2.4M weights and yes, <a href="https://github.com/anadim/AdderBoard">we know</a> it could be much smaller. But it's still tiny compared to the 0.5B parameters of the model.</p>
 <p><img alt="Inside the calculator" src="img/0b20c70d-e083.gif" /></p>
 <p>Claude tested version 1 on every pair of numbers up to 199, for all four operations, plus negative numbers and.... 0 mistakes! hooray.</p>
-<p>On a frozen Qwen3-0.6B, the calculator lifts multiplication accuracy <strong>from near zero</strong> <strong>to 100%</strong>. <strong>Booyah!</strong></p>
+<p>On a frozen Qwen3-0.6B, the calculator increases multiplication accuracy <strong>from near zero to 100%</strong>. <strong>Booyah!</strong></p>
 <p><img alt="Accuracy as the numbers get longer" src="img/1dd2825d-3793.png" /></p>
-<p><strong>Does that help on actual (but still silly) math problems?</strong> On <a href="https://arxiv.org/abs/2110.14168">GSM8K</a> [6] the calculator barely helps <a href="https://arxiv.org/abs/2505.09388">Qwen3-0.6B</a> [5]: eg it goes from 52% to 53%. But on <a href="https://arxiv.org/abs/2211.10435">GSM-Hard</a> [4], the same GSM8K test questions with bigger numbers it goes <strong>from 27% to 35%</strong>. RL widens that gap (more in the RL section).</p>
-<p><strong>So the implant works, and</strong> <strong>only when</strong> <strong>the model actually uses</strong> <strong>it.</strong> To use it in the above case we just showed it a few examples in the prompt. Can we teach it to use the calculator instead?</p>
-<h3 id="1-3-teaching-the-model-to-call-it">1.3 Teaching the model to call it</h3>
+<p><strong>Does that help on actual (but still silly) math problems?</strong> On <a href="https://arxiv.org/abs/2110.14168">GSM8K</a> [6] the calculator barely helps <a href="https://arxiv.org/abs/2505.09388">Qwen3-0.6B</a> [5]: eg it goes from 52% to 53%. But on <a href="https://arxiv.org/abs/2211.10435">GSM-Hard</a> [4], the same GSM8K test questions with bigger numbers it goes <strong>from 27% to 35%</strong> (26% to 33% on the problems we never tuned the calculator on). RL widens that gap (<a href="#3-1-setup-and-the-calculator-after-rl">§3.1</a>).</p>
+<p><strong>So the implant works, and only when the model actually uses it.</strong> To use it in the above case we just showed it a few examples in the prompt. Can we teach it to use the calculator instead?</p>
+<h3 id="1-3-teaching-the-model-to-call-and-implant">1.3 Teaching the model to call  and implant</h3>
 <p>Instead of prompting, you can teach the model to use an implant by <strong>fine-tuning</strong> it on format so it learns to call the implant, the way you'd teach a model a tool-calling format, eg., a call looks like <code>&lt;tool_call&gt;48 * 2&lt;/tool_call&gt;</code> when it needs to multiply.</p>
-<p>Below, we fine-tuned Qwen2.5-0.5B on the same ~7.5k GSM8K training solutions (plus ~3k extra arithmetic examples) in three ways: plain solutions with no calls; solutions where every calculation is a call, and the model has to fill in each result itself (so it has to learn the arithmetic), and one where the calculator implant is attached, so it fills in the result and the model only has to make the call.</p>
+<p>Below, we fine-tuned Qwen2.5-0.5B on the same ~7k GSM8K training solutions (plus ~3k extra arithmetic examples) in three ways: plain solutions with no calls; solutions where every calculation is a call, and the model has to fill in each result itself (so it has to learn the arithmetic), and one where the calculator implant is attached, so it fills in the result and the model only has to make the call.</p>
 <p><img alt="Fine-tune Qwen to make the calls" src="img/86bfd31d-e8fd.png" /></p>
 <p>The longer the numbers, the more the implant helps, eg., on GSM-Hard the model goes from ~13% to 23%, and on arithmetic templates it never saw from ~51% to 99%.</p>
 <p><strong>Therefore, fine-tuning teaches the call format, while the implant does the arithmetic.</strong></p>
@@ -124,23 +146,23 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <p><img alt="Giving Qwen eyes: the CNN reads each image as it streams by, and the implant looks back to it later" src="img/4b4504f0-aa6a.gif" /></p>
 <p>Like the fine-tune we did for the calculator, Qwen has to be fine-tuned to use the implant, so we show it a few examples written out in the right format. We compare with fine-tuning on correct solutions (same solutions, no implant) to see how much format vs function take to learn... and yeah there's a gap.</p>
 <p><img alt="Giving Qwen eyes: accuracy vs number of worked examples, with and without the vision implant" src="img/1fc08f0c-ee1b.png" /></p>
-<p>With 32 examples, Qwen+eyes (+calculator) scores <strong>95% vs 4% without eyes</strong>. Plain fine-tuning does catch up eventually but is only at 93% after 4,000 examples and about 16,000 to match the accuracy of the implant. So the implant gets there with roughly <strong>100× fewer task examples</strong>.</p>
+<p>With 32 examples, Qwen+eyes (+calculator) scores <strong>95% vs 4% without eyes</strong>. Plain fine-tuning does catch up eventually but is only at 93% after 4,000 examples and needs about 16,000 to pass it. So the implant gets there with roughly <strong>100× fewer task examples</strong>.</p>
 <p>OK you may say these are not "real eyes", and I would indeed agree. The model doesn't really see internally (in its original weights) what the CNN sees, so it can't use things like "this 7 looks a lot like a 1" etc. That is a weakness of bolting implants, rather than training one big model to do all of it at the same time. But you could co-train: let the model's activations read the CNN's features, and train the two together.</p>
 <h3 id="1-5-so-isn-t-this-just-tools">1.5 So... isn't this just tools?</h3>
 <p>One can be a nihilist about this and say: it's just tools! And you'd be mostly right! The calculator accuracy gains are what a Python calculator would offer, and the IFEval rules are output constraints you could also indeed enforce with decoding code. But a few things are a bit different.</p>
 <p><strong>I think the key difference is not what the tool computes, but where it lives, and that it can be trained together with the model.</strong></p>
 <p>A Python tool sits outside the model, so token generation has to be interrupted: you parse tokens, parse tool results, paste them back to context, resume generation. An implant is just more weights, so batching, CUDA graphs, fine-tuning and RL handle it like any other layer (no serving stack tested yet). It's silent until needed and implants compose (meaning you can have multiple of them) without interfering with each other, and <strong>there's no need for a sandbox</strong>.</p>
-<hr>
+<hr />
 <h2 id="2-implants-that-read-and-write-thoughts">2. Implants that read and write thoughts</h2>
-<p><strong>So far implants worked directly on tokens:</strong> they read what the model writes and write tokens back. But an implant lives inside (or parallel to) the model and so it can also look at internal hidden states, and peek at roughly what the model is "thinking", to directly act on that. The next two implants do exactly this: the first reads the model's thoughts, the second writes them.</p>
+<p><strong>So far our micromachines worked directly on tokens</strong><strong>:</strong> they read what the model writes and write tokens back. But an implant lives inside (or parallel to) the model and so it can also look at internal hidden states, and peek at roughly what the model is "thinking", to directly act on that. The next two implants do exactly this: the first reads the model's thoughts, the second writes them.</p>
 <h3 id="2-1-a-mistake-detector">2.1 A mistake detector</h3>
-<p>Going back to GSM8K, where most mistakes weren't arithmetic but related to reasoning, could an implant help some other way? Here's an implant idea: a <strong>mistake detector</strong>!</p>
+<p>Going back to GSM8K, where most mistakes weren't arithmetic but related to reasoning, could a micromachine help some other way? Here's an implant idea: a <strong>mistake detector</strong>!</p>
 <p>Right before the model commits to its final answer, the implant reads the internal states and attempts to predict whether a second look would help, and if so it force writes "Hmm, wait. Let me rethink this." instead, and the model keeps going (same idea as the "Wait" in <a href="https://arxiv.org/abs/2501.19393">s1</a> [18]).</p>
 <p><strong>But does the model know internally when it's wrong?</strong> Kinda! We ran Qwen3-0.6B on GSM8K problems and saved its activations right as it's about to write its final answer, labeled right or wrong: about 50,000 examples. A small probe trained on those separates wrong from right answers pretty well on test problems it never saw (eg AUROC 0.85 on GSM8K, 0.84 on GSM-Hard). Same spirit as Kadavath et al. [19]: language models mostly know what they know.</p>
 <p><strong>How does the implant decide when to fire?</strong> It uses three tiny probes that read the model's hidden states. One asks "is this answer right?". The other two ask: "would a rethink help?", once just before the answer and once right after it. For labels, Claude tried the rethink on many GSM8K training solutions: if a wrong answer turned into a right one, that's a "rethink helps" example. Why not just fire on likely mistakes? Because most wrong answers stay wrong even after a rethink, so that would mostly waste tokens.</p>
 <p>The rest is standard circuit design in weight space: it watches the next-token scores (through a copy of its output layer) to know when an answer is about to come, and if a rethink runs 300 tokens without an answer, it force writes the answer marker itself.</p>
 <p>Below is a real GSM8K test problem. The arithmetic is all right, but it doubled the wrong day and is about to answer 5. So the detector fires, and the implant writes "Hmm, wait..." instead of the answer, and on its second pass the model gets 7 the right answer.</p>
-<p><img alt="The mistake detector in action" src="img/a10ab916-dfd7.gif" /></p>
+<p><img alt="The mistake detector in action" src="img/48de56bf-77c7.gif" /></p>
 <p>With the detector on, GSM8K goes from 52% to 56%, and GSM-Hard from 27% to 29%. With the calculator <strong>plus</strong> the detector deciding when to rethink, the model gets <strong>35% on GSM-Hard (34% with the calculator alone) and 57% on GSM8K</strong>. (We also tried rethinking every time: it scores a point or so higher, but costs more tokens)</p>
 <p><img alt="Two different fixes, on GSM-Hard and GSM8K" src="img/dacbe9e5-bb48.png" /></p>
 <p><em>(These runs use a slightly different setup from the calculator chart earlier, so the calculator-only bar reads 34% here instead of 35%.)</em></p>
@@ -148,7 +170,7 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <p><strong>Can an implant that reads the model's state also block a topic?</strong> Say you never want your model to do math (or... cough... help build faster kernels... cough). Claude trained a linear probe on Qwen3-1.7B's hidden states at the end of the prompt, on about 9,000 prompts written in lots of styles (homework writing, casual chat, other languages, code snippets), and tested it on 640 new prompts. When the probe fires, the blocker implant takes over the reply: it steers the model into saying "I can't help with math problems." and then ends it. We compared it with the obvious alternatives: just asking in the system prompt, a strict system prompt, and a keyword list.</p>
 <p>And the whole blocker, not just the probe, is again an implant in the weights: it decides at the end of the prompt (and it keeps checking the model's state while the model writes its answer, so it can still cut in halfway, see below), and then writes the decline sentence itself, word by word. No Python needed around the model.</p>
 <p>Here's the blocker on two held-out prompts: a calculus request it shuts down, and a parent asking how to motivate a kid who hates math homework, which it lets through:</p>
-<p><img alt="The topic blocker in action" src="img/a3abaaae-ecf4.gif" /></p>
+<p><img alt="The topic blocker in action" src="img/3b3edb2a-2a5b.gif" /></p>
 <p><img alt="Block a topic by reading the model's state" src="img/aa4550e7-62ed.png" /></p>
 <p>The blocker catches ~99% of the requests it should block and rarely blocks prompts that just mention the topic ("my daughter hates math, how do I motivate her?"). The price: it blocks ~10% of normal requests (vs 6% for the model alone), and fires on 23% of non-math MMLU quiz questions. The obvious alternatives do worse: a system prompt gets ignored or, made strict, blocks most normal requests too, and a keyword list can't tell <em>doing</em> math from <em>talking about</em> it.</p>
 <p>One nice tidbit: the probe also watches the model's own reply, so a harmless-looking request that turns into math halfway (scaling a recipe from 6 to 15 people) gets cut off the moment the model starts multiplying. Cute :)</p>
@@ -157,10 +179,10 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <p>The model goes from 15% to 96–99%, and if the implant writes a wrong result instead, say 171, it answers 171+58 about 97% of the time: it really does use the value. On a word-problem version it goes from 3% to 98%, versus 70% (tool line) or 94% (161 in text). It's a silly toy example, but it makes the point: <strong>if an implant hands the model a thought instead of text, the model treats it as its own.</strong></p>
 <p><img alt="The model treats the written value as its own" src="img/798dde97-0e40.png" /></p>
 <p>So the wiring between an implant and a model is just more weights that so far had been hand-designed by Claude but they are learnable too.</p>
-<hr>
+<hr />
 <h2 id="3-rl-with-one-implant">3. RL with one implant</h2>
 <h3 id="3-1-setup-and-the-calculator-after-rl">3.1 Setup, and the calculator after RL</h3>
-<p>Everything so far teaches the model to use its implants with a few examples in the prompt or during a small fine-tune. The obvious next question is: <strong>what if you do RL on the model with the implants attached?</strong> Does the model learn to lean on them more as the reward goes up? What if you don't even wire them in properly, just connect them to a few intermediate layers, and let RL optimize the wiring? Will it figure out a better wiring than the one Claude Code chose for the implant?</p>
+<p>Everything so far teaches the model to use its micromachines with a few examples in the prompt or during a small fine-tune. The obvious next question is: <strong>what if you do RL on the model with the implants attached?</strong> Does the model learn to lean on them more as the reward goes up? What if you don't even wire them in properly, just connect them to a few intermediate layers, and let RL optimize the wiring? Will it figure out a better wiring than the one Claude Code chose for the implant?</p>
 <p>We started with GSM8K-style problems (plus a version with much bigger numbers) and GRPO on Qwen3-0.6B-Base, with three settings: 1) no implant, 2) the frozen calculator, and 3) a <em>broken</em> calculator, same structure, but it writes wrong digits. Same recipe for all three, 2-3 seeds each, tuned for the calculator. RL trains only the model's own weights: the calculator and its wiring stay frozen.</p>
 <p>To make this practical, Claude wrote a custom RL engine (of course): about 100x faster than its first HuggingFace loop.</p>
 <p><strong>The calculator still matters after RL, on big numbers.</strong> After 300 updates, plain RL takes the model from 53% to about 70% on the GSM8K test set, and with the calculator attached it lands in the same place. On GSM-Hard, where the numbers are much bigger, the gap is large: 44% for plain RL vs 55% with the calculator, averaged over three seeds.</p>
@@ -169,7 +191,7 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <h3 id="3-2-a-broken-calculator-teaches-avoidance">3.2 A broken calculator teaches avoidance</h3>
 <p><strong>RL teaches when not to use an implant.</strong> With a broken calculator implant (the same calculator with its output digits shuffled, e.g. every 3 comes out as a 1, so it fires in the same places but almost every answer it writes is wrong) the model starts at 7%. RL climbs back to 37% within 64 updates by doing the opposite: it puts a unit word after every number ("8 apples + 747460 apples = 747468 apples") (the calculator is wired to fire at an "=" that follows "number op number", so a unit word in between mostly keeps it quiet), and the broken calculator goes from firing on 75% of equations to 12%. <em>RL teache</em><strong><em>s the model to generate tokens that avoi</em></strong><em>d using an implant that doesn't help</em><em>!</em></p>
 <p><img alt="Good calculator: fewer unit words. Broken calculator: RL stops triggering it" src="img/368a7ec5-10d6.png" /></p>
-<p><img alt="RL learns to stop triggering a broken calculator" src="img/11edf76d-deeb.gif" /></p>
+<p><img alt="RL learns to stop triggering a broken calculator" src="img/271ada82-e1ca.gif" /></p>
 <h3 id="3-3-rl-learns-the-wiring-and-where-a-half-broken-calculator-is-right">3.3 RL learns the wiring, and where a half-broken calculator is right</h3>
 <p><strong>RL can also rewire the implant.</strong> Next we kept the calculator frozen but made its wiring trainable: small zero-initialized adapters from the calculator's output into layers 7, 14 and 21 and the final layer (each adapter is a small linear map that adds the calculator's result into the model's hidden state at that layer; starting at zero, they change nothing until RL grows them), plus a trainable in-wire (a small gate that reads the model's hidden state) that can veto a call. In about half the runs, RL first vetoes most implant calls, then lets them back in by size: big numbers first, 1-2 digit numbers (which the model handles fine) last (the other runs just call every time). This is so cool!!</p>
 <p><img alt="RL skips the calculator on small numbers; learned wiring ends about level with hand wiring" src="img/55313ca5-386e.png" /></p>
@@ -180,10 +202,10 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <p><img alt="The trained calculator breaks; RL erodes the BBH implants it trains" src="img/0ffdc919-838c.png" /></p>
 <p><strong>What it doesn't do (yet).</strong> In our runs, learned wiring ends about helping as much as the wiring Claude Code picked, and RL couldn't discover an implant from scratch through new random links. But if you start the links from a short distillation of the hand wiring (200 quick supervised steps that train only the links, with the model frozen, to reproduce ~1,200 correct solutions written by the hand-wired model), RL makes them about 10-20% stronger and roughly doubles the gain they carry, to about +11 points (+24 on big numbers), in all three seeds. The animation below plays one of those runs: as RL goes on, the links into layers 7, 14 and 21 grow stronger, and the gap between links on and links off (same model) widens from about 5 to 11 points. So RL seems good at deciding when to use an implant it can already reach (meaning the wires are already working), less so at building a new in wire connection. Our links were simple, though; better-designed links or smarter wiring may well change that.</p>
 <p><img alt="RL strengthens a calculator link the model already uses" src="img/c2522a03-ee84.gif" /></p>
-<hr>
+<hr />
 <h2 id="4-climbing-benchmarks-with-frozen-hosts">4. Climbing benchmarks with frozen hosts</h2>
 <h3 id="4-1-the-loop-and-how-it-cheats">4.1 The loop, and how it cheats</h3>
-<p>I was curious: what if you took a benchmark and asked Claude Code to climb it by finding holes in a small model and adding implants to patch them? <strong>How would the accuracy scale as a function of holes patched and implants added?</strong></p>
+<p>I was curious: what if you took a benchmark and asked Claude Code to climb it by finding holes in a small model and adding micromachines to patch them? <strong>How would the accuracy scale as a function of holes patched and implants added?</strong></p>
 <p>So I asked Claude Code to find holes in the small Qwen models we've been playing with, on a few benchmarks: GSM8K [6], <a href="https://arxiv.org/abs/2210.09261">BIG-Bench Hard</a> [9], and IFEval [10].</p>
 <p><strong>How do you write</strong> <strong>consecutive implants?</strong> Claude Code runs a loop that looks a lot like RL (without gradients), except what changes is the set of implants, while the main model weights stay frozen.</p>
 <p><img alt="How Claude builds an implant" src="img/92c8e79c-8010.png" /></p>
@@ -197,7 +219,7 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 </ol>
 <p>OK let's try to climb the hill again, without cheating.</p>
 <h3 id="4-2-ifeval">4.2 IFEval</h3>
-<p><a href="https://arxiv.org/abs/2311.07911">IFEval</a> [10] checks whether a model follows instructions like "don't use any commas", "answer in all lowercase", "end with the exact phrase ...". Each one is easy to check with code, and a 0.6B model is bad at a lot of them. Out of the box, Qwen3-0.6B gets every instruction right on only about 58% of IFEval's 541 questions, so it felt like a reasonable place to try implants.</p>
+<p><a href="https://arxiv.org/abs/2311.07911">IFEval</a> [10] checks whether a model follows instructions like "don't use any commas", "answer in all lowercase", "end with the exact phrase ...". Each one is easy to check with code, and a 0.6B model is bad at a lot of them. Out of the box, Qwen3-0.6B gets every instruction right on only about 58% of IFEval's 541 questions, so it felt like a reasonable place to try micromachines.</p>
 <p>So, following the loop above, Claude wrote 14 rule implants for the frozen Qwen3-0.6B, with no fine-tuning: unlike the calculator, these implants don't wait for the model to write a call, they can act on their own. Each has two parts: A <strong>reader</strong> spots the instruction in the prompt (and tells "don't use commas" apart from "commas confuse me"). An <strong>enforcer</strong> watches the model write and steps in only when it's about to break the rule: if its top pick is a comma, it "urges" the model to go with the second best pick that isn't a comma. The model still writes almost all the words while the implant adds things like bullet markers, quote marks or the repeated request, etc.</p>
 <p>Lots of IFEval problems combine 2 to 3 instructions ("a poem about the sea, all lowercase, no commas"). Here's how often they're followed, with and without implants:</p>
 <p><img alt="Rule implants on IFEval" src="img/4f829636-80f2.png" /></p>
@@ -216,10 +238,10 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <li><strong>expr</strong>, <strong>calc</strong>, <strong>bool</strong>: exact arithmetic and True/False logic. These don't even need a call: they fire when the model itself writes something like <code>(3 + 4) * 2 =</code>, and write the answer right after.</li>
 </ul>
 <p>The other three are narrower, each built around one BBH task, and honestly they sit closer to the "real tool" line than I'd like. And yes, this is programmatic solving, yet the model has to still turn a question into a compact call, and the implant does the reasoning required behind the call. That's the tradeoff: you give up generality to get exactness on the procedural parts of the task.</p>
-<p>The figure below shows the 12 BBH tasks these implants cover, in three setups: the base model, the model after a short fine-tune that teaches it to write calls (432 generated examples) but with implants OFF (dark grey), and then implants ON:</p>
+<p>The figure below shows the 12 BBH tasks these implants cover, in three setups: the base model (Qwen3-0.6B-Base), the model after a short fine-tune that teaches it to write calls (432 generated examples) but with implants OFF (dark grey), and then implants ON:</p>
 <p><img alt="Eight implants on BIG-Bench Hard" src="img/7729ce8b-f50a.png" /></p>
 <p>On the 12 tasks with an implant, accuracy goes <strong>from 43% to 84%</strong> (the fine-tune alone gets 38%). One thing to note: the fine-tuned model gets implant-trigger happy and also calls tools on the other 15 tasks, dropping their accuracy from 39% to 20%. But that part is fixable, as we'll see next.</p>
-<p>100 no-call examples didn't teach the model when <em>not</em> to call, so Claude fixed it with... another implant. A <strong>call gate</strong> reads the hidden state just as the model starts a tool call, and if no implant fits, a decode-loop mask blocks the call. Stray calls on the 15 no-implant tasks drop from 59% to 4%, and those tasks recover from 20% to 30%! <strong>The 27-task average goes from 48% to 55%</strong> (the model alone gets 41%).</p>
+<p>100 no-call examples didn't teach the model when <em>not</em> to call, so Claude fixed it with... another implant. A <strong>call gate</strong> reads the hidden state just as the model starts a tool call, and if no implant fits, it blocks the call (Claude first wrote it as a decode-loop mask, then compiled it into weights; it makes the same decisions). Stray calls on the 15 no-implant tasks drop from 59% to 4%, and those tasks recover from 20% to 30%! <strong>The 27-task average goes from 48% to 55%</strong> (the model alone gets 41%).</p>
 <p>All 27 tasks, one by one, before the call gate (gray dot: model alone; open circle: fine-tuned, implants off; green dot: implants on):</p>
 <p><img alt="All 27 BIG-Bench Hard tasks" src="img/7e1e05b2-e6cd.png" /></p>
 <p>And the scaling law (ok yeah it's a curve again) for BBH:</p>
@@ -232,27 +254,70 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <p>Claude wrote, one at a time:</p>
 <ul>
 <li><strong>calculator v2</strong>: exact on long chains of + and −.</li>
-<li><strong>sanity check</strong>: if an answer is impossible (negative, not a whole number, or missing), it writes "We need to find" and the model solves it again.</li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
+<li><strong>sanity check</strong>: if an answer is impossible (negative or not a whole number), it writes "We need to find" and the model solves it again.</li>
+<li><strong>forget-mask</strong>: on a retry, hides the failed attempt from attention, so the new try sees only the question.</li>
+<li><strong>retry writer, answer register and voter</strong>: the model tries N times in one stream, and the implant votes.</li>
+<li><strong>position reset</strong>: makes the question look adjacent to every try.</li>
+<li><strong>adaptive tries</strong>: stop at 4 tries if they agree, go up to 16 if not.</li>
 </ul>
 <p><img alt="One call, eight tries: try 1 is flagged and forgotten, the stack asks for four more tries, and 7 wins the vote, all inside a single generate()" src="img/db9a0fbb-3820.gif" /></p>
 <p>[figure: GSM8K all-weights ladder — coming]</p>
 <p><img alt="Implants on GSM8K" src="img/a4b59b32-c099.png" /></p>
-<p><img alt="Eight implants, added one at a time: 67.7 to 82.7 on GSM8K" src="img/432b2112-fa62.gif" /></p>
+<p><img alt="Eight implants, added one at a time: 67.7 to 82.7 on GSM8K" src="img/f86bcd64-a2f0.gif" /></p>
 <p>The calculator adds a point, v2 almost another, and the sanity check plus a forget-mask (below) gets to 72%: +4.6 points (CI 2.6 to 6.4).</p>
 <p><strong>The surprise: retries copy the old mistake.</strong> On a retry, the model mostly copied its earlier attempt through attention, re-deriving the same impossible answer in 62 of 80 cases! The <strong>forget-mask</strong> adds a few fixed attention dimensions per head, so the new attempt sees only the question. Hiding the failed attempt is what helps, more than starting over.</p>
 <p><img alt="Add one implant at a time, GSM8K" src="img/84de44e2-bea0.png" /></p>
 <p><strong>Best-of-N, in one call.</strong> A retry writer makes the model try N times in one stream, and a voter (a fixed ReLU circuit plus a linear probe on layer 18) picks the final answer from a register of attempts. Later tries got worse, since each sits farther from the question (attempt 1 is right 81% of the time, attempt 8 only 30%), so Claude compiled a position reset into the weights: a rotary re-phasing that makes the question look adjacent to every attempt. With 8 tries on dev (train questions held out from RL), the vote goes from 82% to 88.5%, same as a hand-coded reset. Test: [PENDING: all-weights voter + reset on test].</p>
 <p>What's left is half selection (a right attempt is there but the vote misses it) and half hard questions; only 2-3% are never solved in 32 tries, and a third of those are gold errors :)</p>
-<hr>
-<h2 id="5-rl-with-the-climbed-stack">5. RL with the climbed stack</h2>
+<div class="finding"><strong>With the host frozen, implants add up on real benchmarks.</strong> IFEval goes from 58% to 72%, BBH from 41% to 55% over all 27 tasks, and on GSM8K one call with a retry-and-vote stack matches 8 separate calls (81% vs 80%).</div>
+<hr />
+<h2 id="5-rl-with-all-the-implants">5. RL with all the implants</h2>
 <h3 id="5-1-rl-the-whole-stack-from-the-base-model">5.1 RL the whole stack, from the base model</h3>
-<p><strong>On GSM8K, RL with implants works really well.</strong> From the bare Qwen3-0.6B-Base with the full GSM8K stack, RL takes dev (vote over 4 tries) from 37% to 84% [PENDING: controls — same RL with a single attempt, and plain RL without implants; 3 seeds; test]. From the already-RL'd model, per-attempt credit takes dev from 81% to 87%, and attempt 8 from 29% to 71% [PENDING: RL with the weight-space reset attached; test numbers]. But first, the simplest case: a single calculator.</p>
-<p><img alt="Same base model, same RL recipe: plain RL vs RL with implants" src="img/77c11437-080a.gif" /></p>
-<p><img alt="Credit every try and try 8 goes from 29% to 71%; the position reset gets there with zero RL" src="img/483e0bf6-07f6.gif" /></p>
+<p><strong>From the bare base model, RL with implants beats plain RL.</strong> This is a separate experiment from <a href="#4-4-gsm8k-self-consistency-in-the-weights">§4.4</a>: we go back to the bare Qwen3-0.6B-Base and RL it with the stack attached, same 300 GRPO updates as plain RL. Test numbers are in the table below. Starting instead from the RL'd host of <a href="#4-4-gsm8k-self-consistency-in-the-weights">§4.4</a>, RL with the whole stack attached and per-attempt credit takes test from 72% to 80% (3 seeds), and try 8 from 23% to 66%; rewarding only the final vote is unstable (2 of 3 seeds got worse). But the position reset alone, with no RL, already gets 81%, and RL on top of it adds nothing on GSM8K. After RL, switching off the forget-mask costs the most (8 points), since the RL'd model now relies on not seeing its earlier tries (figure “Each implant, one by one”).</p>
+<p><img alt="Same base model, same RL recipe: plain RL vs RL with implants" src="img/2d3e31f9-d884.gif" /></p>
+<p><img alt="Credit every try and try 8 goes from 29% to 71%; the position reset gets there with zero RL" src="img/f3091262-72aa.gif" /></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>GSM8K</th>
+<th>GSM-Hard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>base, no RL</td>
+<td>28%</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>plain RL, no implants (2 seeds)</td>
+<td>71%</td>
+<td>45%</td>
+</tr>
+<tr>
+<td>RL with implants, one try (3 seeds)</td>
+<td>73%</td>
+<td>56%</td>
+</tr>
+<tr>
+<td>RL with implants, 4 tries in one call (3 seeds)</td>
+<td>75%</td>
+<td>53%</td>
+</tr>
+<tr>
+<td>+ position reset during RL (3 seeds)</td>
+<td>77%</td>
+<td>55%</td>
+</tr>
+<tr>
+<td>+ adaptive tries at test, up to 16 (3 seeds)</td>
+<td>80%</td>
+<td>59%</td>
+</tr>
+</tbody>
+</table>
+<p>Most of the jump is RL itself. The base is weak mostly because of our sampled prompt format (greedy it gets 53%, and 56% with the Qwen report's 4-shot prompt), and the micromachines without RL don't help it at all. With one try per question the implants add 2 points on GSM8K and 11 on big numbers; the rows below that also spend up to 13x the tokens [PENDING: plain RL + 8 separate calls].</p>
 <p><img alt="Each implant, one by one" src="img/96224c8d-802c.png" /></p>
 <h3 id="5-2-rl-picks-among-implants">5.2 RL picks among implants</h3>
 <p><strong>Irrelevant implants don't get in the way.</strong> Next we attached every implant at once (the calculator, the 8 BBH implants and the 14 IFEval rule implants, each using its own trainable in-wires) but still trained on math problems only. The question here is whether a pile of implants that mostly have nothing to do with the task hurts. It doesn't. The BBH puzzle implants never fire on a math problem, and the IFEval ones only listen to chat-formatted prompts, so they change nothing. The three implants that do arithmetic (the calculator plus two BBH arithmetic implants) stay switched on. In a control run where those two BBH arithmetic implants were scrambled (they still fire in the same places, but their outputs are shuffled, so every answer they write is wrong), RL shut them off within 25-50 updates, kept the good calculator, and reached the same GSM8K score (69%); on GSM-Hard the correct set did a bit better (56% vs 52%, one seed).</p>
@@ -261,7 +326,7 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <p><img alt="With implants on, RL wins on every task type (two seeds)" src="img/ea467c91-b8ce.png" /></p>
 <p><strong>RL picks the better implant</strong>. In these runs the model also has two '=' implants that fire on their own, so it never needs a <code>&lt;calc&gt;</code> call. Over RL, <code>&lt;calc&gt;</code> calls fade: from about 80% of GSM answers to about 25%. Is RL giving up on the calculator? No. Remove the '=' implants and <code>&lt;calc&gt;</code> stays at 88%. Corrupt the '=' implants so that 25%, 55% or 87% of its answers are wrong, and <code>&lt;calc&gt;</code> goes up to 95-98%. RL drops an implant only when another one does the same job better.</p>
 <p><img alt="RL drops &lt;calc&gt; only when a better implant exists" src="img/3a08f05a-790a.png" /></p>
-<hr>
+<hr />
 <h2 id="6-do-implants-transfer-across-models">6. Do implants transfer across models?</h2>
 <p>Most of the above was found by running the loop on one small model, Qwen3-0.6B: its failures told Claude what to build, and the implants were built and debugged against that model. So a fair question is: <strong>did we just build a bag of patches for one silly model, or find something more general</strong>? Well let's take these implants and slap them on other Qwen models and see what happens!</p>
 <p><strong>Moving an implant from model A to model B</strong> only touches its two read/write ends that bolt on the main model: rebuild the reader for B's tokenizer, and re-solve the write directions against B's output layer (on generic data, never the benchmark). The circuit in the middle, the f(x) itself, doesn't change (call implants also get the short call fine-tune).</p>
@@ -271,10 +336,10 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <li><strong>Within Qwen3, most things carry over, but helps less as the model gets better.</strong> Bigger models have fewer holes left to fill.</li>
 <li><strong>Across families, the tokenizer makes or breaks things.</strong> Models that write numbers one digit at a time (SmolLM2, Granite) can use the calculator (and SmolLM2 the IFEval rules too). Models that chunk digits in groups (SmolLM3, OLMo-2, Phi-4-mini) can't be read by a digit-level reader, so you have to rework the implant.</li>
 </ol>
-<p>So implants transfer, just less well than, say, a Python tool: the function is portable, but the reader has to speak the new model's tokenizer language. But it's perhaps encouraging that holes found on a small model line up with holes in bigger models.</p>
-<hr>
+<p>So micromachines transfer, just less well than, say, a Python tool: the function is portable, but the reader has to speak the new model's tokenizer language. But it's perhaps encouraging that holes found on a small model line up with holes in bigger models.</p>
+<hr />
 <h2 id="7-that-s-it">7. That's it</h2>
-<p>Implants can read and interfere with the residual stream, so they can react to what the model computes or thinks. Implants seem to be a reasonable choice where the tool is small, exact, and called often mid-generation. And since implants are just weights, they're finetunable and RLable tools: you can train the implant, the model, or both, together or separately, and even the wiring between them, ie how the model talks to the tool.</p>
+<p>Micromachines can read and interfere with the residual stream, so they can react to what the model computes or thinks. Implants seem to be a reasonable choice where the tool is small, exact, and called often mid-generation. And since implants are just weights, they're finetunable and RLable tools: you can train the implant, the model, or both, together or separately, and even the wiring between them, ie how the model talks to the tool.</p>
 <p>On top of that:</p>
 <ul>
 <li><strong>RL teaches the model how to use them better and when to switch them off.</strong> The implant is part of the forward pass, so you can do RL with it attached, and the model reshapes how it is used (and what it writes or reads).</li>
@@ -285,14 +350,14 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <p>I think this whole side quest may have been a bit silly, but it was fun. I started this last Friday night, with Claude Code, and it took a few days to complete. In 2023 this would have been a couple of semesters' work for a few talented PhD students.</p>
 <p>One last thing. Is this an RSI loop? Kinda, if you squint :) One model finds holes in another and patches them by writing weights. Swap "another" for "itself" and I suspect that's roughly what self-improvement will look like.</p>
 <p>I'm curious to see what people think, and if this is useful at all.</p>
-<p>Have fun creating implants!</p>
-<hr>
+<p>Have fun building micromachines!</p>
+<hr />
 <h2 id="8-related-work">8. Related work</h2>
 <p>Most of the ingredients here come from other people's work.</p>
 <p>Writing programs directly as transformer weights goes back to RASP [11] and Tracr [12], and to our own Looped Transformers [1]; agents reading and writing weights directly is the weight-space programming of [2], and in the last few weeks agents have hand-written exact standalone transformers for algorithmic tasks too (iWSP [29], "Written, Not Trained" [30]). People have also put exact computers next to or inside language models before: Neural Comprehension [13] plugged compiled networks into an LM, IGC [14] put a gated calculator inside a fine-tuned Llama, MathLLM [21] adds exact arithmetic (with residue number systems) inside a frozen model's forward pass, Qwenputer [15] compiled a whole RISC-V CPU into Qwen, and Percepta [16] ran WebAssembly inside a transformer, and Sketchpad [31] attaches a certified-exact arithmetic adapter to a frozen Qwen3.5-0.8B that leaves the base model untouched when off (trained and then certified, rather than written by an agent). Handing the arithmetic to something exact is really the Toolformer [17] and PAL [4] idea, and most of the gains we see are the ones a Python tool would give. The "wait" comes from s1 [18], and reading "am I wrong?" off the hidden states builds on Kadavath et al. [19] and Azaria &amp; Mitchell [20]. Turning images into text tokens is what we did in LIFT [7]. Closest in spirit is the concurrent WeightCode [32], where an LLM writes programs that install new, gated capabilities into trained vision and sequence networks; here the host is a frozen LLM, the implants are exact and sit outside its weights, and RL trains the model with them attached.</p>
 <p>Another close work is Frozen Tape Modules [22] which puts a separately trained, frozen module inside the forward pass of a small Gemma, behind a learned "controller". The Bicameral Model [23] couples two LMs through their hidden states, so one of them can drive a calculator or a Z3 solver. OccamLLM [24] and Dhanraj &amp; Eliasmith [25] run exact arithmetic or rules off the hidden states, and the latter writes the result back in, the closest prior to our latent write. On the RL side, ReTool [26], ToolRL [27] and ToRL [28] train models to use tools, but there the tool sits outside and talks in text.</p>
-<p>So we're not the first to put a tool inside a network. What's different here is mostly how the implants are created and how they behave once they're in. An agent writes them as exact programs straight into weight space, and you can compose many of them on one frozen model. Most stay silent by construction, so the model is bit-for-bit unchanged until one fires. Moving one to another model mostly means refitting its reader and writer (plus, for implants the model has to call, the short fine-tune that teaches it to write the calls). And because they live in the forward pass, RL can train the model with the implants it already has wired in.</p>
-<hr>
+<p>So we're not the first to put a tool inside a network. What's different here is mostly how WSMs are created and how they behave once they're in. An agent writes them as exact programs straight into weight space, and you can compose many of them on one frozen model. Most stay silent by construction, so the model is bit-for-bit unchanged until one fires. Moving one to another model mostly means refitting its reader and writer (plus, for implants the model has to call, the short fine-tune that teaches it to write the calls). And because they live in the forward pass, RL can train the model with the implants it already has wired in.</p>
+<hr />
 <h2 id="appendix-a-build-details">Appendix A: build details</h2>
 <h3 id="a-1-how-the-ifeval-rules-are-compiled">A.1 How the IFEval rules are compiled</h3>
 <p>All 14 implants are again compiled into plain weights: about 9K ReLU activations, plus two big vocab-sized lookup tables (348M numbers, mostly a copy of the output layer) so the implant sees what the model will write next. It's a rule enforcing machine: hard-attention heads read an instruction from the prompt (say, "all lowercase"), counters track things like bullets written so far, and if the model's next token would break one of the rules, the implant swaps in its best allowed one. Perhaps you can think of this as constrained decoding, but it happens through the weights of the implant.</p>
@@ -301,7 +366,7 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <p><strong>Data:</strong> Claude had a bigger open model (Qwen2.5-7B) write about 7,600 user messages: math requests, messages that only mention math, and everything else, across 10 styles (homework dumps, casual chat, code, stories, ...) and 8 languages. Plus 1,700 GSM8K and Alpaca training questions (funny, Claude insists on picking "older" datasets all the time..)</p>
 <p><strong>Classifier:</strong> run the frozen 1.7B on each message, get hidden states at the last token of the prompt, fit a logistic regression.</p>
 <p><strong>Implant:</strong> the probe becomes a single ReLU unit inside the implant. If it fires, the write forces the "decline sentence" and then the end-of-reply token. If not, it adds zero, so does nothing.</p>
-<hr>
+<hr />
 <h2 id="references">References</h2>
 <ol>
 <li>A. Giannou, S. Rajput, J. Sohn, K. Lee, J. D. Lee, D. Papailiopoulos. <a href="https://arxiv.org/abs/2301.13196">Looped Transformers as Programmable Computers</a>. ICML 2023.</li>
