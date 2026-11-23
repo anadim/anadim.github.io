@@ -81,6 +81,13 @@ hr{border:0;border-top:1px solid #e2e2e2;margin:2.4em 0}.tldr{font-size:.95em;ba
 
 .finding{background:#eaf6f1;border:1px solid #9fd3bf;border-radius:10px;padding:14px 18px;margin:1.6em 0;font-size:.95em;line-height:1.55}
 table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetica,Arial,sans-serif}th,td{border:1px solid #ddd;padding:4px 10px;text-align:left}th{background:#f6f8f7}
+
+h3{font:700 1.12em/1.3 -apple-system,Helvetica,Arial,sans-serif;margin:1.6em 0 .4em;scroll-margin-top:16px}
+.toc{font-size:15px!important;line-height:1.5!important}.toc-h{font-size:13px!important}.toc li.l3{padding-left:16px;font-size:14.5px}.toc li.l2{font-weight:600;margin-top:5px}
+hr{border:0;border-top:1px solid #e2e2e2;margin:2.4em 0}.tldr{font-size:.95em;background:#f6f8f7;border-radius:6px;padding:12px 16px}
+
+.finding{background:#eaf6f1;border:1px solid #9fd3bf;border-radius:10px;padding:14px 18px;margin:1.6em 0;font-size:.95em;line-height:1.55}
+table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetica,Arial,sans-serif}th,td{border:1px solid #ddd;padding:4px 10px;text-align:left}th{background:#f6f8f7}
 </style></head><body><div class="draft">Draft, shared privately. Please don't circulate.</div>
 <h1 id="weight-space-micromachines-brain-implants-for-llms">Weight-Space Micromachines: Brain Implants for LLMs</h1>
 <p class="tldr"><strong>TL;DR</strong> AI agents can write small modules ("implants") straight into weight space and bolt them onto a frozen LLM: a calculator, "eyes" for images, a mistake detector, a little memory that lets the model retry a problem and vote inside one call. Implants stay OFF until needed, so the model is bit-for-bit unchanged until one fires. Attaching them alone climbs benchmarks like RL but without RL: on Qwen3-0.6B-Base, BIG-Bench Hard goes from 41% to 55%, IFEval from 13% to 35%. You can also RL with implants attached: on GSM8K, RL with implants reaches 80% vs 68% for plain RL, BIG-Bench Hard 60% vs 54%  and IFEval 48% vs 46%.</p>
@@ -365,24 +372,18 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <li><strong>Across model families, the tokenizer decides</strong> <strong>the </strong><strong>fate of an</strong><strong> implant</strong><strong>.</strong> Models that write numbers one digit at a time (SmolLM2, Granite) can use the implants. Models that split numbers differently (Falcon3, or ones that chunk digits in groups) can't be read as is, so the implant has to be reworked.</li>
 </ol>
 <p><img alt="Qwen3-1.7B-Base: model alone, implants without RL, plain RL, RL with implants, and RL then implants, on GSM8K, BIG-Bench Hard and IFEval" src="img/42bfc5ef-6aee.png" /></p>
-<p><strong>The same on Qwen3-1.7B.</strong> We reran the four settings on Qwen3-1.7B-Base with the same implants (only their read and write ends refit), and the picture holds: RL with the implants beats plain RL on all three benchmarks, and on GSM8K RL first, implants after does best.</p>
-<p>So micromachines transfer, just less well than, say, a Python tool: the function is portable, but the reader has to speak the new model's tokenizer language. But it's perhaps encouraging that implants built on a small model still help bigger ones.</p>
-<div class="finding"><strong>Implants move to other models by refitting their read and write ends,</strong> <strong>as long as the tokenizer cooperates.</strong> They help Qwen3-1.7B clearly on IFEval and GSM8K (90% vs 81% when attached after plain RL), barely on BBH, 4B a little, and some families that write numbers digit by digit (SmolLM2, Granite, not Falcon3), but not ones that chunk digits.</div>
+<p><strong>The same on Qwen3-1.7B.</strong> We reran the four settings on Qwen3-1.7B-Base with the same implants (only their read and write ends refit), and the same conclusions hold: RL with the implants beats plain RL on all three benchmarks, and on GSM8K RL first, implants after does best.</p>
+<p><strong>So micromachines transfer,</strong> just less well than, say, a Python tool: the function is portable, but the reader has to speak the new model's tokenizer language. But it's perhaps encouraging that implants built on a small model still help bigger ones.</p>
+<div class="finding"><strong>Implants move to other models by refitting their read and write ends,</strong> <strong>as long as the tokenizer cooperates.</strong> They help Qwen3-1.7B clearly on IFEval and GSM8K (90% vs 81% when attached after plain RL), barely on BBH for the 4B a little, and some families that write numbers digit by digit (SmolLM2, Granite, not Falcon3), but not ones that chunk digits.</div>
 <hr />
 <h2 id="7-that-s-it">7. That's it</h2>
 <p>So, back to the question of tools from <a href="#1-5-so-aren-t-implants-just-tools">§1.5</a>.</p>
-<p>Micromachines can read and interfere with the residual stream, so they can react to what the model computes or thinks. Implants seem to be a reasonable choice where the tool is small, exact, and called often mid-generation. And since implants are just weights, they're finetunable and RLable tools: you can train the model around them, and even the wiring between them, ie how the model talks to the tool (training the implant itself breaks it, <a href="#3-4-what-rl-can-t-do-yet-training-the-implant-can-break-it">§3.4</a>).</p>
-<p>On top of that:</p>
-<ul>
-<li><strong>RL teaches the model when to use them and when to switch them off.</strong> The implant is part of the forward pass, so you can do RL with it attached, and the model reshapes how it is used (and what it writes or reads). Training with them on isn't always best, though: with GSM8K's 4-try stack in the loop, RL made each try worse, and RL first, implants after, won.</li>
-<li><strong>An agent can build them, in a loop</strong>, and accuracy climbs with the number of implants. Like any agentic loop, this can reward-hack (ours did, on BBH), and held-out tests and independent judges help.</li>
-<li><strong>Some of what RL learns, you can just write.</strong> On GSM8K, a hand-written position reset with zero trained parameters gets about the same gain as 300 RL updates (81% vs 80%), and stacking the two adds nothing.</li>
-</ul>
-<p>I don't want to oversell the findings: the models are small, and most of the gains are where a tool would help anyway, the GSM8K stack pays for its gains with many more tokens, and making this work for more complex tasks and bigger models needs thinking.</p>
-<p><strong>But it's also kind of cool that an agent can look at a model's mistakes and failure modes and write exact little machines into weight space to patch them, and bolt them on in weight space </strong><strong>mostly without breaking anything</strong><strong>. And that RL then teaches the model how to use them.</strong></p>
-<p>I think this whole side quest may have been a bit silly, but it was fun. I started this last Friday night, with Claude Code, and it took about a week. In 2023 this would have been a couple of semesters' work for a few talented PhD students.</p>
-<p>A more down-to-earth version of where this could go: an agent that maintains a small library of patches for a specific model, each with the failures it fixes, its tests, and an off switch, the way we maintain code.</p>
+<p>Micromachines can read and write on model internal state, so they can react to what a model computes, and they perhaps are a reasonable choice when a tool is small, exact and used often mid-generation. Because they are just weights, you can fine-tune and RL the model with them attached: RL learns when to use each implant and when to switch it off, and can even train the wiring between model and implant.</p>
+<p>An agent can build them in a loop, and accuracy climbs with each one it adds. Like any agentic loop it can reward-hack (ours did, on BBH), so held-out tests and independent judges matter. An agent can also maintains a small library of patches for a specific model, each with the failures it fixes, its tests and an off switch, the way we maintain code.</p>
+<p>I don't want to oversell the findings: the models are small, and most of the gains are where a tool would help anyway.</p>
+<p><strong>But it's also kind of cool that an agent can look at</strong> <strong>t</strong><strong>h</strong><strong>e</strong><strong> failure</strong> <strong>m</strong><strong>od</strong><strong>e</strong><strong>s</strong> <strong>o</strong><strong>f</strong><strong> a model</strong> <strong>and write exact little machines into weight space to patch them, and bolt them on in weight space </strong><strong>mostly without breaking anything</strong><strong>. And that RL then teaches the model how to use them.</strong></p>
 <p>One last thing. Is this an RSI loop? Kinda, if you squint :) One model finds holes in another and patches them by writing weights. Swap "another" for "itself" and I suspect that's roughly what self-improvement will look like.</p>
+<p>I think this whole side quest may have been a bit silly, but it was fun. I started this roughly a week ago. In 2023 this would have been a couple of semesters worth of work with a few talented PhD students.</p>
 <p>I'm curious to see what people think, and if this is useful at all.</p>
 <p>Have fun building micromachines!</p>
 <hr />
