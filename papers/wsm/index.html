@@ -109,6 +109,13 @@ hr{border:0;border-top:1px solid #e2e2e2;margin:2.4em 0}.tldr{font-size:.95em;ba
 
 .finding{background:#eaf6f1;border:1px solid #9fd3bf;border-radius:10px;padding:14px 18px;margin:1.6em 0;font-size:.95em;line-height:1.55}
 table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetica,Arial,sans-serif}th,td{border:1px solid #ddd;padding:4px 10px;text-align:left}th{background:#f6f8f7}
+
+h3{font:700 1.12em/1.3 -apple-system,Helvetica,Arial,sans-serif;margin:1.6em 0 .4em;scroll-margin-top:16px}
+.toc{font-size:15px!important;line-height:1.5!important}.toc-h{font-size:13px!important}.toc li.l3{padding-left:16px;font-size:14.5px}.toc li.l2{font-weight:600;margin-top:5px}
+hr{border:0;border-top:1px solid #e2e2e2;margin:2.4em 0}.tldr{font-size:.95em;background:#f6f8f7;border-radius:6px;padding:12px 16px}
+
+.finding{background:#eaf6f1;border:1px solid #9fd3bf;border-radius:10px;padding:14px 18px;margin:1.6em 0;font-size:.95em;line-height:1.55}
+table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetica,Arial,sans-serif}th,td{border:1px solid #ddd;padding:4px 10px;text-align:left}th{background:#f6f8f7}
 </style></head><body><div class="draft">Draft, shared privately. Please don't circulate.</div>
 <h1 id="weight-space-micromachines-brain-implants-for-llms">Weight-Space Micromachines: Brain Implants for LLMs</h1>
 <p class="tldr"><strong>TL;DR</strong> AI agents can write small modules ("implants") straight into weight space and bolt them onto a frozen LLM: a calculator, "eyes" for images, a mistake detector, a little memory that lets the model retry a problem and vote inside one call. Implants stay OFF until needed, so the model is bit-for-bit unchanged until one fires. Attaching them alone climbs benchmarks like RL but without RL: on Qwen3-0.6B-Base, BIG-Bench Hard goes from 41% to 55%, IFEval from 13% to 35%. You can also RL with implants attached: on GSM8K, RL with implants reaches 80% vs 68% for plain RL, BIG-Bench Hard 60% vs 54%  and IFEval 48% vs 46%.</p>
@@ -367,7 +374,7 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <p>So far the model stayed frozen and while adding the implants. Since implants are just weights, you can also train the model with them attached. This section asks what RL does with them: does it beat plain RL (<a href="#5-1-rl-with-implants-vs-plain-rl">§5.1</a>), and does it learn which implants to use and which to switch off (<a href="#5-2-rl-picks-among-implants">§5.2</a>)?</p>
 <h3 id="5-1-rl-with-implants-vs-plain-rl">5.1 RL with implants vs plain RL</h3>
 <p><strong>Same frozen model, same recipe, four rows.</strong> To keep the comparison fair, we use one base model, Qwen3-0.6B-Base, and the same four settings for GSM8K, BIG-Bench Hard and IFEval: 1) the model alone, 2) the model after RL, 3) the model with the implants but no RL, 4) and the model RL'd with the implants attached. </p>
-<p>Both RL settings use the same GRPO recipe (300 updates, 64 prompts × 8 samples, learning rate 1e-6, 3 seeds) and train only on training or look-alike synthetic questions, never on the test (yeah i know this can still leak, but let's ignore this).</p>
+<p>Both RL settings use the same GRPO recipe (300 updates, 64 prompts × 8 samples, learning rate 1e-6; 6 seeds on GSM8K and IFEval, 3 on BIG-Bench Hard) and train only on training or look-alike synthetic questions, never on the test (yeah i know this can still leak, but let's ignore this).</p>
 <p><img alt="Same base model, same RL recipe: the four rows plus RL-then-implants on GSM8K, BBH and IFEval" src="img/73deb2c9-fe51.png" /></p>
 <p><strong>Of these four settings</strong><strong>, RL with the implants ends highest on all three.</strong> On top of RL, the implants add 12 points on GSM8K (17 on GSM-Hard), 7 on BIG-Bench Hard (against plain RL from the untouched model) and 3 on IFEval (6 seeds on GSM8K and IFEval). </p>
 <p>And general skills don't decrease: on MMLU, ARC-Challenge, HellaSwag, WinoGrande and NQ, the model RL'd with implants stays within a point of the base model, just like plain RL; the implants never fire there.</p>
@@ -439,7 +446,7 @@ table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetic
 <li><strong>Main host:</strong> Qwen3-0.6B-Base, frozen, for most of the post. For the GSM8K climb in <a href="#4-4-climbing-gsm8k-with-implants">§4.4</a> the host is that same model after 300 updates of RL with the calculator (<a href="#3-rling-on-the-model-with-one-implant">§3</a>), then frozen. For the four-row comparison in <a href="#5-1-rl-with-implants-vs-plain-rl">§5.1</a> it is Qwen3-0.6B-Base on all three benchmarks (on BBH after the short call fine-tune).</li>
 <li><strong>Other hosts:</strong> Qwen2.5-0.5B (calculator and eyes demos); Qwen3-0.6B chat (IFEval in <a href="#4-2-climbing-ifeval-with-implants">§4.2</a>, the mixed run in <a href="#5-2-rl-picks-among-implants">§5.2</a>); Qwen3-1.7B chat (topic blocker); Qwen3-1.7B and 4B, SmolLM2, Granite and Falcon3 (transfer).</li>
 <li><strong>Data:</strong> GSM8K and GSM-Hard (test sets for reporting; GSM8K train questions held out from RL for tuning), IFEval (541 prompts), BIG-Bench Hard (27 tasks), and MNIST for the eyes. Implants were built mostly on Claude's own look-alike synthetic questions (the IFEval templates reword the even-numbered IFEval prompts, so we also report the odd ones, and we read BBH scores between versions).</li>
-<li><strong>RL:</strong> GRPO, 64 prompts × 8 samples per update, 300 updates, learning rate 1e-6 (the best of 3e-7 to 5e-6 on GSM8K), temperature 1, 1–3 seeds per arm (3 in <a href="#5-1-rl-with-implants-vs-plain-rl">§5.1</a>; 150 updates in the <a href="#5-2-rl-picks-among-implants">§5.2</a> mixed run).</li>
+<li><strong>RL:</strong> GRPO, 64 prompts × 8 samples per update, 300 updates, learning rate 1e-6 (the best of 3e-7 to 5e-6 on GSM8K), temperature 1, 1–6 seeds per arm (in <a href="#5-1-rl-with-implants-vs-plain-rl">§5.1</a>, 6 on GSM8K and IFEval and 3 on BIG-Bench Hard; 150 updates in the <a href="#5-2-rl-picks-among-implants">§5.2</a> mixed run).</li>
 </ul>
 <hr />
 <h2 id="references">References</h2>
