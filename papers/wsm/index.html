@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Weight-Space Micromachines</title><style>body{background:#fff;color:#1b1b1b;font:18px/1.65 Georgia,'Times New Roman',serif;max-width:760px;margin:0 auto;padding:40px 16px 80px}
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Weight-Space Micromachines</title><style>body{background:#fff;color:#1b1b1b;font:18px/1.65 Georgia,'Times New Roman',serif;max-width:760px;margin:0 auto;padding:40px 16px 80px}
 h1{font:700 2.1em/1.2 -apple-system,Helvetica,Arial,sans-serif;margin:.2em 0 .6em}h2{font:700 1.4em/1.3 -apple-system,Helvetica,Arial,sans-serif;margin:2em 0 .5em;scroll-margin-top:16px}
 img{max-width:100%;height:auto;display:block;margin:1.2em auto}a{color:#0b6e4f}code{font:.88em Menlo,monospace;background:#f2f2f0;padding:1px 4px;border-radius:3px}
 blockquote{border-left:3px solid #ccc;margin:1em 0;padding:0 1em;color:#444}
@@ -123,7 +123,14 @@ hr{border:0;border-top:1px solid #e2e2e2;margin:2.4em 0}.tldr{font-size:.95em;ba
 
 .finding{background:#eaf6f1;border:1px solid #9fd3bf;border-radius:10px;padding:14px 18px;margin:1.6em 0;font-size:.95em;line-height:1.55}
 table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetica,Arial,sans-serif}th,td{border:1px solid #ddd;padding:4px 10px;text-align:left}th{background:#f6f8f7}
-</style></head><body><div class="draft">Draft, shared privately. Please don't circulate.</div>
+
+h3{font:700 1.12em/1.3 -apple-system,Helvetica,Arial,sans-serif;margin:1.6em 0 .4em;scroll-margin-top:16px}
+.toc{font-size:15px!important;line-height:1.5!important}.toc-h{font-size:13px!important}.toc li.l3{padding-left:16px;font-size:14.5px}.toc li.l2{font-weight:600;margin-top:5px}
+hr{border:0;border-top:1px solid #e2e2e2;margin:2.4em 0}.tldr{font-size:.95em;background:#f6f8f7;border-radius:6px;padding:12px 16px}
+
+.finding{background:#eaf6f1;border:1px solid #9fd3bf;border-radius:10px;padding:14px 18px;margin:1.6em 0;font-size:.95em;line-height:1.55}
+table{border-collapse:collapse;margin:1em 0;font:15px/1.4 -apple-system,Helvetica,Arial,sans-serif}th,td{border:1px solid #ddd;padding:4px 10px;text-align:left}th{background:#f6f8f7}
+</style></head><body>
 <h1 id="weight-space-micromachines-brain-implants-for-llms">Weight-Space Micromachines: Brain Implants for LLMs</h1>
 <p class="tldr"><strong>TL;DR</strong> AI agents can write small modules ("implants") straight into weight space and bolt them onto a frozen LLM: a calculator, "eyes" for images, a mistake detector, a little memory that lets the model retry a problem and vote inside one call. Implants stay OFF until needed, so the model is bit-for-bit unchanged until one fires. Attaching them alone climbs benchmarks like RL but without RL: on Qwen3-0.6B-Base, BIG-Bench Hard goes from 41% to 55%, IFEval from 13% to 35%. You can also RL with implants attached: on GSM8K, RL with implants reaches 80% vs 68% for plain RL, BIG-Bench Hard 60% vs 54%  and IFEval 48% vs 46%.</p>
 <p>Code: <a href="https://github.com/anadim/weight-space-micromachines">github.com/anadim/weight-space-micromachines</a>.</p>
