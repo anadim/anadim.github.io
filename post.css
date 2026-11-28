@@ -93,3 +93,17 @@ h2{font-size:24px}h3{font-size:20px}h4{font-size:18px}
 .toc li.l3{padding-left:18px;font-size:16px;font-weight:400}
 .toc a{color:var(--green)}
 @media(max-width:600px){.toc ol{columns:1}}
+
+/* Notes dropdown in the top menu: hover (or keyboard focus) lists every post */
+.crumbs{position:relative;z-index:20}
+.dd{position:relative;display:inline-block}
+.dd>a::after{content:'▾';font-size:.8em;margin-left:3px;opacity:.6}
+.ddm{display:none;position:absolute;right:-12px;top:100%;margin:0;padding:8px 0;list-style:none;width:min(420px,90vw);
+  background:var(--paper);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 30px rgba(27,42,51,.12);
+  font-variant-caps:normal;letter-spacing:0;font-size:16px;line-height:1.35;text-align:left}
+.dd::before{content:'';position:absolute;left:0;right:0;top:100%;height:10px}
+.dd:hover .ddm,.dd:focus-within .ddm{display:block;margin-top:6px}
+.ddm a{display:flex;justify-content:space-between;gap:16px;padding:6px 16px;color:var(--ink);text-decoration:none}
+.ddm a:hover{background:#EEF4F5;color:var(--green)}
+.ddm time{flex:none;color:var(--muted);font-variant-numeric:tabular-nums}
+.ddm li.cur a{color:var(--green);font-weight:600}
