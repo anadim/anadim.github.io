@@ -107,3 +107,7 @@ h2{font-size:24px}h3{font-size:20px}h4{font-size:18px}
 .ddm a:hover{background:#EEF4F5;color:var(--green)}
 .ddm time{flex:none;color:var(--muted);font-variant-numeric:tabular-nums}
 .ddm li.cur a{color:var(--green);font-weight:600}
+
+/* Videos play in place, like the GIFs */
+figure.video{margin:1.4em 0}
+figure.video video{display:block;width:100%;height:auto;border-radius:6px;background:#EFEBE1}
