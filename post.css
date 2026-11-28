@@ -1,0 +1,95 @@
+/* Post pages: typography follows papail.io/papers/wsm;
+   wide screens add a sticky contents rail (left) and link sidenotes (right). */
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap');
+:root{--col:680px;--note:230px;--gap:40px;--rail:220px;--green:#1F6F8B;--ink:#1B2A33;--muted:#5F6E76;--soft:#8A979E;--line:#E6E2D8;--paper:#FAF8F3;--sans:'Newsreader',Georgia,serif}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font:19px/1.65 'Newsreader',Georgia,serif;font-optical-sizing:auto;-webkit-font-smoothing:antialiased;margin:0;padding:28px 16px 80px}
+main{max-width:var(--col);margin:0 auto;position:relative}
+h1,h2,h3,h4{font-family:'Newsreader',Georgia,serif;font-weight:600;scroll-margin-top:16px}
+h1{font-size:2.3em;line-height:1.1;font-weight:500;letter-spacing:-.01em;margin:.4em 0 .3em}
+h2{font-size:1.4em;line-height:1.3;margin:2em 0 .5em}
+h3{font-size:1.12em;line-height:1.3;margin:1.6em 0 .4em}
+h4{font-size:1em;line-height:1.3;margin:1.4em 0 .3em}
+a{color:var(--green);text-underline-offset:3px}
+img{max-width:100%;height:auto;display:block;margin:0 auto}
+figure{margin:1.4em 0}
+figcaption{font:italic 15px/1.45 'Newsreader',serif;color:var(--muted);text-align:center;margin-top:.5em}
+code{font:.82em Menlo,Consolas,monospace;background:#EFEBE1;padding:1px 4px;border-radius:3px}
+pre{background:#F2EFE7;border:1px solid var(--line);border-radius:6px;padding:10px 14px;overflow-x:auto}
+pre code{background:none;padding:0;font-size:.82em}
+blockquote{border-left:3px solid #ccc;margin:1em 0;padding:0 1em;color:#444}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0}
+table{border-collapse:collapse;margin:1em 0;font:15px/1.4 var(--sans)}
+th,td{border:1px solid #ddd;padding:4px 10px;text-align:left}th{background:#f6f8f7}
+.crumbs{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 20px;padding-bottom:12px;border-bottom:1px solid var(--line);margin-bottom:2.2em}
+.crumbs .home{color:var(--ink);font-size:17px;font-weight:500;text-decoration:none;margin-right:auto}
+.crumbs nav{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:16px;font-variant-caps:all-small-caps;letter-spacing:.07em}.crumbs nav a{text-decoration:none}
+.subtitle{font-size:1.15em;color:#555;margin:-.1em 0 .4em;font-style:italic}
+.meta{font-size:15px;color:var(--soft);margin:0 0 1.8em}
+.toc-h{font-size:15px;font-weight:500;font-variant-caps:all-small-caps;letter-spacing:.14em;color:var(--muted);margin-bottom:6px}
+/* inline contents box (narrow screens) */
+.toc{font-size:16px;line-height:1.45;background:#F2EFE7;border:1px solid var(--line);border-radius:6px;padding:10px 14px;margin:18px 0 28px}
+.toc ol{list-style:none;margin:0;padding:0;columns:2;column-gap:24px}
+.toc li{margin:0 0 2px;break-inside:avoid}.toc li.l2{font-weight:600;margin-top:5px}.toc li.l3{padding-left:16px;font-size:14.5px}
+.toc a{text-decoration:none}.toc a:hover{text-decoration:underline}
+@media(max-width:600px){.toc ol{columns:1}}
+.math{overflow-x:auto;margin:1em 0;text-align:center}
+.video,.subscribe{font-size:16px;background:#F2EFE7;border-radius:6px;padding:10px 14px}
+/* link references */
+sup.rn{font:600 12px 'Newsreader',serif;color:var(--green);margin-left:1px;vertical-align:super;line-height:0}
+.sidenote{display:none}
+.links-list{margin-top:3em;border-top:1px solid var(--line);padding-top:1.2em;font-size:15.5px;line-height:1.5}
+.links-list ol{margin:0;padding-left:1.6em}.links-list li{margin:.25em 0;color:#555;word-break:break-word}
+.links-list .back{text-decoration:none;color:#aaa;margin-left:.2em}
+.post-foot{display:flex;justify-content:space-between;font-size:16px;border-top:1px solid var(--line);margin-top:3em;padding-top:1em}
+/* left rail */
+.rail{display:none}
+
+@media (min-width:1300px){
+  main{margin-left:calc(50% - var(--col)/2 - (var(--note) + var(--gap) - var(--rail) - var(--gap))/2)}
+  .rail{display:block;position:fixed;top:96px;width:var(--rail);max-height:calc(100vh - 140px);overflow-y:auto;
+        left:calc(50% - var(--col)/2 - (var(--note) + var(--gap) - var(--rail) - var(--gap))/2 - var(--gap) - var(--rail));
+        font-size:15px;line-height:1.35;padding-right:8px}
+  .rail ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--line)}
+  .rail li{margin:0}
+  .rail a{display:block;padding:4px 0 4px 12px;color:var(--muted);text-decoration:none;border-left:2px solid transparent;margin-left:-1px}
+  .rail li.l3 a{padding-left:24px;font-size:14px;color:var(--soft)}
+  .rail a:hover{color:var(--green)}
+  .rail a.on{color:var(--green);border-left-color:var(--green);font-weight:600}
+  .toc{display:none}
+  .sidenote{display:block;float:right;clear:right;width:var(--note);margin-right:calc(-1 * (var(--note) + var(--gap)));
+            margin-top:.3em;margin-bottom:.8em;font-size:14px;line-height:1.4;color:var(--muted);position:relative;word-break:break-word}
+  .sidenote b{color:var(--green);font-weight:600}
+  .sidenote a{color:#555;text-decoration:none}.sidenote a:hover{color:var(--green);text-decoration:underline}
+  blockquote .sidenote{margin-right:calc(-1 * (var(--note) + var(--gap)) - 1em)}
+}
+
+/* boxes, as on papail.io/papers/wsm, in the homepage palette */
+.tldr{font-size:.95em;background:#EEF4F5;border-radius:8px;padding:14px 18px}
+.finding{background:#EAF3F5;border:1px solid #BFD9E0;border-radius:10px;padding:14px 18px;margin:1.6em 0;font-size:.95em;line-height:1.55}
+.finding p{margin:0}
+.note{background:#F2EFE7;border:1px solid var(--line);border-radius:8px;padding:12px 16px;margin:0 0 1.8em;font-size:16.5px;line-height:1.5}
+.note b{font-weight:600}
+
+/* Type scale matched to the homepage: body 18px, one secondary size (16px) for everything around the text. */
+body{font-size:18px}
+h1{font-size:38px;font-weight:400;letter-spacing:-.02em}
+h2{font-size:24px}h3{font-size:20px}h4{font-size:18px}
+.crumbs .home{font-size:18px}
+.crumbs nav,.meta,.toc,.toc li.l3,.toc-h,figcaption,table,.video,.subscribe,.links-list,.post-foot,.note{font-size:16px}
+.meta,.crumbs nav{color:var(--muted)}
+.tldr,.finding{font-size:18px}
+@media (min-width:1300px){.rail,.rail li.l3 a,.sidenote{font-size:16px}.sidenote{line-height:1.4}}
+
+/* references never inherit bold/italic from the sentence they sit in */
+.sidenote,.sidenote a{font-weight:400!important;font-style:normal!important}
+.sidenote b{font-weight:600!important}
+/* contents as a box at the top, as on papail.io/papers/wsm */
+.toc{display:block!important;background:#EEF4F5;border:1px solid #D3E3E8;border-radius:10px;padding:16px 22px 18px;margin:20px 0 32px;font-size:16px;line-height:1.4}
+.toc .toc-h{font-size:15px;font-weight:600;text-transform:uppercase;font-variant-caps:normal;letter-spacing:.1em;color:var(--muted);margin-bottom:10px}
+.toc ol{columns:2;column-gap:36px}
+.toc li{margin:0 0 4px}
+.toc li.l2{font-weight:600;margin-top:8px}.toc li.l2:first-child{margin-top:0}
+.toc li.l3{padding-left:18px;font-size:16px;font-weight:400}
+.toc a{color:var(--green)}
+@media(max-width:600px){.toc ol{columns:1}}
